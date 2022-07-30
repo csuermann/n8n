@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const invoiceOperations = [
+export const invoiceOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,34 +18,38 @@ export const invoiceOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new invoice',
+				action: 'Create an invoice',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a invoice',
+				action: 'Delete an invoice',
 			},
 			{
 				name: 'Email',
 				value: 'email',
 				description: 'Email an invoice',
+				action: 'Email an invoice',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get data of a invoice',
+				action: 'Get an invoice',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get data of all invoices',
+				action: 'Get all invoices',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const invoiceFields = [
+export const invoiceFields: INodeProperties[] = [
 /* -------------------------------------------------------------------------- */
 /*                                 invoice:create                             */
 /* -------------------------------------------------------------------------- */
@@ -66,9 +71,10 @@ export const invoiceFields = [
 		},
 		options: [
 			{
-				displayName: 'Client',
+				displayName: 'Client Name or ID',
 				name: 'client',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getClients',
 				},
@@ -114,6 +120,7 @@ export const invoiceFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 			},
 			{
@@ -316,6 +323,7 @@ export const invoiceFields = [
 		displayName: 'Invoice ID',
 		name: 'invoiceId',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -335,6 +343,7 @@ export const invoiceFields = [
 		displayName: 'Invoice ID',
 		name: 'invoiceId',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -354,6 +363,7 @@ export const invoiceFields = [
 		displayName: 'Invoice ID',
 		name: 'invoiceId',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -415,7 +425,7 @@ export const invoiceFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -439,7 +449,7 @@ export const invoiceFields = [
 			maxValue: 60,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -478,4 +488,4 @@ export const invoiceFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

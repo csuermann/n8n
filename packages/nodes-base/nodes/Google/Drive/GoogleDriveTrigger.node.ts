@@ -18,7 +18,7 @@ import {
 	googleApiRequestAllItems,
 } from './GenericFunctions';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 export class GoogleDriveTrigger implements INodeType {
 	description: INodeTypeDescription = {
@@ -31,7 +31,6 @@ export class GoogleDriveTrigger implements INodeType {
 		subtitle: '={{$parameter["event"]}}',
 		defaults: {
 			name: 'Google Drive Trigger',
-			color: '#4285F4',
 		},
 		credentials: [
 			{
@@ -67,12 +66,12 @@ export class GoogleDriveTrigger implements INodeType {
 				type: 'options',
 				options: [
 					{
-						name: 'Service Account',
-						value: 'serviceAccount',
+						name: 'OAuth2 (Recommended)',
+						value: 'oAuth2',
 					},
 					{
-						name: 'OAuth2',
-						value: 'oAuth2',
+						name: 'Service Account',
+						value: 'serviceAccount',
 					},
 				],
 				default: 'oAuth2',
@@ -97,7 +96,6 @@ export class GoogleDriveTrigger implements INodeType {
 					// 	value: 'anyFileFolder',
 					// },
 				],
-				description: '',
 			},
 			{
 				displayName: 'File URL or ID',
@@ -210,6 +208,7 @@ export class GoogleDriveTrigger implements INodeType {
 				default: '',
 			},
 			{
+				// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 				displayName: 'Drive To Watch',
 				name: 'driveToWatch',
 				type: 'options',
@@ -225,7 +224,7 @@ export class GoogleDriveTrigger implements INodeType {
 				},
 				default: 'root',
 				required: true,
-				description: 'The drive to monitor',
+				description: 'The drive to monitor. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Watch For',

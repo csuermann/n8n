@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const folderOperations = [
+export const folderOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,42 +20,47 @@ export const folderOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a folder',
+				action: 'Create a folder',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a folder',
+				action: 'Delete a folder',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a folder',
+				action: 'Get a folder',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all folders',
+				action: 'Get all folders',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a folder',
+				action: 'Update a folder',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const folderFields = [
+export const folderFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                folder:create                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -72,9 +78,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -116,9 +123,10 @@ export const folderFields = [
 	/*                                folder:delete                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -136,9 +144,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -159,9 +168,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Folder ID',
+		displayName: 'Folder Name or ID',
 		name: 'folder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -186,9 +196,10 @@ export const folderFields = [
 	/*                                folder:get                                  */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -206,9 +217,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -229,9 +241,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Folder ID',
+		displayName: 'Folder Name or ID',
 		name: 'folder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -256,9 +269,10 @@ export const folderFields = [
 	/*                                folder:getAll                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -276,9 +290,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -317,7 +332,7 @@ export const folderFields = [
 			maxValue: 100,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -349,9 +364,10 @@ export const folderFields = [
 	/*                                folder:update                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -369,9 +385,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -392,9 +409,10 @@ export const folderFields = [
 		required: true,
 	},
 	{
-		displayName: 'Folder ID',
+		displayName: 'Folder Name or ID',
 		name: 'folder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -439,4 +457,4 @@ export const folderFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

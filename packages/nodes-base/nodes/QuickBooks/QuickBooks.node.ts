@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import {
 	IExecuteFunctions,
 } from 'n8n-core';
@@ -72,7 +73,6 @@ export class QuickBooks implements INodeType {
 		description: 'Consume the QuickBooks Online API',
 		defaults: {
 			name: 'QuickBooks Online',
-			color: '#2CA01C',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -87,6 +87,7 @@ export class QuickBooks implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Bill',
@@ -130,7 +131,6 @@ export class QuickBooks implements INodeType {
 					},
 				],
 				default: 'customer',
-				description: 'Resource to consume',
 			},
 			...billOperations,
 			...billFields,
@@ -181,6 +181,10 @@ export class QuickBooks implements INodeType {
 				return await loadResource.call(this, 'purchase');
 			},
 
+			async getTaxCodeRefs(this: ILoadOptionsFunctions) {
+				return await loadResource.call(this, 'TaxCode');
+			},
+
 			async getTerms(this: ILoadOptionsFunctions) {
 				return await loadResource.call(this, 'Term');
 			},
@@ -222,18 +226,18 @@ export class QuickBooks implements INodeType {
 						const lines = this.getNodeParameter('Line', i) as IDataObject[];
 
 						if (!lines.length) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`, { itemIndex: i });
 						}
 
 						if (lines.some(line => line.DetailType === undefined || line.Amount === undefined || line.Description === undefined)) {
-							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.');
+							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.', { itemIndex: i });
 						}
 
 						lines.forEach(line => {
 							if (line.DetailType === 'AccountBasedExpenseLineDetail' && line.accountId === undefined) {
-								throw new NodeOperationError(this.getNode(), 'Please enter an account ID for the associated line.');
+								throw new NodeOperationError(this.getNode(), 'Please enter an account ID for the associated line.', { itemIndex: i });
 							} else if (line.DetailType === 'ItemBasedExpenseLineDetail' && line.itemId === undefined) {
-								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.');
+								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.', { itemIndex: i });
 							}
 						});
 
@@ -313,7 +317,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -385,7 +389,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -456,7 +460,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -484,16 +488,16 @@ export class QuickBooks implements INodeType {
 						const lines = this.getNodeParameter('Line', i) as IDataObject[];
 
 						if (!lines.length) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`, { itemIndex: i });
 						}
 
 						if (lines.some(line => line.DetailType === undefined || line.Amount === undefined || line.Description === undefined)) {
-							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.');
+							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.', { itemIndex: i });
 						}
 
 						lines.forEach(line => {
 							if (line.DetailType === 'SalesItemLineDetail' && line.itemId === undefined) {
-								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.');
+								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.', { itemIndex: i });
 							}
 						});
 
@@ -504,7 +508,6 @@ export class QuickBooks implements INodeType {
 						} as IDataObject;
 
 						body.Line = processLines.call(this, body, lines, resource);
-
 						const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
 
 						body = populateFields.call(this, body, additionalFields, resource);
@@ -599,7 +602,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -627,16 +630,16 @@ export class QuickBooks implements INodeType {
 						const lines = this.getNodeParameter('Line', i) as IDataObject[];
 
 						if (!lines.length) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one line for the ${resource}.`, { itemIndex: i });
 						}
 
 						if (lines.some(line => line.DetailType === undefined || line.Amount === undefined || line.Description === undefined)) {
-							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.');
+							throw new NodeOperationError(this.getNode(), 'Please enter detail type, amount and description for every line.', { itemIndex: i });
 						}
 
 						lines.forEach(line => {
 							if (line.DetailType === 'SalesItemLineDetail' && line.itemId === undefined) {
-								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.');
+								throw new NodeOperationError(this.getNode(), 'Please enter an item ID for the associated line.', { itemIndex: i });
 							}
 						});
 
@@ -742,7 +745,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -914,7 +917,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);
@@ -1093,7 +1096,7 @@ export class QuickBooks implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						body = populateFields.call(this, body, updateFields, resource);

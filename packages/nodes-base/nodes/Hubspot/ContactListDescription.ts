@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const contactListOperations = [
+export const contactListOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,19 +20,20 @@ export const contactListOperations = [
 				name: 'Add',
 				value: 'add',
 				description: 'Add contact to a list',
+				action: 'Add a contact to a list',
 			},
 			{
 				name: 'Remove',
 				value: 'remove',
 				description: 'Remove a contact from a list',
+				action: 'Remove a contact from a list',
 			},
 		],
 		default: 'add',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const contactListFields = [
+export const contactListFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                contactList:add                             */
@@ -67,6 +69,7 @@ export const contactListFields = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		required: true,
 		displayOptions: {
 			show: {
@@ -158,4 +161,4 @@ export const contactListFields = [
 		},
 		default: '',
 	},
-] as INodeProperties[];
+];

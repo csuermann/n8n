@@ -41,7 +41,6 @@ export class CustomerIo implements INodeType {
 		description: 'Consume Customer.io API',
 		defaults: {
 			name: 'CustomerIo',
-			color: '#ffcd00',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -56,6 +55,7 @@ export class CustomerIo implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Customer',
@@ -75,7 +75,6 @@ export class CustomerIo implements INodeType {
 					},
 				],
 				default: 'customer',
-				description: 'Resource to consume.',
 			},
 			// CAMPAIGN
 			...campaignOperations,
@@ -134,7 +133,7 @@ export class CustomerIo implements INodeType {
 									Object.assign(body, JSON.parse(additionalFieldsJson));
 
 								} else {
-									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON');
+									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON', { itemIndex: i });
 								}
 							}
 						} else {
@@ -178,7 +177,7 @@ export class CustomerIo implements INodeType {
 									Object.assign(body, JSON.parse(additionalFieldsJson));
 
 								} else {
-									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON');
+									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON', { itemIndex: i });
 								}
 							}
 						} else {
@@ -241,7 +240,7 @@ export class CustomerIo implements INodeType {
 								if (validateJSON(additionalFieldsJson) !== undefined) {
 									Object.assign(body, JSON.parse(additionalFieldsJson));
 								} else {
-									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON');
+									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON', { itemIndex: i });
 								}
 							}
 						} else {
@@ -286,7 +285,7 @@ export class CustomerIo implements INodeType {
 									Object.assign(body, JSON.parse(additionalFieldsJson));
 
 								} else {
-									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON');
+									throw new NodeOperationError(this.getNode(), 'Additional fields must be a valid JSON', { itemIndex: i });
 								}
 							}
 						} else {

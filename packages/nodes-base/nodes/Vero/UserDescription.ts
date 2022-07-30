@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const userOperations = [
+export const userOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -14,47 +15,53 @@ export const userOperations = [
 		},
 		options: [
 			{
-				name: 'Create/Update',
-				value: 'create',
-				description: `Create or update a user profile`,
+				name: 'Add Tags',
+				value: 'addTags',
+				description: 'Adds a tag to a users profile',
+				action: 'Add tags to a user',
 			},
 			{
 				name: 'Alias',
 				value: 'alias',
 				description: 'Change a users identifier',
+				action: 'Change a user\'s alias',
 			},
 			{
-				name: 'Unsubscribe',
-				value: 'unsubscribe',
-				description: 'Unsubscribe a user.',
-			},
-			{
-				name: 'Re-subscribe',
-				value: 'resubscribe',
-				description: 'Resubscribe a user.',
+				name: 'Create or Update',
+				value: 'create',
+				description: 'Create or update a user profile',
+				action: 'Create or update a user',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a user.',
+				description: 'Delete a user',
+				action: 'Delete a user',
 			},
 			{
-				name: 'Add Tags',
-				value: 'addTags',
-				description: 'Adds a tag to a users profile.',
+				name: 'Re-Subscribe',
+				value: 'resubscribe',
+				description: 'Resubscribe a user',
+				action: 'Resubscribe a user',
 			},
 			{
 				name: 'Remove Tags',
 				value: 'removeTags',
-				description: 'Removes a tag from a users profile.',
+				description: 'Removes a tag from a users profile',
+				action: 'Remove tags from a user',
+			},
+			{
+				name: 'Unsubscribe',
+				value: 'unsubscribe',
+				description: 'Unsubscribe a user',
+				action: 'Unsubscribe a user',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const userFields = [
+export const userFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                user:create                                 */
@@ -83,7 +90,6 @@ export const userFields = [
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -116,8 +122,9 @@ export const userFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
-				description: 'The table to create the row in.',
+				description: 'The table to create the row in',
 			},
 		],
 	},
@@ -125,7 +132,7 @@ export const userFields = [
 		displayName: 'Data',
 		name: 'dataAttributesUi',
 		placeholder: 'Add Data',
-		description: 'key value pairs that represent the custom user properties you want to update',
+		description: 'Key value pairs that represent the custom user properties you want to update',
 		type: 'fixedCollection',
 		typeOptions: {
 			multipleValues: true,
@@ -154,14 +161,14 @@ export const userFields = [
 						name: 'key',
 						type: 'string',
 						default: '',
-						description: 'Name of the property to set.',
+						description: 'Name of the property to set',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: 'Value of the property to set.',
+						description: 'Value of the property to set',
 					},
 				],
 			},
@@ -172,11 +179,10 @@ export const userFields = [
 		name: 'dataAttributesJson',
 		type: 'json',
 		default: '',
-		required: false,
 		typeOptions: {
 			alwaysOpenEditWindow: true,
 		},
-		description: 'key value pairs that represent the custom user properties you want to update',
+		description: 'Key value pairs that represent the custom user properties you want to update',
 		displayOptions: {
 			show: {
 				resource: [
@@ -372,4 +378,4 @@ export const userFields = [
 		},
 		description: 'Tags to remove separated by ","',
 	},
-] as INodeProperties[];
+];

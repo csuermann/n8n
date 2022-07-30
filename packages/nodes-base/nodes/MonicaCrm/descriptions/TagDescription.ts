@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const tagOperations = [
+export const tagOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const tagOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a tag',
+				action: 'Create a tag',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a tag',
+				action: 'Delete a tag',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a tag',
+				action: 'Get a tag',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all tags',
+				action: 'Get all tags',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a tag',
+				action: 'Update a tag',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const tagFields = [
+export const tagFields: INodeProperties[] = [
 	// ----------------------------------------
 	//               tag: create
 	// ----------------------------------------
@@ -137,7 +143,7 @@ export const tagFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -195,4 +201,4 @@ export const tagFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

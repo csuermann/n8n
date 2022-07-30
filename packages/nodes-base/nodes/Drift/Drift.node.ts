@@ -22,14 +22,14 @@ export class Drift implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Drift',
 		name: 'drift',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:drift.png',
 		group: ['output'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume Drift API',
 		defaults: {
-			name: 'Drift ',
-			color: '#404040',
+			name: 'Drift',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -73,12 +73,12 @@ export class Drift implements INodeType {
 					},
 				],
 				default: 'accessToken',
-				description: 'The resource to operate on.',
 			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Contact',
@@ -86,7 +86,6 @@ export class Drift implements INodeType {
 					},
 				],
 				default: 'contact',
-				description: 'Resource to consume.',
 			},
 			...contactOperations,
 			...contactFields,
@@ -96,7 +95,7 @@ export class Drift implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		let responseData;
 		const qs: IDataObject = {};
 		const resource = this.getNodeParameter('resource', 0) as string;

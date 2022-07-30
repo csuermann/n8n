@@ -6,12 +6,15 @@ import {
 	TLP,
 } from '../interfaces/AlertInterface';
 
-export const caseOperations = [
+export const caseOperations: INodeProperties[] = [
 	{
+		// eslint-disable-next-line n8n-nodes-base/node-param-display-name-wrong-for-dynamic-options
 		displayName: 'Operation',
 		name: 'operation',
 		default: 'getAll',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
+		noDataExpression: true,
 		required: true,
 		displayOptions: {
 			show: {
@@ -27,9 +30,9 @@ export const caseOperations = [
 			loadOptionsMethod: 'loadCaseOptions',
 		},
 	},
-] as INodeProperties[];
+];
 
-export const caseFields = [
+export const caseFields: INodeProperties[] = [
 	{
 		displayName: 'Return All',
 		name: 'returnAll',
@@ -45,7 +48,7 @@ export const caseFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -69,7 +72,7 @@ export const caseFields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	// Required fields
 	{
@@ -158,7 +161,7 @@ export const caseFields = [
 				],
 			},
 		},
-		description: 'Severity of the alert. Default=Medium',
+		description: 'Severity of the alert. Default=Medium.',
 	},
 	{
 		displayName: 'Start Date',
@@ -211,6 +214,7 @@ export const caseFields = [
 				],
 			},
 		},
+		// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
 		description: 'Flag of the case default=false',
 	},
 	{
@@ -247,7 +251,7 @@ export const caseFields = [
 				],
 			},
 		},
-		description: 'Traffict Light Protocol (TLP). Default=Amber',
+		description: 'Traffict Light Protocol (TLP). Default=Amber.',
 	},
 	{
 		displayName: 'Tags',
@@ -268,9 +272,10 @@ export const caseFields = [
 	},
 	// required for responder execution
 	{
-		displayName: 'Responder ID',
+		displayName: 'Responder Name or ID',
 		name: 'responder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		required: true,
 		typeOptions: {
@@ -328,8 +333,7 @@ export const caseFields = [
 				],
 			},
 		},
-		required: false,
-		default: '',
+		default: {},
 		options: [
 			{
 				displayName: 'Custom Fields',
@@ -353,9 +357,10 @@ export const caseFields = [
 						displayName: 'Custom Field',
 						values: [
 							{
-								displayName: 'Field',
+								displayName: 'Field Name or ID',
 								name: 'field',
 								type: 'options',
+								description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 								typeOptions: {
 									loadOptionsMethod: 'loadCustomFields',
 								},
@@ -432,8 +437,7 @@ export const caseFields = [
 				],
 			},
 		},
-		required: false,
-		default: '',
+		default: {},
 		options: [
 			{
 				displayName: 'Custom Fields',
@@ -457,9 +461,10 @@ export const caseFields = [
 						displayName: 'Custom Field',
 						values: [
 							{
-								displayName: 'Field',
+								displayName: 'Field Name or ID',
 								name: 'field',
 								type: 'options',
+								description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 								typeOptions: {
 									loadOptionsMethod: 'loadCustomFields',
 								},
@@ -509,6 +514,7 @@ export const caseFields = [
 				name: 'flag',
 				type: 'boolean',
 				default: false,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
 				description: 'Flag of the case default=false',
 			},
 			{
@@ -559,24 +565,24 @@ export const caseFields = [
 				default: '',
 				options: [
 					{
-						value: 'Indeterminate',
-						name: 'Indeterminate',
+						value: 'Duplicated',
+						name: 'Duplicated',
 					},
 					{
 						value: 'FalsePositive',
 						name: 'False Positive',
 					},
 					{
-						value: 'TruePositive',
-						name: 'True Positive',
+						value: 'Indeterminate',
+						name: 'Indeterminate',
 					},
 					{
 						value: 'Other',
 						name: 'Other',
 					},
 					{
-						value: 'Duplicated',
-						name: 'Duplicated',
+						value: 'TruePositive',
+						name: 'True Positive',
 					},
 				],
 				description: 'Resolution status of the case',
@@ -600,7 +606,7 @@ export const caseFields = [
 					},
 				],
 				default: 2,
-				description: 'Severity of the alert. Default=Medium',
+				description: 'Severity of the alert. Default=Medium.',
 			},
 			{
 				displayName: 'Start Date',
@@ -672,7 +678,7 @@ export const caseFields = [
 						value: TLP.red,
 					},
 				],
-				description: 'Traffict Light Protocol (TLP). Default=Amber',
+				description: 'Traffict Light Protocol (TLP). Default=Amber.',
 			},
 		],
 	},
@@ -709,7 +715,6 @@ export const caseFields = [
 		displayName: 'Filters',
 		name: 'filters',
 		type: 'collection',
-		required: false,
 		default: {},
 		placeholder: 'Add a Filter',
 		displayOptions: {
@@ -739,9 +744,10 @@ export const caseFields = [
 						displayName: 'Custom Field',
 						values: [
 							{
-								displayName: 'Field',
+								displayName: 'Field Name or ID',
 								name: 'field',
 								type: 'options',
+								description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 								typeOptions: {
 									loadOptionsMethod: 'loadCustomFields',
 								},
@@ -777,6 +783,7 @@ export const caseFields = [
 				name: 'flag',
 				type: 'boolean',
 				default: false,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
 				description: 'Flag of the case default=false',
 			},
 			{
@@ -812,24 +819,24 @@ export const caseFields = [
 				default: '',
 				options: [
 					{
-						value: 'Indeterminate',
-						name: 'Indeterminate',
+						value: 'Duplicated',
+						name: 'Duplicated',
 					},
 					{
 						value: 'False Positive',
 						name: 'FalsePositive',
 					},
 					{
-						value: 'True Positive',
-						name: 'TruePositive',
+						value: 'Indeterminate',
+						name: 'Indeterminate',
 					},
 					{
 						value: 'Other',
 						name: 'Other',
 					},
 					{
-						value: 'Duplicated',
-						name: 'Duplicated',
+						value: 'True Positive',
+						name: 'TruePositive',
 					},
 				],
 			},
@@ -852,7 +859,7 @@ export const caseFields = [
 					},
 				],
 				default: 2,
-				description: 'Severity of the alert. Default=Medium',
+				description: 'Severity of the alert. Default=Medium.',
 			},
 			{
 				displayName: 'Start Date',
@@ -905,7 +912,6 @@ export const caseFields = [
 				displayName: 'TLP',
 				name: 'tlp',
 				type: 'options',
-				required: false,
 				default: 2,
 				options: [
 					{
@@ -925,8 +931,8 @@ export const caseFields = [
 						value: TLP.red,
 					},
 				],
-				description: 'Traffict Light Protocol (TLP). Default=Amber',
+				description: 'Traffict Light Protocol (TLP). Default=Amber.',
 			},
 		],
 	},
-] as INodeProperties[];
+];

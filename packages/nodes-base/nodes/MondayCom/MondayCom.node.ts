@@ -57,7 +57,6 @@ export class MondayCom implements INodeType {
 		description: 'Consume Monday.com API',
 		defaults: {
 			name: 'Monday.com',
-			color: '#4353ff',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -101,12 +100,12 @@ export class MondayCom implements INodeType {
 					},
 				],
 				default: 'accessToken',
-				description: 'The resource to operate on.',
 			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Board',
@@ -126,7 +125,6 @@ export class MondayCom implements INodeType {
 					},
 				],
 				default: 'board',
-				description: 'Resource to consume.',
 			},
 			//BOARD
 			...boardOperations,
@@ -256,7 +254,7 @@ export class MondayCom implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		let responseData;
 		const qs: IDataObject = {};
 		const resource = this.getNodeParameter('resource', 0) as string;
@@ -390,7 +388,7 @@ export class MondayCom implements INodeType {
 							try {
 								JSON.parse(additionalFields.defaults as string);
 							} catch (error) {
-								throw new NodeOperationError(this.getNode(), 'Defauls must be a valid JSON');
+								throw new NodeOperationError(this.getNode(), 'Defauls must be a valid JSON', { itemIndex: i });
 							}
 							body.variables.defaults = JSON.stringify(JSON.parse(additionalFields.defaults as string));
 						}
@@ -535,7 +533,7 @@ export class MondayCom implements INodeType {
 						try {
 							JSON.parse(value);
 						} catch (error) {
-							throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON');
+							throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON', { itemIndex: i });
 						}
 						body.variables.value = JSON.stringify(JSON.parse(value));
 
@@ -563,7 +561,7 @@ export class MondayCom implements INodeType {
 						try {
 							JSON.parse(columnValues);
 						} catch (error) {
-							throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON');
+							throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON', { itemIndex: i });
 						}
 						body.variables.columnValues = JSON.stringify(JSON.parse(columnValues));
 
@@ -594,7 +592,7 @@ export class MondayCom implements INodeType {
 							try {
 								JSON.parse(additionalFields.columnValues as string);
 							} catch (error) {
-								throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON');
+								throw new NodeOperationError(this.getNode(), 'Custom Values must be a valid JSON', { itemIndex: i });
 							}
 							body.variables.columnValues = JSON.stringify(JSON.parse(additionalFields.columnValues as string));
 						}

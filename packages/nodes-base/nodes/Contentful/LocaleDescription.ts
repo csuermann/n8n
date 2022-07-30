@@ -8,11 +8,12 @@ export const resource = {
 	value: 'locale',
 } as INodePropertyOptions;
 
-export const operations = [
+export const operations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -27,11 +28,10 @@ export const operations = [
 			},
 		],
 		default: 'getAll',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const fields = [
+export const fields: INodeProperties[] = [
 	{
 		displayName: 'Environment ID',
 		name: 'environmentId',
@@ -48,7 +48,7 @@ export const fields = [
 			},
 		},
 		default: 'master',
-		description: 'The id for the Contentful environment (e.g. master, staging, etc.). Depending on your plan, you might not have environments. In that case use "master".',
+		description: 'The ID for the Contentful environment (e.g. master, staging, etc.). Depending on your plan, you might not have environments. In that case use "master".',
 	},
 	{
 		displayName: 'Return All',
@@ -65,7 +65,7 @@ export const fields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -89,6 +89,6 @@ export const fields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
-] as INodeProperties[];
+];

@@ -1,19 +1,26 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import TelemetryClient = require('@rudderstack/rudder-sdk-node');
-import { IDataObject, LoggerProxy } from 'n8n-workflow';
-import config = require('../../config');
+import TelemetryClient from '@rudderstack/rudder-sdk-node';
+import { ITelemetryTrackProperties, LoggerProxy } from 'n8n-workflow';
+import * as config from '../../config';
+import { IExecutionTrackProperties } from '../Interfaces';
 import { getLogger } from '../Logger';
 
-interface IExecutionCountsBufferItem {
-	manual_success_count: number;
-	manual_error_count: number;
-	prod_success_count: number;
-	prod_error_count: number;
+type ExecutionTrackDataKey = 'manual_error' | 'manual_success' | 'prod_error' | 'prod_success';
+
+interface IExecutionTrackData {
+	count: number;
+	first: Date;
 }
 
-interface IExecutionCountsBuffer {
-	[workflowId: string]: IExecutionCountsBufferItem;
+interface IExecutionsBuffer {
+	[workflowId: string]: {
+		manual_error?: IExecutionTrackData;
+		manual_success?: IExecutionTrackData;
+		prod_error?: IExecutionTrackData;
+		prod_success?: IExecutionTrackData;
+	};
 }
 
 export class Telemetry {
@@ -21,16 +28,20 @@ export class Telemetry {
 
 	private instanceId: string;
 
+	private versionCli: string;
+
 	private pulseIntervalReference: NodeJS.Timeout;
 
-	private executionCountsBuffer: IExecutionCountsBuffer = {};
+	private executionCountsBuffer: IExecutionsBuffer = {};
 
-	constructor(instanceId: string) {
+	constructor(instanceId: string, versionCli: string) {
 		this.instanceId = instanceId;
+		this.versionCli = versionCli;
 
-		const enabled = config.get('diagnostics.enabled') as boolean;
+		const enabled = config.getEnv('diagnostics.enabled');
+		const logLevel = config.getEnv('logs.level');
 		if (enabled) {
-			const conf = config.get('diagnostics.config.backend') as string;
+			const conf = config.getEnv('diagnostics.config.backend');
 			const [key, url] = conf.split(';');
 
 			if (!key || !url) {
@@ -40,12 +51,24 @@ export class Telemetry {
 				return;
 			}
 
-			this.client = new TelemetryClient(key, url);
+			this.client = this.createTelemetryClient(key, url, logLevel);
 
-			this.pulseIntervalReference = setInterval(async () => {
-				void this.pulse();
-			}, 6 * 60 * 60 * 1000); // every 6 hours
+			this.startPulse();
 		}
+	}
+
+	private createTelemetryClient(
+		key: string,
+		url: string,
+		logLevel: string,
+	): TelemetryClient | undefined {
+		return new TelemetryClient(key, url, { logLevel });
+	}
+
+	private startPulse() {
+		this.pulseIntervalReference = setInterval(async () => {
+			void this.pulse();
+		}, 6 * 60 * 60 * 1000); // every 6 hours
 	}
 
 	private async pulse(): Promise<unknown> {
@@ -55,48 +78,42 @@ export class Telemetry {
 
 		const allPromises = Object.keys(this.executionCountsBuffer).map(async (workflowId) => {
 			const promise = this.track('Workflow execution count', {
+				event_version: '2',
 				workflow_id: workflowId,
 				...this.executionCountsBuffer[workflowId],
 			});
-			this.executionCountsBuffer[workflowId].manual_error_count = 0;
-			this.executionCountsBuffer[workflowId].manual_success_count = 0;
-			this.executionCountsBuffer[workflowId].prod_error_count = 0;
-			this.executionCountsBuffer[workflowId].prod_success_count = 0;
 
 			return promise;
 		});
 
+		this.executionCountsBuffer = {};
 		allPromises.push(this.track('pulse'));
 		return Promise.all(allPromises);
 	}
 
-	async trackWorkflowExecution(properties: IDataObject): Promise<void> {
+	async trackWorkflowExecution(properties: IExecutionTrackProperties): Promise<void> {
 		if (this.client) {
-			const workflowId = properties.workflow_id as string;
-			this.executionCountsBuffer[workflowId] = this.executionCountsBuffer[workflowId] ?? {
-				manual_error_count: 0,
-				manual_success_count: 0,
-				prod_error_count: 0,
-				prod_success_count: 0,
-			};
+			const execTime = new Date();
+			const workflowId = properties.workflow_id;
 
-			if (
-				properties.success === false &&
-				properties.error_node_type &&
-				(properties.error_node_type as string).startsWith('n8n-nodes-base')
-			) {
-				// errored exec
-				void this.track('Workflow execution errored', properties);
+			this.executionCountsBuffer[workflowId] = this.executionCountsBuffer[workflowId] ?? {};
 
-				if (properties.is_manual) {
-					this.executionCountsBuffer[workflowId].manual_error_count++;
-				} else {
-					this.executionCountsBuffer[workflowId].prod_error_count++;
-				}
-			} else if (properties.is_manual) {
-				this.executionCountsBuffer[workflowId].manual_success_count++;
+			const key: ExecutionTrackDataKey = `${properties.is_manual ? 'manual' : 'prod'}_${
+				properties.success ? 'success' : 'error'
+			}`;
+
+			if (!this.executionCountsBuffer[workflowId][key]) {
+				this.executionCountsBuffer[workflowId][key] = {
+					count: 1,
+					first: execTime,
+				};
 			} else {
-				this.executionCountsBuffer[workflowId].prod_success_count++;
+				// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+				this.executionCountsBuffer[workflowId][key]!.count++;
+			}
+
+			if (!properties.success && properties.error_node_type?.startsWith('n8n-nodes-base')) {
+				void this.track('Workflow execution errored', properties);
 			}
 		}
 	}
@@ -113,7 +130,9 @@ export class Telemetry {
 		});
 	}
 
-	async identify(traits?: IDataObject): Promise<void> {
+	async identify(traits?: {
+		[key: string]: string | number | boolean | object | undefined | null;
+	}): Promise<void> {
 		return new Promise<void>((resolve) => {
 			if (this.client) {
 				this.client.identify(
@@ -133,15 +152,22 @@ export class Telemetry {
 		});
 	}
 
-	async track(eventName: string, properties?: IDataObject): Promise<void> {
+	async track(eventName: string, properties: ITelemetryTrackProperties = {}): Promise<void> {
 		return new Promise<void>((resolve) => {
 			if (this.client) {
+				const { user_id } = properties;
+				const updatedProperties: ITelemetryTrackProperties = {
+					...properties,
+					instance_id: this.instanceId,
+					version_cli: this.versionCli,
+				};
+
 				this.client.track(
 					{
-						userId: this.instanceId,
+						userId: `${this.instanceId}${user_id ? `#${user_id}` : ''}`,
 						anonymousId: '000000000000',
 						event: eventName,
-						properties,
+						properties: updatedProperties,
 					},
 					resolve,
 				);
@@ -149,5 +175,11 @@ export class Telemetry {
 				resolve();
 			}
 		});
+	}
+
+	// test helpers
+
+	getCountsBuffer(): IExecutionsBuffer {
+		return this.executionCountsBuffer;
 	}
 }

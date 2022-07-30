@@ -3,18 +3,11 @@ import {
 	snakeCase,
 } from 'change-case';
 
-import {
-	createHash,
-} from 'crypto';
+import { createHash } from 'crypto';
 
-import {
-	Builder,
-} from 'xml2js';
+import { Builder } from 'xml2js';
 
-import {
-	BINARY_ENCODING,
-	IExecuteFunctions,
-} from 'n8n-core';
+import { IExecuteFunctions } from 'n8n-core';
 
 import {
 	IBinaryKeyData,
@@ -51,6 +44,7 @@ export class S3 implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'S3',
 		name: 's3',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:s3.png',
 		group: ['output'],
 		version: 1,
@@ -58,7 +52,6 @@ export class S3 implements INodeType {
 		description: 'Sends data to any S3-compatible service',
 		defaults: {
 			name: 'S3',
-			color: '#d05b4b',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -73,6 +66,7 @@ export class S3 implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Bucket',
@@ -88,7 +82,6 @@ export class S3 implements INodeType {
 					},
 				],
 				default: 'file',
-				description: 'The operation to perform.',
 			},
 			// BUCKET
 			...bucketOperations,
@@ -599,11 +592,11 @@ export class S3 implements INodeType {
 							const binaryPropertyName = this.getNodeParameter('binaryPropertyName', 0) as string;
 
 							if (items[i].binary === undefined) {
-								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 							}
 
 							if ((items[i].binary as IBinaryKeyData)[binaryPropertyName] === undefined) {
-								throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`);
+								throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`, { itemIndex: i });
 							}
 
 							const binaryData = (items[i].binary as IBinaryKeyData)[binaryPropertyName];

@@ -28,7 +28,6 @@ export class PayPalTrigger implements INodeType {
 		description: 'Handle PayPal events via webhooks',
 		defaults: {
 			name: 'PayPal Trigger',
-			color: '#32325d',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -48,12 +47,12 @@ export class PayPalTrigger implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Events',
+				displayName: 'Event Names or IDs',
 				name: 'events',
 				type: 'multiOptions',
 				required: true,
 				default: [],
-				description: 'The event to listen to.',
+				description: 'The event to listen to. Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'getEvents',
 				},
@@ -71,7 +70,7 @@ export class PayPalTrigger implements INodeType {
 					{
 						name: '*',
 						value: '*',
-						description: 'Any time any event is triggered (Wildcard Event).',
+						description: 'Any time any event is triggered (Wildcard Event)',
 					},
 				];
 				let events;

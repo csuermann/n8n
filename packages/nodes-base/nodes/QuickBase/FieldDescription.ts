@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const fieldOperations = [
+export const fieldOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,14 +20,14 @@ export const fieldOperations = [
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all fields',
+				action: 'Get all fields',
 			},
 		],
 		default: 'getAll',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const fieldFields = [
+export const fieldFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
 	/*                                field:getAll                                */
 	/* -------------------------------------------------------------------------- */
@@ -63,7 +64,7 @@ export const fieldFields = [
 			},
 		},
 		default: false,
-		description: 'Returns a list of your user contacts.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -87,7 +88,7 @@ export const fieldFields = [
 			maxValue: 100,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -111,8 +112,8 @@ export const fieldFields = [
 				name: 'includeFieldPerms',
 				type: 'boolean',
 				default: false,
-				description: `Set to 'true' if you'd like to get back the custom permissions for the field(s)`,
+				description: 'Whether to get back the custom permissions for the field(s)',
 			},
 		],
 	},
-] as INodeProperties[];
+];

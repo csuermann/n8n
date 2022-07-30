@@ -32,7 +32,6 @@ export class Bubble implements INodeType {
 		description: 'Consume the Bubble Data API',
 		defaults: {
 			name: 'Bubble',
-			color: '#0205d3',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -47,6 +46,7 @@ export class Bubble implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Object',
@@ -54,7 +54,6 @@ export class Bubble implements INodeType {
 					},
 				],
 				default: 'object',
-				description: 'Resource to consume',
 			},
 			...objectOperations,
 			...objectFields,
@@ -154,7 +153,7 @@ export class Bubble implements INodeType {
 						const filter = options.filtersJson as string;
 						const data = validateJSON(filter);
 						if (data === undefined) {
-							throw new NodeOperationError(this.getNode(), 'Filters must be a valid JSON');
+							throw new NodeOperationError(this.getNode(), 'Filters must be a valid JSON', { itemIndex: i });
 						}
 						qs.constraints = JSON.stringify(data);
 					}

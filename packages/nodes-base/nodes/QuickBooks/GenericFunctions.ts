@@ -125,7 +125,11 @@ export async function quickBooksApiRequestAllItems(
 	const maxResults = 1000;
 	const returnData: IDataObject[] = [];
 
-	const maxCount = await getCount.call(this, method, endpoint, qs);
+	const maxCountQuery = {
+		query: `SELECT COUNT(*) FROM ${resource}`,
+	} as IDataObject;
+
+	const maxCount = await getCount.call(this, method, endpoint, maxCountQuery);
 
 	const originalQuery = qs.query as string;
 
@@ -134,7 +138,7 @@ export async function quickBooksApiRequestAllItems(
 		responseData = await quickBooksApiRequest.call(this, method, endpoint, qs, body);
 		try {
 			const nonResource = originalQuery.split(' ')?.pop();
-			if (nonResource === 'CreditMemo' || nonResource === 'Term') {
+			if (nonResource === 'CreditMemo' || nonResource === 'Term' || nonResource === 'TaxCode') {
 				returnData.push(...responseData.QueryResponse[nonResource]);
 			} else {
 				returnData.push(...responseData.QueryResponse[capitalCase(resource)]);
@@ -330,9 +334,14 @@ export function processLines(
 					ItemRef: {
 						value: line.itemId,
 					},
+					TaxCodeRef : {
+						value: line.TaxCodeRef,
+					},
 				};
 				delete line.itemId;
+				delete line.TaxCodeRef;
 			}
+
 
 		} else if (resource === 'invoice') {
 			if (line.DetailType === 'SalesItemLineDetail') {
@@ -340,8 +349,12 @@ export function processLines(
 					ItemRef: {
 						value: line.itemId,
 					},
+					TaxCodeRef : {
+						value: line.TaxCodeRef,
+					},
 				};
 				delete line.itemId;
+				delete line.TaxCodeRef;
 			}
 		}
 
@@ -445,12 +458,12 @@ export function populateFields(
 
 export const toOptions = (option: string) => ({ name: option, value: option });
 
-export const toDisplayName = ({ name, value }: Option) => {
+export const toDisplayName = ({ name, value }: Option): INodePropertyOptions => {
 	return { name: splitPascalCase(name), value };
 };
 
 export const splitPascalCase = (word: string) => {
-	return word.match(/($[a-z])|[A-Z][^A-Z]+/g)?.join(' ');
+	return word.match(/($[a-z])|[A-Z][^A-Z]+/g)!.join(' ');
 };
 
 export function adjustTransactionDates(

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
  } from 'n8n-workflow';
 
-export const fileOperations = [
+export const fileOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,24 +20,26 @@ export const fileOperations = [
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a file',
+				action: 'Delete a file',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all files',
+				action: 'Get all files',
 			},
 			{
 				name: 'Upload',
 				value: 'upload',
 				description: 'Upload a file',
+				action: 'Upload a file',
 			},
 		],
 		default: 'delete',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const fileFields = [
+export const fileFields: INodeProperties[] = [
 /* -------------------------------------------------------------------------- */
 /*                                 file:upload                                */
 /* -------------------------------------------------------------------------- */
@@ -55,7 +58,7 @@ export const fileFields = [
 				],
 			},
 		},
-		description: 'If the data to upload should be taken from binary field.',
+		description: 'Whether the data to upload should be taken from binary field',
 	},
 	{
 		displayName: 'Binary Property',
@@ -76,7 +79,7 @@ export const fileFields = [
 				],
 			},
 		},
-		description: 'Name of the binary property which contains the data for the file to be uploaded.',
+		description: 'Name of the binary property which contains the data for the file to be uploaded',
 	},
 	{
 		displayName: 'File Association',
@@ -228,7 +231,7 @@ export const fileFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -252,7 +255,7 @@ export const fileFields = [
 			maxValue: 200,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -279,14 +282,14 @@ export const fileFields = [
 					minValue: 0,
 				},
 				default: 0,
-				description: 'Filter based on Contact Id, if user has permission to see Contact files.',
+				description: 'Filter based on Contact ID, if user has permission to see Contact files',
 			},
 			{
 				displayName: 'Name',
 				name: 'name',
 				type: 'string',
 				default: '',
-				description: `Filter files based on name, with '*' preceding or following to indicate LIKE queries.`,
+				description: 'Filter files based on name, with \'*\' preceding or following to indicate LIKE queries',
 			},
 			{
 				displayName: 'Permission',
@@ -319,20 +322,8 @@ export const fileFields = [
 						value: 'application',
 					},
 					{
-						name: 'Image',
-						value: 'image',
-					},
-					{
-						name: 'Fax',
-						value: 'fax',
-					},
-					{
 						name: 'Attachment',
 						value: 'attachment',
-					},
-					{
-						name: 'Ticket',
-						value: 'ticket',
 					},
 					{
 						name: 'Contact',
@@ -343,40 +334,52 @@ export const fileFields = [
 						value: 'digitalProduct',
 					},
 					{
-						name: 'Import',
-						value: 'import',
-					},
-					{
-						name: 'Hidden',
-						value: 'hidden',
-					},
-					{
-						name: 'Webform',
-						value: 'webform',
-					},
-					{
-						name: 'Style Cart',
-						value: 'styleCart',
-					},
-					{
-						name: 'Re Sampled Image',
-						value: 'reSampledImage',
-					},
-					{
-						name: 'Template Thumnail',
-						value: 'templateThumnail',
+						name: 'Fax',
+						value: 'fax',
 					},
 					{
 						name: 'Funnel',
 						value: 'funnel',
 					},
 					{
+						name: 'Hidden',
+						value: 'hidden',
+					},
+					{
+						name: 'Image',
+						value: 'image',
+					},
+					{
+						name: 'Import',
+						value: 'import',
+					},
+					{
 						name: 'Logo Thumnail',
 						value: 'logoThumnail',
 					},
+					{
+						name: 'Re Sampled Image',
+						value: 'reSampledImage',
+					},
+					{
+						name: 'Style Cart',
+						value: 'styleCart',
+					},
+					{
+						name: 'Template Thumnail',
+						value: 'templateThumnail',
+					},
+					{
+						name: 'Ticket',
+						value: 'ticket',
+					},
+					{
+						name: 'Webform',
+						value: 'webform',
+					},
 				],
 				default: '',
-				description: 'Filter based on the type of file.',
+				description: 'Filter based on the type of file',
 			},
 			{
 				displayName: 'Viewable',
@@ -401,4 +404,4 @@ export const fileFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

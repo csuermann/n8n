@@ -8,20 +8,20 @@ import {
 	NodeOperationError,
 } from 'n8n-workflow';
 
-import * as moment from 'moment';
+import moment from 'moment';
 import { togglApiRequest } from './GenericFunctions';
 
 export class TogglTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Toggl Trigger',
 		name: 'togglTrigger',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:toggl.png',
 		group: ['trigger'],
 		version: 1,
 		description: 'Starts the workflow when Toggl events occur',
 		defaults: {
 			name: 'Toggl',
-			color: '#00FF00',
 		},
 		credentials: [
 			{

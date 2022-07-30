@@ -30,7 +30,6 @@ export class ClickUpTrigger implements INodeType {
 		description: 'Handle ClickUp events via webhooks (Beta)',
 		defaults: {
 			name: 'ClickUp Trigger',
-			color: '#7B68EE',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -84,9 +83,10 @@ export class ClickUpTrigger implements INodeType {
 				default: 'accessToken',
 			},
 			{
-				displayName: 'Team',
+				displayName: 'Team Name or ID',
 				name: 'team',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getTeams',
 				},
@@ -121,12 +121,12 @@ export class ClickUpTrigger implements INodeType {
 						value: 'goalCreated',
 					},
 					{
-						name: 'goal.updated',
-						value: 'goalUpdated',
-					},
-					{
 						name: 'goal.deleted',
 						value: 'goalDeleted',
+					},
+					{
+						name: 'goal.updated',
+						value: 'goalUpdated',
 					},
 					{
 						name: 'keyResult.created',

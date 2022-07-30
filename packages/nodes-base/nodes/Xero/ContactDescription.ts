@@ -1,12 +1,13 @@
 import {
 	INodeProperties,
- } from 'n8n-workflow';
+} from 'n8n-workflow';
 
-export const contactOperations = [
+export const contactOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -18,38 +19,42 @@ export const contactOperations = [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'create a contact',
+				description: 'Create a contact',
+				action: 'Create a contact',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a contact',
+				action: 'Get a contact',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all contacts',
+				action: 'Get all contacts',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a contact',
+				action: 'Update a contact',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const contactFields = [
+export const contactFields: INodeProperties[] = [
 
-/* -------------------------------------------------------------------------- */
-/*                                contact:create                              */
-/* -------------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------------- */
+	/*                                contact:create                              */
+	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Organization ID',
+		displayName: 'Organization Name or ID',
 		name: 'organizationId',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		typeOptions: {
 			loadOptionsMethod: 'getTenants',
 		},
@@ -108,82 +113,82 @@ export const contactFields = [
 				default: '',
 				description: 'A user defined account number',
 			},
-			// {
-			// 	displayName: 'Addresses',
-			// 	name: 'addressesUi',
-			// 	type: 'fixedCollection',
-			// 	typeOptions: {
-			// 		multipleValues: true,
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Add Address',
-			// 	options: [
-			// 		{
-			// 			name: 'addressesValues',
-			// 			displayName: 'Address',
-			// 			values: [
-			// 				{
-			// 					displayName: 'Type',
-			// 					name: 'type',
-			// 					type: 'options',
-			// 					options: [
-			// 						{
-			// 							name: 'PO Box',
-			// 							value: 'POBOX',
-			// 						},
-			// 						{
-			// 							name: 'Street',
-			// 							value: 'STREET',
-			// 						},
-			// 					],
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Line 1',
-			// 					name: 'line1',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Line 2',
-			// 					name: 'line2',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'City',
-			// 					name: 'city',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Region',
-			// 					name: 'region',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Postal Code',
-			// 					name: 'postalCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Country',
-			// 					name: 'country',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Attention To',
-			// 					name: 'attentionTo',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// },
+			{
+				displayName: 'Addresses',
+				name: 'addressesUi',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Address',
+				options: [
+					{
+						name: 'addressesValues',
+						displayName: 'Address',
+						values: [
+							{
+								displayName: 'Type',
+								name: 'type',
+								type: 'options',
+								options: [
+									{
+										name: 'PO Box',
+										value: 'POBOX',
+									},
+									{
+										name: 'Street',
+										value: 'STREET',
+									},
+								],
+								default: '',
+							},
+							{
+								displayName: 'Line 1',
+								name: 'line1',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Line 2',
+								name: 'line2',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'City',
+								name: 'city',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Region',
+								name: 'region',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Postal Code',
+								name: 'postalCode',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Country',
+								name: 'country',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Attention To',
+								name: 'attentionTo',
+								type: 'string',
+								default: '',
+							},
+						],
+					},
+				],
+			},
 			{
 				displayName: 'Bank Account Details',
 				name: 'bankAccountDetails',
@@ -250,85 +255,85 @@ export const contactFields = [
 				default: '',
 				description: 'Last name of contact person (max length = 255)',
 			},
-			// {
-			// 	displayName: 'Phones',
-			// 	name: 'phonesUi',
-			// 	type: 'fixedCollection',
-			// 	typeOptions: {
-			// 		multipleValues: true,
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Add Phone',
-			// 	options: [
-			// 		{
-			// 			name: 'phonesValues',
-			// 			displayName: 'Phones',
-			// 			values: [
-			// 				{
-			// 					displayName: 'Type',
-			// 					name: 'type',
-			// 					type: 'options',
-			// 					options: [
-			// 						{
-			// 							name: 'Default',
-			// 							value: 'DEFAULT',
-			// 						},
-			// 						{
-			// 							name: 'DDI',
-			// 							value: 'DDI',
-			// 						},
-			// 						{
-			// 							name: 'Mobile',
-			// 							value: 'MOBILE',
-			// 						},
-			// 						{
-			// 							name: 'Fax',
-			// 							value: 'FAX',
-			// 						},
-			// 					],
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Number',
-			// 					name: 'phoneNumber',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Area Code',
-			// 					name: 'phoneAreaCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Country Code',
-			// 					name: 'phoneCountryCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// },
 			{
-				displayName: 'Purchase Default Account Code',
+				displayName: 'Phones',
+				name: 'phonesUi',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Phone',
+				options: [
+					{
+						name: 'phonesValues',
+						displayName: 'Phones',
+						values: [
+							{
+								displayName: 'Type',
+								name: 'phoneType',
+								type: 'options',
+								options: [
+									{
+										name: 'Default',
+										value: 'DEFAULT',
+									},
+									{
+										name: 'DDI',
+										value: 'DDI',
+									},
+									{
+										name: 'Mobile',
+										value: 'MOBILE',
+									},
+									{
+										name: 'Fax',
+										value: 'FAX',
+									},
+								],
+								default: '',
+							},
+							{
+								displayName: 'Number',
+								name: 'phoneNumber',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Area Code',
+								name: 'phoneAreaCode',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Country Code',
+								name: 'phoneCountryCode',
+								type: 'string',
+								default: '',
+							},
+						],
+					},
+				],
+			},
+			{
+				displayName: 'Purchase Default Account Code Name or ID',
 				name: 'purchasesDefaultAccountCode',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getAccountCodes',
 				},
 				default: '',
-				description: 'The default purchases account code for contacts',
+				description: 'The default purchases account code for contacts. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Sales Default Account Code',
+				displayName: 'Sales Default Account Code Name or ID',
 				name: 'salesDefaultAccountCode',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getAccountCodes',
 				},
 				default: '',
-				description: 'The default sales account code for contacts',
+				description: 'The default sales account code for contacts. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Skype',
@@ -353,13 +358,14 @@ export const contactFields = [
 			},
 		],
 	},
-/* -------------------------------------------------------------------------- */
-/*                                 contact:get                                */
-/* -------------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------------- */
+	/*                                 contact:get                                */
+	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Organization ID',
+		displayName: 'Organization Name or ID',
 		name: 'organizationId',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		typeOptions: {
 			loadOptionsMethod: 'getTenants',
 		},
@@ -393,13 +399,14 @@ export const contactFields = [
 		},
 		required: true,
 	},
-/* -------------------------------------------------------------------------- */
-/*                                   contact:getAll                           */
-/* -------------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------------- */
+	/*                                   contact:getAll                           */
+	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Organization ID',
+		displayName: 'Organization Name or ID',
 		name: 'organizationId',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		typeOptions: {
 			loadOptionsMethod: 'getTenants',
 		},
@@ -431,7 +438,7 @@ export const contactFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -455,7 +462,7 @@ export const contactFields = [
 			maxValue: 100,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Options',
@@ -479,7 +486,7 @@ export const contactFields = [
 				name: 'includeArchived',
 				type: 'boolean',
 				default: false,
-				description: `Contacts with a status of ARCHIVED will be included in the response`,
+				description: 'Whether contacts with a status of ARCHIVED will be included in the response',
 			},
 			{
 				displayName: 'Order By',
@@ -504,7 +511,6 @@ export const contactFields = [
 					},
 				],
 				default: '',
-				description: 'Sort order',
 			},
 			{
 				displayName: 'Where',
@@ -515,17 +521,18 @@ export const contactFields = [
 				},
 				placeholder: 'EmailAddress!=null&&EmailAddress.StartsWith("boom")',
 				default: '',
-				description: `The where parameter allows you to filter on endpoints and elements that don't have explicit parameters. <a href="https://developer.xero.com/documentation/api/requests-and-responses#get-modified">Examples Here</a>`,
+				description: 'The where parameter allows you to filter on endpoints and elements that don\'t have explicit parameters. <a href="https://developer.xero.com/documentation/api/requests-and-responses#get-modified">Examples Here</a>.',
 			},
 		],
 	},
-/* -------------------------------------------------------------------------- */
-/*                                contact:update                              */
-/* -------------------------------------------------------------------------- */
+	/* -------------------------------------------------------------------------- */
+	/*                                contact:update                              */
+	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Organization ID',
+		displayName: 'Organization Name or ID',
 		name: 'organizationId',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		typeOptions: {
 			loadOptionsMethod: 'getTenants',
 		},
@@ -583,82 +590,82 @@ export const contactFields = [
 				default: '',
 				description: 'A user defined account number',
 			},
-			// {
-			// 	displayName: 'Addresses',
-			// 	name: 'addressesUi',
-			// 	type: 'fixedCollection',
-			// 	typeOptions: {
-			// 		multipleValues: true,
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Add Address',
-			// 	options: [
-			// 		{
-			// 			name: 'addressesValues',
-			// 			displayName: 'Address',
-			// 			values: [
-			// 				{
-			// 					displayName: 'Type',
-			// 					name: 'type',
-			// 					type: 'options',
-			// 					options: [
-			// 						{
-			// 							name: 'PO Box',
-			// 							value: 'POBOX',
-			// 						},
-			// 						{
-			// 							name: 'Street',
-			// 							value: 'STREET',
-			// 						},
-			// 					],
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Line 1',
-			// 					name: 'line1',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Line 2',
-			// 					name: 'line2',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'City',
-			// 					name: 'city',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Region',
-			// 					name: 'region',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Postal Code',
-			// 					name: 'postalCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Country',
-			// 					name: 'country',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Attention To',
-			// 					name: 'attentionTo',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// },
+			{
+				displayName: 'Addresses',
+				name: 'addressesUi',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Address',
+				options: [
+					{
+						name: 'addressesValues',
+						displayName: 'Address',
+						values: [
+							{
+								displayName: 'Type',
+								name: 'type',
+								type: 'options',
+								options: [
+									{
+										name: 'PO Box',
+										value: 'POBOX',
+									},
+									{
+										name: 'Street',
+										value: 'STREET',
+									},
+								],
+								default: '',
+							},
+							{
+								displayName: 'Line 1',
+								name: 'line1',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Line 2',
+								name: 'line2',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'City',
+								name: 'city',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Region',
+								name: 'region',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Postal Code',
+								name: 'postalCode',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Country',
+								name: 'country',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Attention To',
+								name: 'attentionTo',
+								type: 'string',
+								default: '',
+							},
+						],
+					},
+				],
+			},
 			{
 				displayName: 'Bank Account Details',
 				name: 'bankAccountDetails',
@@ -732,85 +739,85 @@ export const contactFields = [
 				default: '',
 				description: 'Full name of contact/organisation',
 			},
-			// {
-			// 	displayName: 'Phones',
-			// 	name: 'phonesUi',
-			// 	type: 'fixedCollection',
-			// 	typeOptions: {
-			// 		multipleValues: true,
-			// 	},
-			// 	default: '',
-			// 	placeholder: 'Add Phone',
-			// 	options: [
-			// 		{
-			// 			name: 'phonesValues',
-			// 			displayName: 'Phones',
-			// 			values: [
-			// 				{
-			// 					displayName: 'Type',
-			// 					name: 'type',
-			// 					type: 'options',
-			// 					options: [
-			// 						{
-			// 							name: 'Default',
-			// 							value: 'DEFAULT',
-			// 						},
-			// 						{
-			// 							name: 'DDI',
-			// 							value: 'DDI',
-			// 						},
-			// 						{
-			// 							name: 'Mobile',
-			// 							value: 'MOBILE',
-			// 						},
-			// 						{
-			// 							name: 'Fax',
-			// 							value: 'FAX',
-			// 						},
-			// 					],
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Number',
-			// 					name: 'phoneNumber',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Area Code',
-			// 					name: 'phoneAreaCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 				{
-			// 					displayName: 'Country Code',
-			// 					name: 'phoneCountryCode',
-			// 					type: 'string',
-			// 					default: '',
-			// 				},
-			// 			],
-			// 		},
-			// 	],
-			// },
 			{
-				displayName: 'Purchase Default Account Code',
+				displayName: 'Phones',
+				name: 'phonesUi',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				default: {},
+				placeholder: 'Add Phone',
+				options: [
+					{
+						name: 'phonesValues',
+						displayName: 'Phones',
+						values: [
+							{
+								displayName: 'Type',
+								name: 'phoneType',
+								type: 'options',
+								options: [
+									{
+										name: 'Default',
+										value: 'DEFAULT',
+									},
+									{
+										name: 'DDI',
+										value: 'DDI',
+									},
+									{
+										name: 'Mobile',
+										value: 'MOBILE',
+									},
+									{
+										name: 'Fax',
+										value: 'FAX',
+									},
+								],
+								default: '',
+							},
+							{
+								displayName: 'Number',
+								name: 'phoneNumber',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Area Code',
+								name: 'phoneAreaCode',
+								type: 'string',
+								default: '',
+							},
+							{
+								displayName: 'Country Code',
+								name: 'phoneCountryCode',
+								type: 'string',
+								default: '',
+							},
+						],
+					},
+				],
+			},
+			{
+				displayName: 'Purchase Default Account Code Name or ID',
 				name: 'purchasesDefaultAccountCode',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getAccountCodes',
 				},
 				default: '',
-				description: 'The default purchases account code for contacts',
+				description: 'The default purchases account code for contacts. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Sales Default Account Code',
+				displayName: 'Sales Default Account Code Name or ID',
 				name: 'salesDefaultAccountCode',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getAccountCodes',
 				},
 				default: '',
-				description: 'The default sales account code for contacts',
+				description: 'The default sales account code for contacts. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Skype',
@@ -835,4 +842,4 @@ export const contactFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

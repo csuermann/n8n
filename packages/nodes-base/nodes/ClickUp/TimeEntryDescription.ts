@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const timeEntryOperations = [
+export const timeEntryOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,52 +20,59 @@ export const timeEntryOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a time entry',
+				action: 'Create a time entry',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a time entry',
+				action: 'Delete a time entry',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a time entry',
+				action: 'Get a time entry',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all time entries',
+				action: 'Get all time entries',
 			},
 			{
 				name: 'Start',
 				value: 'start',
 				description: 'Start a time entry',
+				action: 'Start a time entry',
 			},
 			{
 				name: 'Stop',
 				value: 'stop',
 				description: 'Stop the current running timer',
+				action: 'Stop a time entry',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a time Entry',
+				action: 'Update a time entry',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const timeEntryFields = [
+export const timeEntryFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                timeEntry:getAll                            */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -96,7 +104,7 @@ export const timeEntryFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -120,7 +128,7 @@ export const timeEntryFields = [
 			maxValue: 10,
 		},
 		default: 5,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -158,9 +166,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:get                               */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -192,7 +201,7 @@ export const timeEntryFields = [
 			},
 		},
 		default: false,
-		description: 'When set to true it will return just the current running time entry',
+		description: 'Whether to return just the current running time entry',
 	},
 	{
 		displayName: 'Time Entry ID',
@@ -219,9 +228,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:create                            */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -239,9 +249,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -279,9 +290,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'Folder ID',
+		displayName: 'Folder Name or ID',
 		name: 'folder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -305,9 +317,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'List ID',
+		displayName: 'List Name or ID',
 		name: 'list',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -331,9 +344,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'List ID',
+		displayName: 'List Name or ID',
 		name: 'list',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -374,7 +388,7 @@ export const timeEntryFields = [
 		default: '',
 	},
 	{
-		displayName: 'Duration (minutes)',
+		displayName: 'Duration (Minutes)',
 		name: 'duration',
 		type: 'number',
 		displayOptions: {
@@ -392,9 +406,10 @@ export const timeEntryFields = [
 		description: 'Duration in minutes',
 	},
 	{
-		displayName: 'Task ID',
+		displayName: 'Task Name or ID',
 		name: 'task',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		displayOptions: {
 			show: {
 				resource: [
@@ -431,14 +446,15 @@ export const timeEntryFields = [
 		},
 		options: [
 			{
-				displayName: 'Assignee IDs',
+				displayName: 'Assignee Name or ID',
 				name: 'assignee',
 				type: 'options',
-				loadOptionsDependsOn: [
-					'list',
-				],
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getAssignees',
+					loadOptionsDependsOn: [
+						'list',
+					],
 				},
 				default: [],
 			},
@@ -456,9 +472,10 @@ export const timeEntryFields = [
 				description: 'Description of the time entry',
 			},
 			{
-				displayName: 'Tags IDs',
+				displayName: 'Tag Names or IDs',
 				name: 'tags',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsDependsOn: [
 						'team',
@@ -474,9 +491,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:start                             */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -547,9 +565,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:stop                              */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -571,9 +590,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:delete                            */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -612,9 +632,10 @@ export const timeEntryFields = [
 	/*                                timeEntry:update                            */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Team ID',
+		displayName: 'Team Name or ID',
 		name: 'team',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -632,9 +653,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'Space ID',
+		displayName: 'Space Name or ID',
 		name: 'space',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -672,9 +694,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'Folder ID',
+		displayName: 'Folder Name or ID',
 		name: 'folder',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -698,9 +721,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'List ID',
+		displayName: 'List Name or ID',
 		name: 'list',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -724,9 +748,10 @@ export const timeEntryFields = [
 		required: true,
 	},
 	{
-		displayName: 'List ID',
+		displayName: 'List Name or ID',
 		name: 'list',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		default: '',
 		displayOptions: {
 			show: {
@@ -801,14 +826,15 @@ export const timeEntryFields = [
 		},
 		options: [
 			{
-				displayName: 'Assignee IDs',
+				displayName: 'Assignee Name or ID',
 				name: 'assignee',
 				type: 'options',
-				loadOptionsDependsOn: [
-					'list',
-				],
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getAssignees',
+					loadOptionsDependsOn: [
+						'list',
+					],
 				},
 				default: [],
 			},
@@ -826,7 +852,7 @@ export const timeEntryFields = [
 				description: 'Description of the time entry',
 			},
 			{
-				displayName: 'Duration (minutes)',
+				displayName: 'Duration (Minutes)',
 				name: 'duration',
 				type: 'number',
 				default: 0,
@@ -839,9 +865,10 @@ export const timeEntryFields = [
 				default: '',
 			},
 			{
-				displayName: 'Tags IDs',
+				displayName: 'Tag Names or IDs',
 				name: 'tags',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsDependsOn: [
 						'spaceId',
@@ -851,9 +878,10 @@ export const timeEntryFields = [
 				default: [],
 			},
 			{
-				displayName: 'Task ID',
+				displayName: 'Task Name or ID',
 				name: 'task',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getTasks',
 					loadOptionsDependsOn: [
@@ -865,4 +893,4 @@ export const timeEntryFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

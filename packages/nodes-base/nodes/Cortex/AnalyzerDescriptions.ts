@@ -6,11 +6,12 @@ import {
 	TLP,
 } from './AnalyzerInterface';
 
-export const analyzersOperations = [
+export const analyzersOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		required: true,
 		description: 'Choose an operation',
 		displayOptions: {
@@ -26,14 +27,15 @@ export const analyzersOperations = [
 				name: 'Execute',
 				value: 'execute',
 				description: 'Execute Analyzer',
+				action: 'Execute an analyzer',
 			},
 		],
 	},
-] as INodeProperties[];
+];
 
 export const analyzerFields: INodeProperties[] = [
 	{
-		displayName: 'Analyzer Type',
+		displayName: 'Analyzer Type Name or ID',
 		name: 'analyzer',
 		type: 'options',
 		required: true,
@@ -50,11 +52,11 @@ export const analyzerFields: INodeProperties[] = [
 				],
 			},
 		},
-		description: 'Choose the analyzer',
+		description: 'Choose the analyzer. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		default: '',
 	},
 	{
-		displayName: 'Observable Type',
+		displayName: 'Observable Type Name or ID',
 		name: 'observableType',
 		type: 'options',
 		required: true,
@@ -80,7 +82,7 @@ export const analyzerFields: INodeProperties[] = [
 			],
 		},
 		default: '',
-		description: 'Choose the observable type',
+		description: 'Choose the observable type. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 
 	// Observable type != file
@@ -129,13 +131,12 @@ export const analyzerFields: INodeProperties[] = [
 				],
 			},
 		},
-		description: 'Name of the binary property to which to write the data of the read file.',
+		description: 'Name of the binary property to which to write the data of the read file',
 	},
 	{
 		displayName: 'TLP',
 		name: 'tlp',
 		type: 'options',
-		required: false,
 		displayOptions: {
 			show: {
 				resource: [
@@ -196,10 +197,10 @@ export const analyzerFields: INodeProperties[] = [
 				name: 'force',
 				type: 'boolean',
 				default: false,
-				description: 'To force bypassing the cache, set this parameter to true',
+				description: 'Whether to force bypassing the cache',
 			},
 			{
-				displayName: 'Timeout (seconds)',
+				displayName: 'Timeout (Seconds)',
 				name: 'timeout',
 				type: 'number',
 				default: 3,

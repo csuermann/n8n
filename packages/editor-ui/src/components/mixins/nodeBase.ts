@@ -4,13 +4,14 @@ import mixins from 'vue-typed-mixins';
 
 import { deviceSupportHelpers } from '@/components/mixins/deviceSupportHelpers';
 import { nodeIndex } from '@/components/mixins/nodeIndex';
-import { NODE_NAME_PREFIX, NO_OP_NODE_TYPE } from '@/constants';
+import { NODE_NAME_PREFIX, NO_OP_NODE_TYPE, STICKY_NODE_TYPE } from '@/constants';
 import * as CanvasHelpers from '@/views/canvasHelpers';
 import { Endpoint } from 'jsplumb';
 
 import {
 	INodeTypeDescription,
 } from 'n8n-workflow';
+import { getStyleTokenValue } from '../helpers';
 
 export const nodeBase = mixins(
 	deviceSupportHelpers,
@@ -68,13 +69,14 @@ export const nodeBase = mixins(
 					endpointStyle: CanvasHelpers.getInputEndpointStyle(nodeTypeData, '--color-foreground-xdark'),
 					endpointHoverStyle: CanvasHelpers.getInputEndpointStyle(nodeTypeData, '--color-primary'),
 					isSource: false,
-					isTarget: !this.isReadOnly,
+					isTarget: !this.isReadOnly && nodeTypeData.inputs.length > 1, // only enabled for nodes with multiple inputs.. otherwise attachment handled by connectionDrag event in NodeView,
 					parameters: {
 						nodeIndex: this.nodeIndex,
 						type: inputName,
 						index,
 					},
-					enabled: !this.isReadOnly && nodeTypeData.inputs.length > 1, // only enabled for nodes with multiple inputs.. otherwise attachment handled by connectionDrag event in NodeView
+					enabled: !this.isReadOnly, // enabled in default case to allow dragging
+					cssClass: 'rect-input-endpoint',
 					dragAllowedWhenFull: true,
 					dropOptions: {
 						tolerance: 'touch',
@@ -92,7 +94,9 @@ export const nodeBase = mixins(
 				const endpoint: Endpoint = this.instance.addEndpoint(this.nodeId, newEndpointData);
 				endpoint.__meta = {
 					nodeName: node.name,
+					nodeId: this.nodeId,
 					index: i,
+					totalEndpoints: nodeTypeData.inputs.length,
 				};
 
 				// TODO: Activate again if it makes sense. Currently makes problems when removing
@@ -140,6 +144,7 @@ export const nodeBase = mixins(
 						type: inputName,
 						index,
 					},
+					cssClass: 'dot-output-endpoint',
 					dragAllowedWhenFull: false,
 					dragProxy: ['Rectangle', { width: 1, height: 1, strokeWidth: 0 }],
 				};
@@ -151,11 +156,54 @@ export const nodeBase = mixins(
 					];
 				}
 
-				const endpoint: Endpoint = this.instance.addEndpoint(this.nodeId, newEndpointData);
+				const endpoint: Endpoint = this.instance.addEndpoint(this.nodeId, {...newEndpointData});
 				endpoint.__meta = {
 					nodeName: node.name,
+					nodeId: this.nodeId,
 					index: i,
+					totalEndpoints: nodeTypeData.outputs.length,
 				};
+
+				if (!this.isReadOnly) {
+					const plusEndpointData: IEndpointOptions = {
+						uuid: CanvasHelpers.getOutputEndpointUUID(this.nodeIndex, index),
+						anchor: anchorPosition,
+						maxConnections: -1,
+						endpoint: 'N8nPlus',
+						isSource: true,
+						isTarget: false,
+						enabled: !this.isReadOnly,
+						endpointStyle: {
+							fill: getStyleTokenValue('--color-xdark'),
+							outlineStroke: 'none',
+							hover: false,
+							showOutputLabel: nodeTypeData.outputs.length === 1,
+							size: nodeTypeData.outputs.length >= 3 ? 'small' : 'medium',
+							hoverMessage: this.$locale.baseText('nodeBase.clickToAddNodeOrDragToConnect'),
+						},
+						endpointHoverStyle: {
+							fill: getStyleTokenValue('--color-primary'),
+							outlineStroke: 'none',
+							hover: true, // hack to distinguish hover state
+						},
+						parameters: {
+							nodeIndex: this.nodeIndex,
+							type: inputName,
+							index,
+						},
+						cssClass: 'plus-draggable-endpoint',
+						dragAllowedWhenFull: false,
+						dragProxy: ['Rectangle', { width: 1, height: 1, strokeWidth: 0 }],
+					};
+
+					const plusEndpoint: Endpoint = this.instance.addEndpoint(this.nodeId, plusEndpointData);
+					plusEndpoint.__meta = {
+						nodeName: node.name,
+						nodeId: this.nodeId,
+						index: i,
+						totalEndpoints: nodeTypeData.outputs.length,
+					};
+				}
 			});
 		},
 		__makeInstanceDraggable(node: INodeUi) {
@@ -173,7 +221,15 @@ export const nodeBase = mixins(
 					// @ts-ignore
 					this.dragging = true;
 
-					if (params.e && !this.$store.getters.isNodeSelected(this.data.name)) {
+					const isSelected = this.$store.getters.isNodeSelected(this.data.name);
+					const nodeName = this.data.name;
+					if (this.data.type === STICKY_NODE_TYPE && !isSelected) {
+						setTimeout(() => {
+							this.$emit('nodeSelected', nodeName, false, true);
+						}, 0);
+					}
+
+					if (params.e && !isSelected) {
 						// Only the node which gets dragged directly gets an event, for all others it is
 						// undefined. So check if the currently dragged node is selected and if not clear
 						// the drag-selection.
@@ -231,7 +287,7 @@ export const nodeBase = mixins(
 			});
 		},
 		__addNode (node: INodeUi) {
-			let nodeTypeData = this.$store.getters.nodeType(node.type) as INodeTypeDescription | null;
+			let nodeTypeData = this.$store.getters.nodeType(node.type, node.typeVersion) as INodeTypeDescription | null;
 			if (!nodeTypeData) {
 				// If node type is not know use by default the base.noOp data to display it
 				nodeTypeData = this.$store.getters.nodeType(NO_OP_NODE_TYPE) as INodeTypeDescription;

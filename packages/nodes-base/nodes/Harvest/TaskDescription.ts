@@ -6,11 +6,12 @@ const resource = [
 	'task',
 ];
 
-export const taskOperations = [
+export const taskOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource,
@@ -20,36 +21,40 @@ export const taskOperations = [
 			{
 				name: 'Create',
 				value: 'create',
-				description: `Create a task`,
+				description: 'Create a task',
+				action: 'Create a task',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: `Delete a task`,
+				description: 'Delete a task',
+				action: 'Delete a task',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get data of a task',
+				action: 'Get data of a task',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get data of all tasks',
+				action: 'Get data of all tasks',
 			},
 			{
 				name: 'Update',
 				value: 'update',
-				description: `Update a task`,
+				description: 'Update a task',
+				action: 'Update a task',
 			},
 		],
 		default: 'getAll',
-		description: 'The operation to perform.',
 	},
 
-] as INodeProperties[];
+];
 
-export const taskFields = [
+export const taskFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                task:getAll                                 */
@@ -67,7 +72,7 @@ export const taskFields = [
 			},
 		},
 		default: false,
-		description: 'Returns a list of your tasks.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -89,7 +94,7 @@ export const taskFields = [
 			maxValue: 100,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -111,7 +116,7 @@ export const taskFields = [
 				name: 'is_active',
 				type: 'boolean',
 				default: true,
-				description: 'Pass true to only return active tasks and false to return inactive tasks.',
+				description: 'Whether to only return active tasks and false to return inactive tasks',
 			},
 			{
 				displayName: 'Page',
@@ -121,14 +126,14 @@ export const taskFields = [
 					minValue: 1,
 				},
 				default: 1,
-				description: 'The page number to use in pagination.',
+				description: 'The page number to use in pagination',
 			},
 			{
 				displayName: 'Updated Since',
 				name: 'updated_since',
 				type: 'dateTime',
 				default: '',
-				description: 'Only return tasks belonging to the task with the given ID.',
+				description: 'Only return tasks belonging to the task with the given ID',
 			},
 		],
 	},
@@ -137,7 +142,7 @@ export const taskFields = [
 	/*                                task:get                                    */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Task Id',
+		displayName: 'Task ID',
 		name: 'id',
 		type: 'string',
 		default: '',
@@ -150,14 +155,14 @@ export const taskFields = [
 				resource,
 			},
 		},
-		description: 'The ID of the task you are retrieving.',
+		description: 'The ID of the task you are retrieving',
 	},
 
 	/* -------------------------------------------------------------------------- */
 	/*                                task:delete                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Task Id',
+		displayName: 'Task ID',
 		name: 'id',
 		type: 'string',
 		default: '',
@@ -170,7 +175,7 @@ export const taskFields = [
 				resource,
 			},
 		},
-		description: 'The ID of the task you want to delete.',
+		description: 'The ID of the task you want to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -190,7 +195,7 @@ export const taskFields = [
 		},
 		default: '',
 		required: true,
-		description: 'The name of the task.',
+		description: 'The name of the task',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -212,7 +217,7 @@ export const taskFields = [
 				name: 'billable_by_default',
 				type: 'boolean',
 				default: true,
-				description: 'Used in determining whether default tasks should be marked billable when creating a new project. Defaults to true.',
+				description: 'Whether default tasks should be marked billable when creating a new project. Defaults to true.',
 			},
 			{
 				displayName: 'Default Hourly Rate',
@@ -226,7 +231,7 @@ export const taskFields = [
 				name: 'is_active',
 				type: 'boolean',
 				default: true,
-				description: 'Whether this task is active or archived. Defaults to true',
+				description: 'Whether this task is active or archived. Defaults to true.',
 			},
 			{
 				displayName: 'Is Default',
@@ -255,7 +260,7 @@ export const taskFields = [
 				resource,
 			},
 		},
-		description: 'The ID of the task you want to update.',
+		description: 'The ID of the task you want to update',
 	},
 	{
 		displayName: 'Update Fields',
@@ -277,8 +282,8 @@ export const taskFields = [
 				displayName: 'Billable By Default',
 				name: 'billable_by_default',
 				type: 'boolean',
-				default: '',
-				description: 'Used in determining whether default tasks should be marked billable when creating a new project. Defaults to true.',
+				default: false,
+				description: 'Whether default tasks should be marked billable when creating a new project. Defaults to true.',
 			},
 			{
 				displayName: 'Default Hourly Rate',
@@ -292,7 +297,7 @@ export const taskFields = [
 				name: 'is_active',
 				type: 'boolean',
 				default: true,
-				description: 'Whether this task is active or archived. Defaults to true',
+				description: 'Whether this task is active or archived. Defaults to true.',
 			},
 			{
 				displayName: 'Is Default',
@@ -306,10 +311,10 @@ export const taskFields = [
 				name: 'name',
 				type: 'string',
 				default: '',
-				description: 'Name of the task.',
+				description: 'Name of the task',
 			},
 		],
 	},
 
 
-] as INodeProperties[];
+];

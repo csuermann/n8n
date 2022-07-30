@@ -1,7 +1,4 @@
-import {
-	BINARY_ENCODING,
-	IExecuteFunctions,
-} from 'n8n-core';
+import { IExecuteFunctions } from 'n8n-core';
 import {
 	IDataObject,
 	ILoadOptionsFunctions,
@@ -18,16 +15,17 @@ import {
 } from './PostDescription';
 
 export class LinkedIn implements INodeType {
+	// eslint-disable-next-line n8n-nodes-base/node-class-description-missing-subtitle
 	description: INodeTypeDescription = {
 		displayName: 'LinkedIn',
 		name: 'linkedIn',
-		icon: 'file:linkedin.png',
+		icon: 'file:linkedin.svg',
 		group: ['input'],
 		version: 1,
+		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume LinkedIn API',
 		defaults: {
 			name: 'LinkedIn',
-			color: '#0075b4',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -42,6 +40,7 @@ export class LinkedIn implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Post',
@@ -49,7 +48,6 @@ export class LinkedIn implements INodeType {
 					},
 				],
 				default: 'post',
-				description: 'The resource to consume',
 			},
 			//POST
 			...postOperations,
@@ -78,7 +76,8 @@ export class LinkedIn implements INodeType {
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
-		let body = {};
+
+		let body:any = {};// tslint:disable-line:no-any
 
 		for (let i = 0; i < items.length; i++) {
 			try {
@@ -140,17 +139,17 @@ export class LinkedIn implements INodeType {
 							const item = items[i];
 
 							if (item.binary === undefined) {
-								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 							}
 
 							const propertyNameUpload = this.getNodeParameter('binaryPropertyName', i) as string;
 
 							if (item.binary[propertyNameUpload] === undefined) {
-								throw new NodeOperationError(this.getNode(), `No binary data property "${propertyNameUpload}" does not exists on item!`);
+								throw new NodeOperationError(this.getNode(), `No binary data property "${propertyNameUpload}" does not exists on item!`, { itemIndex: i });
 							}
 
 							// Buffer binary data
-							const buffer = Buffer.from(item.binary[propertyNameUpload].data, BINARY_ENCODING) as Buffer;
+							const buffer = await this.helpers.getBinaryDataBuffer(i, propertyNameUpload);
 							// Upload image
 							await linkedInApiRequest.call(this, 'POST', uploadUrl, buffer, true);
 
@@ -222,6 +221,15 @@ export class LinkedIn implements INodeType {
 									'com.linkedin.ugc.MemberNetworkVisibility': visibility,
 								},
 							};
+
+							if (description === '') {
+								delete body.specificContent['com.linkedin.ugc.ShareContent'].media[0].description;
+							}
+
+							if (title === '') {
+								delete body.specificContent['com.linkedin.ugc.ShareContent'].media[0].title;
+							}
+
 						} else {
 							body = {
 								author: authorUrn,

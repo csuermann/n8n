@@ -21,12 +21,13 @@ import {
 	contactOperations,
 } from './ContactDescription';
 
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 export class GetResponse implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'GetResponse',
 		name: 'getResponse',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:getResponse.png',
 		group: ['input'],
 		version: 1,
@@ -34,7 +35,6 @@ export class GetResponse implements INodeType {
 		description: 'Consume GetResponse API',
 		defaults: {
 			name: 'GetResponse',
-			color: '#00afec',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -78,12 +78,12 @@ export class GetResponse implements INodeType {
 					},
 				],
 				default: 'apiKey',
-				description: 'The resource to operate on.',
 			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Contact',
@@ -91,7 +91,6 @@ export class GetResponse implements INodeType {
 					},
 				],
 				default: 'contact',
-				description: 'The resource to operate on.',
 			},
 			...contactOperations,
 			...contactFields,
@@ -163,7 +162,7 @@ export class GetResponse implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = (items.length as unknown) as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;

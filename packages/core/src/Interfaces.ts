@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+	IAdditionalCredentialOptions,
 	IAllExecuteFunctions,
 	IBinaryData,
 	ICredentialTestFunctions as ICredentialTestFunctionsBase,
@@ -22,7 +23,7 @@ import {
 } from 'n8n-workflow';
 
 import { OptionsWithUri, OptionsWithUrl } from 'request';
-import * as requestPromise from 'request-promise-native';
+import requestPromise from 'request-promise-native';
 
 interface Constructable<T> {
 	new (): T;
@@ -43,6 +44,12 @@ export interface IExecuteFunctions extends IExecuteFunctionsBase {
 		): Promise<IBinaryData>;
 		getBinaryDataBuffer(itemIndex: number, propertyName: string): Promise<Buffer>;
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -55,11 +62,18 @@ export interface IExecuteFunctions extends IExecuteFunctionsBase {
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
 		returnJsonArray(jsonData: IDataObject | IDataObject[]): INodeExecutionData[];
+		normalizeItems(items: INodeExecutionData | INodeExecutionData[]): INodeExecutionData[];
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
 export interface IExecuteSingleFunctions extends IExecuteSingleFunctionsBase {
 	helpers: {
+		getBinaryDataBuffer(propertyName: string, inputIndex?: number): Promise<Buffer>;
 		httpRequest(requestOptions: IHttpRequestOptions): Promise<any>; // tslint:disable-line:no-any
 		prepareBinaryData(
 			binaryData: Buffer,
@@ -67,6 +81,12 @@ export interface IExecuteSingleFunctions extends IExecuteSingleFunctionsBase {
 			mimeType?: string,
 		): Promise<IBinaryData>;
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -78,6 +98,11 @@ export interface IExecuteSingleFunctions extends IExecuteSingleFunctionsBase {
 			credentialsType: string,
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -90,6 +115,12 @@ export interface IPollFunctions extends IPollFunctionsBase {
 			mimeType?: string,
 		): Promise<IBinaryData>;
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -102,6 +133,11 @@ export interface IPollFunctions extends IPollFunctionsBase {
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
 		returnJsonArray(jsonData: IDataObject | IDataObject[]): INodeExecutionData[];
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -118,6 +154,12 @@ export interface ITriggerFunctions extends ITriggerFunctionsBase {
 			mimeType?: string,
 		): Promise<IBinaryData>;
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -130,6 +172,11 @@ export interface ITriggerFunctions extends ITriggerFunctionsBase {
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
 		returnJsonArray(jsonData: IDataObject | IDataObject[]): INodeExecutionData[];
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -152,6 +199,12 @@ export interface ILoadOptionsFunctions extends ILoadOptionsFunctionsBase {
 	helpers: {
 		httpRequest(requestOptions: IHttpRequestOptions): Promise<any>; // tslint:disable-line:no-any
 		request?: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2?: (
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -163,6 +216,11 @@ export interface ILoadOptionsFunctions extends ILoadOptionsFunctionsBase {
 			credentialsType: string,
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -176,6 +234,12 @@ export interface IHookFunctions extends IHookFunctionsBase {
 	helpers: {
 		httpRequest(requestOptions: IHttpRequestOptions): Promise<any>; // tslint:disable-line:no-any
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -187,6 +251,11 @@ export interface IHookFunctions extends IHookFunctionsBase {
 			credentialsType: string,
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -199,6 +268,12 @@ export interface IWebhookFunctions extends IWebhookFunctionsBase {
 			mimeType?: string,
 		): Promise<IBinaryData>;
 		request: (uriOrObject: string | IDataObject | any, options?: IDataObject) => Promise<any>; // tslint:disable-line:no-any
+		requestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: OptionsWithUri | requestPromise.RequestPromiseOptions,
+			additionalCredentialOptions?: IAdditionalCredentialOptions,
+		): Promise<any>;
 		requestOAuth2(
 			this: IAllExecuteFunctions,
 			credentialsType: string,
@@ -211,6 +286,11 @@ export interface IWebhookFunctions extends IWebhookFunctionsBase {
 			requestOptions: OptionsWithUrl | requestPromise.RequestPromiseOptions,
 		): Promise<any>; // tslint:disable-line:no-any
 		returnJsonArray(jsonData: IDataObject | IDataObject[]): INodeExecutionData[];
+		httpRequestWithAuthentication(
+			this: IAllExecuteFunctions,
+			credentialsType: string,
+			requestOptions: IHttpRequestOptions,
+		): Promise<any>;
 	};
 }
 
@@ -233,4 +313,24 @@ export interface INodeInputDataConnections {
 export interface IWorkflowData {
 	pollResponses?: IPollResponse[];
 	triggerResponses?: ITriggerResponse[];
+}
+
+export interface IBinaryDataConfig {
+	mode: 'default' | 'filesystem';
+	availableModes: string;
+	localStoragePath: string;
+	binaryDataTTL: number;
+	persistedBinaryDataTTL: number;
+}
+
+export interface IBinaryDataManager {
+	init(startPurger: boolean): Promise<void>;
+	storeBinaryData(binaryBuffer: Buffer, executionId: string): Promise<string>;
+	retrieveBinaryDataByIdentifier(identifier: string): Promise<Buffer>;
+	markDataForDeletionByExecutionId(executionId: string): Promise<void>;
+	deleteMarkedFiles(): Promise<unknown>;
+	deleteBinaryDataByIdentifier(identifier: string): Promise<void>;
+	duplicateBinaryDataByIdentifier(binaryDataId: string, prefix: string): Promise<string>;
+	deleteBinaryDataByExecutionId(executionId: string): Promise<void>;
+	persistBinaryDataForExecutionId(executionId: string): Promise<void>;
 }

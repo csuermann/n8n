@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const listOperations = [
+export const listOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -18,20 +19,21 @@ export const listOperations = [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a list.',
+				description: 'Create a list',
+				action: 'Create a list',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
-				description: 'Get all lists.',
+				description: 'Get all lists',
+				action: 'Get all lists',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const listFields = [
+export const listFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                 list:create                                */
@@ -52,7 +54,7 @@ export const listFields = [
 			},
 		},
 		default: '',
-		description: 'Name of the list to create.',
+		description: 'Name of the list to create',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -73,7 +75,7 @@ export const listFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -97,6 +99,6 @@ export const listFields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
-] as INodeProperties[];
+];

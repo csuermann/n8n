@@ -2,38 +2,43 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const customerOperations = [
+export const customerOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		default: 'get',
-		description: 'Operation to perform',
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
 				description: 'Create a customer',
+				action: 'Create a customer',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a customer',
+				action: 'Delete a customer',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a customer',
+				action: 'Get a customer',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all customers',
+				action: 'Get all customers',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a customer',
+				action: 'Update a customer',
 			},
 		],
 		displayOptions: {
@@ -44,9 +49,9 @@ export const customerOperations = [
 			},
 		},
 	},
-] as INodeProperties[];
+];
 
-export const customerFields = [
+export const customerFields: INodeProperties[] = [
 	// ----------------------------------
 	//       customer: create
 	// ----------------------------------
@@ -154,6 +159,7 @@ export const customerFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 				description: 'Email of the customer to create',
 			},
@@ -199,6 +205,7 @@ export const customerFields = [
 				displayName: 'Shipping',
 				name: 'shipping',
 				type: 'fixedCollection',
+				default: {},
 				description: 'Shipping information for the customer',
 				typeOptions: {
 					multipleValues: true,
@@ -354,7 +361,7 @@ export const customerFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 			maxValue: 1000,
@@ -394,6 +401,7 @@ export const customerFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 				description: 'Customer\'s email to filter by',
 			},
@@ -507,6 +515,7 @@ export const customerFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 				description: 'Email of the customer to create',
 			},
@@ -514,6 +523,7 @@ export const customerFields = [
 				displayName: 'Metadata',
 				name: 'metadata',
 				type: 'fixedCollection',
+				default: {},
 				placeholder: 'Add Metadata Item',
 				description: 'Set of key-value pairs to attach to the customer to create',
 				typeOptions: {
@@ -646,4 +656,4 @@ export const customerFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

@@ -1,12 +1,13 @@
-import { 
+import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const siteOperations = [
+export const siteOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,29 +20,32 @@ export const siteOperations = [
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a site',
+				action: 'Delete a site',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a site',
+				action: 'Get a site',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Returns all sites',
+				action: 'Get all sites',
 			},
 		],
 		default: 'delete',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const siteFields = [
+export const siteFields: INodeProperties[] = [
 	{
 		displayName: 'Site ID',
 		name: 'siteId',
 		required: true,
 		type: 'string',
+		default: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -93,6 +97,6 @@ export const siteFields = [
 			maxValue: 200,
 		},
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 	},
-] as INodeProperties[];
+];

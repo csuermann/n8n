@@ -5,7 +5,7 @@
 		</div>
 		<div class="text">
 			<input
-				placeholder="Search nodes..."
+				:placeholder="$locale.baseText('nodeCreator.searchBar.searchNodes')"
 				ref="input"
 				:value="value"
 				@input="onInput"
@@ -88,6 +88,8 @@ export default mixins(externalHooks).extend({
 		outline: none;
 		font-size: 18px;
 		-webkit-appearance: none;
+		background-color: var(--color-background-xlight);
+		color: var(--color-text-dark);
 
 		&::placeholder,
 		&::-webkit-input-placeholder {

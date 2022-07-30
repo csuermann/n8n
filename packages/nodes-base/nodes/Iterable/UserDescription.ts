@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const userOperations = [
+export const userOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -16,27 +17,29 @@ export const userOperations = [
 		},
 		options: [
 			{
-				name: 'Create/Update',
+				name: 'Create or Update',
 				value: 'upsert',
-				description: 'Create/Update a user',
+				description: 'Create a new user, or update the current one if it already exists (upsert)',
+				action: 'Create or update a user',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a user',
+				action: 'Delete a user',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a user',
+				action: 'Get a user',
 			},
 		],
 		default: 'upsert',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const userFields = [
+export const userFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                user:upsert                                 */
@@ -105,7 +108,7 @@ export const userFields = [
 			},
 		},
 		default: true,
-		description: 'Create a new user if the idetifier does not exist.',
+		description: 'Whether to create a new user if the idetifier does not exist',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -128,7 +131,7 @@ export const userFields = [
 				displayName: 'Data Fields',
 				name: 'dataFieldsUi',
 				type: 'fixedCollection',
-				default: '',
+				default: {},
 				placeholder: 'Add Data Field',
 				typeOptions: {
 					multipleValues: true,
@@ -143,14 +146,14 @@ export const userFields = [
 								name: 'key',
 								type: 'string',
 								default: '',
-								description: 'The end user specified key of the user defined data.',
+								description: 'The end user specified key of the user defined data',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'The end user specified value of the user defined data.',
+								description: 'The end user specified value of the user defined data',
 							},
 						],
 					},
@@ -161,7 +164,7 @@ export const userFields = [
 				name: 'mergeNestedObjects',
 				type: 'boolean',
 				default: false,
-				description: `Merge top level objects instead of overwriting (default: false), e.g. if user profile has data: {mySettings:{mobile:true}} and change contact field has data: {mySettings:{email:true}}, the resulting profile: {mySettings:{mobile:true,email:true}}`,
+				description: 'Whether to merge top level objects instead of overwriting (default: false), e.g. if user profile has data: {mySettings:{mobile:true}} and change contact field has data: {mySettings:{email:true}}, the resulting profile: {mySettings:{mobile:true,email:true}}',
 			},
 		],
 	},
@@ -222,6 +225,7 @@ export const userFields = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		required: true,
 		displayOptions: {
 			show: {
@@ -296,6 +300,7 @@ export const userFields = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		required: true,
 		displayOptions: {
 			show: {
@@ -313,4 +318,4 @@ export const userFields = [
 		default: '',
 		description: 'Email for a particular user',
 	},
-] as INodeProperties[];
+];

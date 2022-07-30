@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const noteOperations = [
+export const noteOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const noteOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a note',
+				action: 'Create a note',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a note',
+				action: 'Delete a note',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a note',
+				action: 'Get a note',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all notes',
+				action: 'Get all notes',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a note',
+				action: 'Update a note',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const noteFields = [
+export const noteFields: INodeProperties[] = [
 	// ----------------------------------------
 	//               note: create
 	// ----------------------------------------
@@ -184,7 +190,7 @@ export const noteFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -263,7 +269,8 @@ export const noteFields = [
 				name: 'is_favorited',
 				description: 'Whether the note has been favorited',
 				type: 'boolean',
+				default: false,
 			},
 		],
 	},
-] as INodeProperties[];
+];

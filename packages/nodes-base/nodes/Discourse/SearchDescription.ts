@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const searchOperations = [
+export const searchOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		description: 'Choose an operation',
 		required: true,
 		displayOptions: {
@@ -21,11 +22,12 @@ export const searchOperations = [
 				name: 'Query',
 				value: 'query',
 				description: 'Search for something',
+				action: 'Perform a query',
 			},
 		],
 		default: 'query',
 	},
-] as INodeProperties[];
+];
 
 export const searchFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
@@ -47,10 +49,10 @@ export const searchFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'Term to search for.',
+		description: 'Term to search for',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -64,6 +66,6 @@ export const searchFields: INodeProperties[] = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 ];

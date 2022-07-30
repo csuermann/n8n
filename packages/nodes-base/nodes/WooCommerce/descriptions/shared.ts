@@ -1,4 +1,8 @@
-const customerAddressOptions = [
+import {
+	INodeProperties,
+} from 'n8n-workflow';
+
+const customerAddressOptions: INodeProperties[] = [
 	{
 		displayName: 'First Name',
 		name: 'first_name',
@@ -57,6 +61,7 @@ const customerAddressOptions = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		default: '',
 	},
 	{
@@ -67,7 +72,7 @@ const customerAddressOptions = [
 	},
 ];
 
-const customerUpdateOptions = [
+const customerUpdateOptions: INodeProperties[] = [
 	{
 		displayName: 'Billing Address',
 		name: 'billing',
@@ -144,7 +149,7 @@ const customerUpdateOptions = [
 	},
 ];
 
-const customerCreateOptions = [
+const customerCreateOptions: INodeProperties[] = [
 	...customerUpdateOptions,
 	{
 		displayName: 'Username',
@@ -154,7 +159,7 @@ const customerCreateOptions = [
 	},
 ];
 
-export const customerCreateFields = {
+export const customerCreateFields: INodeProperties = {
 	displayName: 'Additional Fields',
 	name: 'additionalFields',
 	type: 'collection',
@@ -173,7 +178,7 @@ export const customerCreateFields = {
 	options: customerCreateOptions,
 };
 
-export const customerUpdateFields = {
+export const customerUpdateFields: INodeProperties = {
 	displayName: 'Update Fields',
 	name: 'updateFields',
 	type: 'collection',

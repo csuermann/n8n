@@ -2,7 +2,7 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const cloneFields = [
+export const cloneFields: INodeProperties[] = [
 	{
 		displayName: 'Source Repository',
 		name: 'sourceRepository',
@@ -16,7 +16,7 @@ export const cloneFields = [
 		},
 		default: '',
 		placeholder: 'https://github.com/n8n-io/n8n',
-		description: 'The URL or path of the repository to clone.',
+		description: 'The URL or path of the repository to clone',
 		required: true,
 	},
-] as INodeProperties[];
+];

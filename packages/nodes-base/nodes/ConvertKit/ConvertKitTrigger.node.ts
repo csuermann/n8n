@@ -31,7 +31,6 @@ export class ConvertKitTrigger implements INodeType {
 		description: 'Handle ConvertKit events via webhooks',
 		defaults: {
 			name: 'ConvertKit Trigger',
-			color: '#fb6970',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -56,7 +55,7 @@ export class ConvertKitTrigger implements INodeType {
 				type: 'options',
 				required: true,
 				default: '',
-				description: 'The events that can trigger the webhook and whether they are enabled.',
+				description: 'The events that can trigger the webhook and whether they are enabled',
 				options: [
 					{
 						name: 'Form Subscribe',
@@ -101,9 +100,10 @@ export class ConvertKitTrigger implements INodeType {
 				],
 			},
 			{
-				displayName: 'Form ID',
+				displayName: 'Form Name or ID',
 				name: 'formId',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getForms',
 				},
@@ -118,9 +118,10 @@ export class ConvertKitTrigger implements INodeType {
 				},
 			},
 			{
-				displayName: 'Sequence ID',
+				displayName: 'Sequence Name or ID',
 				name: 'courseId',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getSequences',
 				},
@@ -165,9 +166,10 @@ export class ConvertKitTrigger implements INodeType {
 				},
 			},
 			{
-				displayName: 'Tag ID',
+				displayName: 'Tag Name or ID',
 				name: 'tagId',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getTags',
 				},

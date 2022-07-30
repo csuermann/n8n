@@ -25,13 +25,13 @@ export class Contentful implements INodeType {
 		displayName: 'Contentful',
 		name: 'contentful',
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:contentful.png',
 		group: ['input'],
 		version: 1,
 		description: 'Consume Contenful API',
 		defaults: {
 			name: 'Contentful',
-			color: '#2E75D4',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -64,6 +64,7 @@ export class Contentful implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					AssetDescription.resource,
 					ContentTypeDescription.resource,
@@ -72,7 +73,6 @@ export class Contentful implements INodeType {
 					SpaceDescription.resource,
 				],
 				default: 'entry',
-				description: 'The resource to operate on.',
 			},
 
 			// Operations:

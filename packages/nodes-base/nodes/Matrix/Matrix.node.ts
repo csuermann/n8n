@@ -49,6 +49,7 @@ export class Matrix implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Matrix',
 		name: 'matrix',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:matrix.png',
 		group: ['output'],
 		version: 1,
@@ -56,7 +57,6 @@ export class Matrix implements INodeType {
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		defaults: {
 			name: 'Matrix',
-			color: '#772244',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -72,6 +72,7 @@ export class Matrix implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Account',
@@ -99,7 +100,6 @@ export class Matrix implements INodeType {
 					},
 				],
 				default: 'message',
-				description: 'The resource to operate on.',
 			},
 			...accountOperations,
 			...eventOperations,

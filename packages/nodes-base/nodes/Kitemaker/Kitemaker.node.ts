@@ -7,7 +7,8 @@ import {
 	ILoadOptionsFunctions,
 	INodeExecutionData,
 	INodeType,
-	INodeTypeDescription
+	INodeTypeDescription,
+	NodeOperationError
 } from 'n8n-workflow';
 
 import {
@@ -55,7 +56,6 @@ export class Kitemaker implements INodeType {
 		description: 'Consume the Kitemaker GraphQL API',
 		defaults: {
 			name: 'Kitemaker',
-			color: '#662482',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -70,6 +70,7 @@ export class Kitemaker implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Organization',
@@ -90,7 +91,6 @@ export class Kitemaker implements INodeType {
 				],
 				default: 'workItem',
 				required: true,
-				description: 'Resource to operate on.',
 			},
 			...organizationOperations,
 			...spaceOperations,
@@ -119,10 +119,16 @@ export class Kitemaker implements INodeType {
 			},
 
 			async getStatuses(this: ILoadOptionsFunctions) {
+				const spaceId = this.getNodeParameter('spaceId', 0) as string;
+				if (!spaceId.length) {
+					throw new NodeOperationError(this.getNode(), 'Please choose a space to set for the work item to create.');
+				}
+
 				const responseData = await kitemakerRequest.call(this, { query: getStatuses });
 				const { data: { organization: { spaces } } } = responseData;
+				const space = spaces.find((e: { [x: string]: string; }) => e.id === spaceId);
 
-				return createLoadOptions(spaces[0].statuses);
+				return createLoadOptions(space.statuses);
 			},
 
 			async getUsers(this: ILoadOptionsFunctions) {
@@ -241,7 +247,7 @@ export class Kitemaker implements INodeType {
 					};
 
 					if (!input.statusId.length) {
-						throw new Error('Please enter a status to set for the work item to create.');
+						throw new NodeOperationError(this.getNode(), 'Please enter a status to set for the work item to create.', { itemIndex: i });
 					}
 
 					const additionalFields = this.getNodeParameter('additionalFields', i) as IDataObject;
@@ -300,7 +306,7 @@ export class Kitemaker implements INodeType {
 					const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 					if (!Object.keys(updateFields).length) {
-						throw new Error('Please enter at least one field to update for the work item.');
+						throw new NodeOperationError(this.getNode(), 'Please enter at least one field to update for the work item.', { itemIndex: i });
 					}
 
 					Object.assign(input, updateFields);

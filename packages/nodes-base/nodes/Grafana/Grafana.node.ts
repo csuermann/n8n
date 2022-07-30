@@ -7,19 +7,18 @@ import {
 	ICredentialTestFunctions,
 	IDataObject,
 	ILoadOptionsFunctions,
+	INodeCredentialTestResult,
 	INodeExecutionData,
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
 	NodeApiError,
-	NodeCredentialTestResult,
 } from 'n8n-workflow';
 
 import {
 	deriveUid,
 	grafanaApiRequest,
 	throwOnEmptyUpdate,
-	tolerateTrailingSlash,
 } from './GenericFunctions';
 
 import {
@@ -34,13 +33,8 @@ import {
 } from './descriptions';
 
 import {
-	OptionsWithUri,
-} from 'request';
-
-import {
 	DashboardUpdateFields,
 	DashboardUpdatePayload,
-	GrafanaCredentials,
 	LoadedDashboards,
 	LoadedFolders,
 	LoadedTeams,
@@ -58,7 +52,6 @@ export class Grafana implements INodeType {
 		description: 'Consume the Grafana API',
 		defaults: {
 			name: 'Grafana',
-			color: '#fb755a',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -66,7 +59,6 @@ export class Grafana implements INodeType {
 			{
 				name: 'grafanaApi',
 				required: true,
-				testedBy: 'grafanaApiTest',
 			},
 		],
 		properties: [
@@ -128,38 +120,6 @@ export class Grafana implements INodeType {
 			async getUsers(this: ILoadOptionsFunctions): Promise<INodePropertyOptions[]> {
 				const users = await grafanaApiRequest.call(this, 'GET', '/org/users') as LoadedUsers;
 				return users.map(({ userId, email }) => ({ value: userId, name: email }));
-			},
-		},
-
-		credentialTest: {
-			async grafanaApiTest(
-				this: ICredentialTestFunctions,
-				credential: ICredentialsDecrypted,
-			): Promise<NodeCredentialTestResult> {
-				const { apiKey, baseUrl: rawBaseUrl } = credential.data as GrafanaCredentials;
-				const baseUrl = tolerateTrailingSlash(rawBaseUrl);
-
-				const options: OptionsWithUri = {
-					headers: {
-						Authorization: `Bearer ${apiKey}`,
-					},
-					method: 'GET',
-					uri: `${baseUrl}/api/folders`,
-					json: true,
-				};
-
-				try {
-					await this.helpers.request(options);
-					return {
-						status: 'OK',
-						message: 'Authentication successful',
-					};
-				} catch (error) {
-					return {
-						status: 'Error',
-						message: error.message,
-					};
-				}
 			},
 		},
 	};

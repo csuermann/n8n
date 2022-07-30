@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const documentOperations = [
+export const documentOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,14 +20,14 @@ export const documentOperations = [
 				name: 'Upload',
 				value: 'upload',
 				description: 'Upload a document',
+				action: 'Upload a document',
 			},
 		],
 		default: 'upload',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const documentFields = [
+export const documentFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                document:upload                             */
@@ -66,7 +67,7 @@ export const documentFields = [
 			},
 		},
 		placeholder: '',
-		description: 'Name of the binary property which contains the data for the file to be uploaded.',
+		description: 'Name of the binary property which contains the data for the file to be uploaded',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -101,15 +102,15 @@ export const documentFields = [
 				description: 'ID of the object you want to link this document to',
 			},
 			{
-				displayName: 'Owner ID',
+				displayName: 'Owner Name or ID',
 				name: 'ownerId',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getUsers',
 				},
 				default: '',
-				description: 'ID of the owner of this document',
+				description: 'ID of the owner of this document. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 		],
 	},
-] as INodeProperties[];
+];

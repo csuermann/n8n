@@ -32,14 +32,13 @@ export class Wordpress implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Wordpress',
 		name: 'wordpress',
-		icon: 'file:wordpress.png',
+		icon: 'file:wordpress.svg',
 		group: ['output'],
 		version: 1,
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume Wordpress API',
 		defaults: {
 			name: 'Wordpress',
-			color: '#016087',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -54,20 +53,18 @@ export class Wordpress implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Post',
 						value: 'post',
-						description: '',
 					},
 					{
 						name: 'User',
 						value: 'user',
-						description: '',
 					},
 				],
 				default: 'post',
-				description: 'Resource to consume.',
 			},
 			...postOperations,
 			...postFields,
@@ -132,7 +129,7 @@ export class Wordpress implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		let responseData;
 		const qs: IDataObject = {};
 		const resource = this.getNodeParameter('resource', 0) as string;
@@ -171,6 +168,9 @@ export class Wordpress implements INodeType {
 						}
 						if (additionalFields.sticky) {
 							body.sticky = additionalFields.sticky as boolean;
+						}
+						if (additionalFields.postTemplate) {
+							body.template = this.getNodeParameter('additionalFields.postTemplate.values.template', i, '') as string;
 						}
 						if (additionalFields.categories) {
 							body.categories = additionalFields.categories as number[];
@@ -216,6 +216,9 @@ export class Wordpress implements INodeType {
 						}
 						if (updateFields.sticky) {
 							body.sticky = updateFields.sticky as boolean;
+						}
+						if (updateFields.postTemplate) {
+							body.template = this.getNodeParameter('updateFields.postTemplate.values.template', i, '') as string;
 						}
 						if (updateFields.categories) {
 							body.categories = updateFields.categories as number[];
@@ -276,6 +279,9 @@ export class Wordpress implements INodeType {
 						}
 						if (options.sticky) {
 							qs.sticky = options.sticky as boolean;
+						}
+						if (options.status) {
+							qs.status = options.status as string;
 						}
 						if (returnAll === true) {
 							responseData = await wordpressApiRequestAllItems.call(this, 'GET', '/posts', {}, qs);

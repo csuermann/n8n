@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const formulaOperations = [
+export const formulaOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,25 +18,26 @@ export const formulaOperations = [
 				name: 'Get',
 				value: 'get',
 				description: 'Get a formula',
+				action: 'Get a formula',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all formulas',
+				action: 'Get all formulas',
 			},
 		],
 		default: 'get',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const formulaFields = [
+export const formulaFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                   formula:get                              */
 /* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Doc',
+		displayName: 'Doc Name or ID',
 		name: 'docId',
 		type: 'options',
 		required: true,
@@ -53,7 +55,7 @@ export const formulaFields = [
 				],
 			},
 		},
-		description: 'ID of the doc.',
+		description: 'ID of the doc. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Formula ID',
@@ -71,13 +73,13 @@ export const formulaFields = [
 				],
 			},
 		},
-		description: 'The formula to get the row from.',
+		description: 'The formula to get the row from',
 	},
 /* -------------------------------------------------------------------------- */
 /*                                   formula:getAll                           */
 /* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Doc',
+		displayName: 'Doc Name or ID',
 		name: 'docId',
 		type: 'options',
 		required: true,
@@ -95,7 +97,7 @@ export const formulaFields = [
 				],
 			},
 		},
-		description: 'ID of the doc.',
+		description: 'ID of the doc. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Return All',
@@ -112,7 +114,7 @@ export const formulaFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -136,6 +138,6 @@ export const formulaFields = [
 			maxValue: 100,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
-] as INodeProperties[];
+];

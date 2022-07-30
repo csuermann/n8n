@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const linkOperations = [
+export const linkOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,24 +18,26 @@ export const linkOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a link',
+				action: 'Create a link',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a link',
+				action: 'Get a link',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a link',
+				action: 'Update a link',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const linkFields = [
+export const linkFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                link:create                                 */
@@ -81,18 +84,20 @@ export const linkFields = [
 				default: 'bit.ly',
 			},
 			{
-				displayName: 'Group',
+				displayName: 'Group Name or ID',
 				name: 'group',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: '',
 				typeOptions: {
 					loadOptionsMethod: 'getGroups',
 				},
 			},
 			{
-				displayName: 'Tags',
+				displayName: 'Tag Names or IDs',
 				name: 'tags',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: [],
 				typeOptions: {
 					loadOptionsMethod: 'getTags',
@@ -206,9 +211,10 @@ export const linkFields = [
 				default: false,
 			},
 			{
-				displayName: 'Group',
+				displayName: 'Group Name or ID',
 				name: 'group',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: '',
 				typeOptions: {
 					loadOptionsMethod: 'getGroups',
@@ -221,9 +227,10 @@ export const linkFields = [
 				default: '',
 			},
 			{
-				displayName: 'Tags',
+				displayName: 'Tag Names or IDs',
 				name: 'tags',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: [],
 				typeOptions: {
 					loadOptionsMethod: 'getTags',
@@ -313,4 +320,4 @@ export const linkFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

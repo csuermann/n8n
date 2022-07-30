@@ -23,7 +23,6 @@ export class OneSimpleApi implements INodeType {
 		description: 'A toolbox of no-code utilities',
 		defaults: {
 			name: 'One Simple API',
-			color: '#1A82e2',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -38,10 +37,15 @@ export class OneSimpleApi implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Information',
 						value: 'information',
+					},
+					{
+						name: 'Social Profile',
+						value: 'socialProfile',
 					},
 					{
 						name: 'Utility',
@@ -55,11 +59,12 @@ export class OneSimpleApi implements INodeType {
 				default: 'website',
 				required: true,
 			},
-			// Generation
+			// website
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: [
@@ -72,25 +77,58 @@ export class OneSimpleApi implements INodeType {
 						name: 'Generate PDF',
 						value: 'pdf',
 						description: 'Generate a PDF from a webpage',
+						action: 'Generate PDF',
 					},
 					{
 						name: 'Get SEO Data',
 						value: 'seo',
 						description: 'Get SEO information from website',
+						action: 'Get SEO Data',
 					},
 					{
 						name: 'Take Screenshot',
 						value: 'screenshot',
 						description: 'Create a screenshot from a webpage',
+						action: 'Screenshot',
 					},
 				],
 				default: 'pdf',
+			},
+			// socialProfile
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: [
+							'socialProfile',
+						],
+					},
+				},
+				options: [
+					{
+						name: 'Instagram',
+						value: 'instagramProfile',
+						description: 'Get details about an Instagram profile',
+						action: 'Get details about an Instagram profile',
+					},
+					{
+						name: 'Spotify',
+						value: 'spotifyArtistProfile',
+						description: 'Get details about a Spotify Artist',
+						action: 'Get details about a Spotify artist',
+					},
+				],
+				default: 'instagramProfile',
 			},
 			// Information
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: [
@@ -103,21 +141,23 @@ export class OneSimpleApi implements INodeType {
 						name: 'Exchange Rate',
 						value: 'exchangeRate',
 						description: 'Convert a value between currencies',
+						action: 'Convert a value between currencies',
 					},
 					{
 						name: 'Image Metadata',
 						value: 'imageMetadata',
 						description: 'Retrieve image metadata from a URL',
+						action: 'Get image metadata from a URL',
 					},
 				],
 				default: 'exchangeRate',
-				description: 'The operation to perform.',
 			},
-			// Utiliy
+			// Utility
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: [
@@ -129,21 +169,23 @@ export class OneSimpleApi implements INodeType {
 					{
 						name: 'Expand URL',
 						value: 'expandURL',
-						description: 'Expand a shortened url',
+						description: 'Expand a shortened URL',
+						action: 'Expand a shortened URL',
 					},
 					{
 						name: 'Generate QR Code',
 						value: 'qrCode',
 						description: 'Generate a QR Code',
+						action: 'Generate a QR code utility',
 					},
 					{
 						name: 'Validate Email',
 						value: 'validateEmail',
 						description: 'Validate an email address',
+						action: 'Validate an email address',
 					},
 				],
 				default: 'validateEmail',
-				description: 'The operation to perform.',
 			},
 			// website: pdf
 			{
@@ -254,12 +296,12 @@ export class OneSimpleApi implements INodeType {
 								value: 'A6',
 							},
 							{
-								name: 'Legal',
-								value: 'Legal',
-							},
-							{
 								name: 'Ledger',
 								value: 'Ledger',
+							},
+							{
+								name: 'Legal',
+								value: 'Legal',
 							},
 							{
 								name: 'Letter',
@@ -271,15 +313,14 @@ export class OneSimpleApi implements INodeType {
 							},
 						],
 						default: '',
-						description: 'The page size',
 					},
 					{
 						displayName: 'Force Refresh',
 						name: 'force',
 						type: 'boolean',
 						default: false,
-						description: `Normally the API will reuse a previously taken screenshot of the URL to give a faster response.
-						This option allows you to retake the screenshot at that exact time, for those times when it's necessary`,
+						// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+						description: 'Normally the API will reuse a previously taken screenshot of the URL to give a faster response. This option allows you to retake the screenshot at that exact time, for those times when it\'s necessary.',
 					},
 				],
 			},
@@ -500,24 +541,62 @@ export class OneSimpleApi implements INodeType {
 							},
 						],
 						default: '',
-						description: 'The screen size',
 					},
 					{
 						displayName: 'Force Refresh',
 						name: 'force',
 						type: 'boolean',
 						default: false,
-						description: `Normally the API will reuse a previously taken screenshot of the URL to give a faster response.
-						This option allows you to retake the screenshot at that exact time, for those times when it's necessary`,
+						// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+						description: 'Normally the API will reuse a previously taken screenshot of the URL to give a faster response. This option allows you to retake the screenshot at that exact time, for those times when it\'s necessary.',
 					},
 					{
 						displayName: 'Full Page',
 						name: 'fullpage',
 						type: 'boolean',
 						default: false,
-						description: 'The API takes a screenshot of the viewable area for the desired screen size. If you need a screenshot of the whole length of the page, use this option',
+						// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+						description: 'The API takes a screenshot of the viewable area for the desired screen size. If you need a screenshot of the whole length of the page, use this option.',
 					},
 				],
+			},
+			// socialProfile: instagramProfile
+			{
+				displayName: 'Profile Name',
+				name: 'profileName',
+				type: 'string',
+				required: true,
+				displayOptions: {
+					show: {
+						operation: [
+							'instagramProfile',
+						],
+						resource: [
+							'socialProfile',
+						],
+					},
+				},
+				default: '',
+				description: 'Profile name to get details of',
+			},
+			// socialProfile: spotifyArtistProfile
+			{
+				displayName: 'Artist Name',
+				name: 'artistName',
+				type: 'string',
+				required: true,
+				displayOptions: {
+					show: {
+						operation: [
+							'spotifyArtistProfile',
+						],
+						resource: [
+							'socialProfile',
+						],
+					},
+				},
+				default: '',
+				description: 'Artist name to get details for',
 			},
 			// information: exchangeRate
 			{
@@ -555,7 +634,6 @@ export class OneSimpleApi implements INodeType {
 					},
 				},
 				default: '',
-				description: 'From Currency',
 			},
 			{
 				displayName: 'To Currency',
@@ -574,7 +652,6 @@ export class OneSimpleApi implements INodeType {
 					},
 				},
 				default: '',
-				description: 'To Currency',
 			},
 			// information: imageMetadata
 			{
@@ -636,7 +713,6 @@ export class OneSimpleApi implements INodeType {
 						name: 'headers',
 						type: 'boolean',
 						default: false,
-						description: '',
 					},
 				],
 			},
@@ -657,7 +733,6 @@ export class OneSimpleApi implements INodeType {
 					},
 				},
 				default: '',
-				description: 'Email Address',
 			},
 			// utility: expandURL
 			{
@@ -684,7 +759,7 @@ export class OneSimpleApi implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		let download;
@@ -778,6 +853,20 @@ export class OneSimpleApi implements INodeType {
 					}
 				}
 
+				if (resource === 'socialProfile') {
+					if (operation === 'instagramProfile') {
+						const profileName = this.getNodeParameter('profileName', i) as string;
+						qs.profile = profileName;
+						responseData = await oneSimpleApiRequest.call(this, 'GET', '/instagram_profile', {}, qs);
+					}
+
+					if (operation === 'spotifyArtistProfile') {
+						const artistName = this.getNodeParameter('artistName', i) as string;
+						qs.profile = artistName;
+						responseData = await oneSimpleApiRequest.call(this, 'GET', '/spotify_profile', {}, qs);
+					}
+				}
+
 				if (resource === 'information') {
 					if (operation === 'exchangeRate') {
 						const value = this.getNodeParameter('value', i) as string;
@@ -865,3 +954,4 @@ export class OneSimpleApi implements INodeType {
 		return [this.helpers.returnJsonArray(returnData)];
 	}
 }
+

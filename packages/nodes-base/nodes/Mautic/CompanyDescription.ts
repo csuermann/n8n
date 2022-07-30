@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const companyOperations = [
+export const companyOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,34 +20,38 @@ export const companyOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new company',
+				action: 'Create a company',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a company',
+				action: 'Delete a company',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get data of a company',
+				action: 'Get a company',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get data of all companies',
+				action: 'Get all companies',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a company',
+				action: 'Update a company',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform',
 	},
-] as INodeProperties[];
+];
 
-export const companyFields = [
+export const companyFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                company:create                              */
@@ -66,10 +71,10 @@ export const companyFields = [
 			},
 		},
 		default: '',
-		description: 'The name of the company to create.',
+		description: 'The name of the company to create',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -83,7 +88,7 @@ export const companyFields = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -172,7 +177,7 @@ export const companyFields = [
 				displayName: 'Custom Fields',
 				name: 'customFieldsUi',
 				placeholder: 'Add Custom Fields',
-				description: 'Adds a custom fields to set also values which have not been predefined.',
+				description: 'Adds a custom fields to set also values which have not been predefined',
 				type: 'fixedCollection',
 				typeOptions: {
 					multipleValues: true,
@@ -184,21 +189,21 @@ export const companyFields = [
 						displayName: 'Field',
 						values: [
 							{
-								displayName: 'Field ID',
+								displayName: 'Field Name or ID',
 								name: 'fieldId',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyFields',
 								},
 								default: '',
-								description: 'ID of the field to set.',
+								description: 'ID of the field to set. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Field Value',
 								name: 'fieldValue',
 								type: 'string',
 								default: '',
-								description: 'Value of the field to set.',
+								description: 'Value of the field to set',
 							},
 						],
 					},
@@ -217,9 +222,10 @@ export const companyFields = [
 				default: '',
 			},
 			{
-				displayName: 'Industry',
+				displayName: 'Industry Name or ID',
 				name: 'industry',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getIndustries',
 				},
@@ -243,7 +249,7 @@ export const companyFields = [
 				name: 'overwriteWithBlank',
 				type: 'boolean',
 				default: false,
-				description: 'If true, then empty values are set to fields. Otherwise empty values are skipped',
+				description: 'Whether empty values are set to fields. Otherwise empty values are skipped.',
 			},
 			{
 				displayName: 'Phone',
@@ -278,10 +284,10 @@ export const companyFields = [
 			},
 		},
 		default: '',
-		description: 'The ID of the company to update.',
+		description: 'The ID of the company to update',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -295,7 +301,7 @@ export const companyFields = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	{
 		displayName: 'Update Fields',
@@ -390,7 +396,7 @@ export const companyFields = [
 				displayName: 'Custom Fields',
 				name: 'customFieldsUi',
 				placeholder: 'Add Custom Fields',
-				description: 'Adds a custom fields to set also values which have not been predefined.',
+				description: 'Adds a custom fields to set also values which have not been predefined',
 				type: 'fixedCollection',
 				typeOptions: {
 					multipleValues: true,
@@ -402,21 +408,21 @@ export const companyFields = [
 						displayName: 'Field',
 						values: [
 							{
-								displayName: 'Field ID',
+								displayName: 'Field Name or ID',
 								name: 'fieldId',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getCompanyFields',
 								},
 								default: '',
-								description: 'ID of the field to set.',
+								description: 'ID of the field to set. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Field Value',
 								name: 'fieldValue',
 								type: 'string',
 								default: '',
-								description: 'Value of the field to set.',
+								description: 'Value of the field to set',
 							},
 						],
 					},
@@ -435,9 +441,10 @@ export const companyFields = [
 				default: '',
 			},
 			{
-				displayName: 'Industry',
+				displayName: 'Industry Name or ID',
 				name: 'industry',
 				type: 'options',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getIndustries',
 				},
@@ -461,7 +468,7 @@ export const companyFields = [
 				name: 'overwriteWithBlank',
 				type: 'boolean',
 				default: false,
-				description: 'If true, then empty values are set to fields. Otherwise empty values are skipped',
+				description: 'Whether empty values are set to fields. Otherwise, empty values are skipped.',
 			},
 			{
 				displayName: 'Phone',
@@ -496,10 +503,10 @@ export const companyFields = [
 			},
 		},
 		default: '',
-		description: 'The ID of the company to return.',
+		description: 'The ID of the company to return',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -513,7 +520,7 @@ export const companyFields = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -534,7 +541,7 @@ export const companyFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -558,10 +565,10 @@ export const companyFields = [
 			maxValue: 30,
 		},
 		default: 30,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -575,7 +582,7 @@ export const companyFields = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -609,24 +616,24 @@ export const companyFields = [
 					},
 				],
 				default: '',
-				description: 'Sort direction: asc or desc.',
+				description: 'Sort direction: asc or desc',
 			},
 			{
-				displayName: 'Order By',
+				displayName: 'Order By Name or ID',
 				name: 'orderBy',
 				type: 'options',
 				typeOptions: {
 					loadOptionsMethod: 'getCompanyFields',
 				},
 				default: '',
-				description: 'Column to sort by. Can use any column listed in the response.',
+				description: 'Column to sort by. Can use any column listed in the response. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Search',
 				name: 'search',
 				type: 'string',
 				default: '',
-				description: 'String or search command to filter entities by.',
+				description: 'String or search command to filter entities by',
 			},
 		],
 	},
@@ -648,10 +655,10 @@ export const companyFields = [
 			},
 		},
 		default: '',
-		description: 'The ID of the company to delete.',
+		description: 'The ID of the company to delete',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -665,6 +672,6 @@ export const companyFields = [
 			},
 		},
 		default: true,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
-] as INodeProperties[];
+];

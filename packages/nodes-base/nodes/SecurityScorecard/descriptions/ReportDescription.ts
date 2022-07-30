@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const reportOperations = [
+export const reportOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		required: true,
 		displayOptions: {
 			show: {
@@ -20,23 +21,26 @@ export const reportOperations = [
 				name: 'Download',
 				value: 'download',
 				description: 'Download a generated report',
+				action: 'Download a report',
 			},
 			{
 				name: 'Generate',
 				value: 'generate',
 				description: 'Generate a report',
+				action: 'Generate a report',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get list of recently generated report',
+				action: 'Get all reports',
 			},
 		],
 		default: 'getAll',
 	},
-] as INodeProperties[];
+];
 
-export const reportFields = [
+export const reportFields: INodeProperties[] = [
 	{
 		displayName: 'Return All',
 		name: 'returnAll',
@@ -52,7 +56,7 @@ export const reportFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -76,7 +80,7 @@ export const reportFields = [
 			maxValue: 100,
 		},
 		default: 100,
-		description: 'Number of results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Report',
@@ -133,7 +137,7 @@ export const reportFields = [
 	{
 		displayName: 'Scorecard Identifier',
 		name: 'scorecardIdentifier',
-		description: 'Primary identifier of a company or scorecard, i.e. domain',
+		description: 'Primary identifier of a company or scorecard, i.e. domain.',
 		type: 'string',
 		required: true,
 		default: '',
@@ -176,13 +180,11 @@ export const reportFields = [
 				],
 			},
 		},
-		description: 'Portfolio ID',
 	},
 	{
 		displayName: 'Branding',
 		name: 'branding',
 		type: 'options',
-		required: false,
 		displayOptions: {
 			show: {
 				resource: [
@@ -217,6 +219,7 @@ export const reportFields = [
 		displayName: 'Date',
 		name: 'date',
 		type: 'dateTime',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -236,7 +239,6 @@ export const reportFields = [
 		displayName: 'Options',
 		name: 'options',
 		type: 'collection',
-		required: false,
 		default: {},
 		placeholder: 'Add Field',
 		displayOptions: {
@@ -269,7 +271,6 @@ export const reportFields = [
 						value: 'pdf',
 					},
 				],
-				required: false,
 			},
 		],
 	},
@@ -277,7 +278,6 @@ export const reportFields = [
 		displayName: 'Options',
 		name: 'options',
 		type: 'collection',
-		required: false,
 		default: {},
 		placeholder: 'Add Field',
 		displayOptions: {
@@ -302,7 +302,6 @@ export const reportFields = [
 					multipleValues: true,
 				},
 				default: [],
-				required: false,
 			},
 			{
 				displayName: 'Format',
@@ -319,7 +318,6 @@ export const reportFields = [
 						value: 'pdf',
 					},
 				],
-				required: false,
 			},
 			{
 				displayName: 'IPs',
@@ -329,7 +327,6 @@ export const reportFields = [
 					multipleValues: true,
 				},
 				default: [],
-				required: false,
 			},
 			{
 				displayName: 'Subdomains',
@@ -339,7 +336,6 @@ export const reportFields = [
 					multipleValues: true,
 				},
 				default: [],
-				required: false,
 			},
 
 		],
@@ -378,6 +374,6 @@ export const reportFields = [
 				],
 			},
 		},
-		description: 'Name of the binary property to which to write the data of the read file.',
+		description: 'Name of the binary property to which to write the data of the read file',
 	},
-] as INodeProperties[];
+];

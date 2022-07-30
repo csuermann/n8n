@@ -6,29 +6,33 @@ import {
 	vendorAdditionalFieldsOptions,
 } from './VendorAdditionalFieldsOptions';
 
-export const vendorOperations = [
+export const vendorOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		default: 'get',
-		description: 'Operation to perform',
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
+				action: 'Create a vendor',
 			},
 			{
 				name: 'Get',
 				value: 'get',
+				action: 'Get a vendor',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
+				action: 'Get all vendors',
 			},
 			{
 				name: 'Update',
 				value: 'update',
+				action: 'Update a vendor',
 			},
 		],
 		displayOptions: {
@@ -39,9 +43,9 @@ export const vendorOperations = [
 			},
 		},
 	},
-] as INodeProperties[];
+];
 
-export const vendorFields = [
+export const vendorFields: INodeProperties[] = [
 	// ----------------------------------
 	//         vendor: create
 	// ----------------------------------
@@ -51,7 +55,7 @@ export const vendorFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The display name of the vendor to create.',
+		description: 'The display name of the vendor to create',
 		displayOptions: {
 			show: {
 				resource: [
@@ -91,7 +95,7 @@ export const vendorFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The ID of the vendor to retrieve.',
+		description: 'The ID of the vendor to retrieve',
 		displayOptions: {
 			show: {
 				resource: [
@@ -112,7 +116,7 @@ export const vendorFields = [
 		name: 'returnAll',
 		type: 'boolean',
 		default: false,
-		description: 'Return all results.',
+		description: 'Whether to return all results or only up to a given limit',
 		displayOptions: {
 			show: {
 				resource: [
@@ -128,8 +132,8 @@ export const vendorFields = [
 		displayName: 'Limit',
 		name: 'limit',
 		type: 'number',
-		default: 5,
-		description: 'The number of results to return.',
+		default: 50,
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 			maxValue: 1000,
@@ -188,7 +192,7 @@ export const vendorFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The ID of the vendor to update.',
+		description: 'The ID of the vendor to update',
 		displayOptions: {
 			show: {
 				resource: [
@@ -219,4 +223,4 @@ export const vendorFields = [
 		},
 		options: vendorAdditionalFieldsOptions,
 	},
-] as INodeProperties[];
+];

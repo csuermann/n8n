@@ -6,13 +6,17 @@ import {
 	blocks,
 } from './Blocks';
 
-export const pageOperations = [
+export const pageOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
+				version: [
+					1,
+				],
 				resource: [
 					'page',
 				],
@@ -23,30 +27,113 @@ export const pageOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a page',
+				action: 'Create a page',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a page',
+				action: 'Get a page',
 			},
 			{
 				name: 'Search',
 				value: 'search',
 				description: 'Text search of pages',
+				action: 'Search a page',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				version: [
+					2,
+				],
+				resource: [
+					'page',
+				],
+			},
+		},
+		options: [
+			{
+				name: 'Archive',
+				value: 'archive',
+				description: 'Archive a page',
+				action: 'Archive a page',
+			},
+			{
+				name: 'Create',
+				value: 'create',
+				description: 'Create a page',
+				action: 'Create a page',
+			},
+			{
+				name: 'Search',
+				value: 'search',
+				description: 'Text search of pages',
+				action: 'Search a page',
+			},
+		],
+		default: 'create',
+	},
+];
 
 export const pageFields = [
 
 	/* -------------------------------------------------------------------------- */
+	/*                                page:archive                                */
+	/* -------------------------------------------------------------------------- */
+	{
+		displayName: 'Page Link or ID',
+		name: 'pageId',
+		type: 'string',
+		default: '',
+		required: true,
+		displayOptions: {
+			show: {
+				version: [
+					2,
+				],
+				resource: [
+					'page',
+				],
+				operation: [
+					'archive',
+				],
+			},
+		},
+		description: 'The Page URL from Notion\'s \'copy link\' functionality (or just the ID contained within the URL)',
+	},
+	{
+		displayName: 'Simplify',
+		name: 'simple',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				version: [
+					2,
+				],
+				resource: [
+					'page',
+				],
+				operation: [
+					'archive',
+				],
+			},
+		},
+		default: true,
+		description: 'Whether to return a simplified version of the response instead of the raw data',
+	},
+	/* -------------------------------------------------------------------------- */
 	/*                                page:create                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Parent Page ID',
+		displayName: 'Parent Page ID or Link',
 		name: 'pageId',
 		type: 'string',
 		default: '',
@@ -61,7 +148,7 @@ export const pageFields = [
 				],
 			},
 		},
-		description: 'The ID of the parent page that this child page belongs to.',
+		description: 'The URL from Notion\'s \'copy link\' functionality (or just the ID contained within the URL)',
 	},
 	{
 		displayName: 'Title',
@@ -82,7 +169,7 @@ export const pageFields = [
 		description: 'Page title. Appears at the top of the page and can be found via Quick Find.',
 	},
 	{
-		displayName: 'Simple',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -96,20 +183,23 @@ export const pageFields = [
 			},
 		},
 		default: true,
-		description: 'When set to true a simplify version of the response will be used else the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	...blocks('page', 'create'),
 	/* -------------------------------------------------------------------------- */
 	/*                                page:get                                    */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Page ID',
+		displayName: 'Page Link or ID',
 		name: 'pageId',
 		type: 'string',
 		default: '',
 		required: true,
 		displayOptions: {
 			show: {
+				version: [
+					1,
+				],
 				resource: [
 					'page',
 				],
@@ -118,13 +208,17 @@ export const pageFields = [
 				],
 			},
 		},
+		description: 'The Page URL from Notion\'s \'copy link\' functionality (or just the ID contained within the URL)',
 	},
 	{
-		displayName: 'Simple',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
 			show: {
+				version: [
+					1,
+				],
 				resource: [
 					'page',
 				],
@@ -134,7 +228,7 @@ export const pageFields = [
 			},
 		},
 		default: true,
-		description: 'When set to true a simplify version of the response will be used else the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	/* -------------------------------------------------------------------------- */
 	/*                                page:search                                  */
@@ -154,7 +248,7 @@ export const pageFields = [
 				],
 			},
 		},
-		description: 'The text to search for.',
+		description: 'The text to search for',
 	},
 	{
 		displayName: 'Return All',
@@ -171,7 +265,7 @@ export const pageFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -195,10 +289,10 @@ export const pageFields = [
 			maxValue: 100,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
-		displayName: 'Simple',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -212,7 +306,7 @@ export const pageFields = [
 			},
 		},
 		default: true,
-		description: 'When set to true a simplify version of the response will be used else the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	{
 		displayName: 'Options',
@@ -256,7 +350,7 @@ export const pageFields = [
 									},
 								],
 								default: 'object',
-								description: 'The name of the property to filter by.',
+								description: 'The name of the property to filter by',
 							},
 							{
 								displayName: 'Value',
@@ -273,7 +367,7 @@ export const pageFields = [
 									},
 								],
 								default: '',
-								description: 'The value of the property to filter by.',
+								description: 'The value of the property to filter by',
 							},
 						],
 					},
@@ -307,8 +401,8 @@ export const pageFields = [
 										value: 'descending',
 									},
 								],
-								default: '',
-								description: 'The direction to sort.',
+								default: 'descending',
+								description: 'The direction to sort',
 							},
 							{
 								displayName: 'Timestamp',
@@ -321,7 +415,7 @@ export const pageFields = [
 									},
 								],
 								default: 'last_edited_time',
-								description: `The name of the timestamp to sort against.`,
+								description: 'The name of the timestamp to sort against',
 							},
 						],
 					},

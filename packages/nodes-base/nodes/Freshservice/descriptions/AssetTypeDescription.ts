@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const assetTypeOperations = [
+export const assetTypeOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const assetTypeOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create an asset type',
+				action: 'Create an asset type',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete an asset type',
+				action: 'Delete an asset type',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve an asset type',
+				action: 'Get an asset type',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all asset types',
+				action: 'Get all asset types',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update an asset type',
+				action: 'Update an asset type',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const assetTypeFields = [
+export const assetTypeFields: INodeProperties[] = [
 	// ----------------------------------------
 	//            assetType: create
 	// ----------------------------------------
@@ -90,15 +96,13 @@ export const assetTypeFields = [
 				default: '',
 			},
 			{
-				displayName: 'Parent Asset Type Name/ID',
+				displayName: 'Parent Asset Type Name or ID',
 				name: 'parent_asset_type_id',
-				description: 'Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				type: 'options',
 				default: '',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getAssetTypes',
-					],
+					loadOptionsMethod: 'getAssetTypes',
 				},
 			},
 		],
@@ -173,7 +177,7 @@ export const assetTypeFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -244,4 +248,4 @@ export const assetTypeFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

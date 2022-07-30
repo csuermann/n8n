@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const identifyOperations = [
+export const identifyOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,14 +20,14 @@ export const identifyOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create an identity',
+				action: 'Create an identity',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const identifyFields = [
+export const identifyFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                identify:create                             */
@@ -46,7 +47,6 @@ export const identifyFields = [
 				],
 			},
 		},
-		required: false,
 	},
 	{
 		displayName: 'Traits',
@@ -77,14 +77,12 @@ export const identifyFields = [
 						name: 'key',
 						type: 'string',
 						default: '',
-						description: '',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: '',
 					},
 				],
 			},
@@ -118,7 +116,7 @@ export const identifyFields = [
 						displayName: 'Active',
 						name: 'active',
 						type: 'boolean',
-						default: '',
+						default: false,
 						description: 'Whether a user is active',
 					},
 					{
@@ -126,21 +124,21 @@ export const identifyFields = [
 						name: 'ip',
 						type: 'string',
 						default: '',
-						description: 'Current user’s IP address.',
+						description: 'Current user’s IP address',
 					},
 					{
 						displayName: 'Locale',
 						name: 'locate',
 						type: 'string',
 						default: '',
-						description: 'Locale string for the current user, for example en-US.',
+						description: 'Locale string for the current user, for example en-US',
 					},
 					{
 						displayName: 'Page',
 						name: 'page',
 						type: 'string',
 						default: '',
-						description: 'Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and url',
+						description: 'Dictionary of information about the current page in the browser, containing hash, path, referrer, search, title and URL',
 					},
 					{
 						displayName: 'Timezone',
@@ -331,4 +329,4 @@ export const identifyFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

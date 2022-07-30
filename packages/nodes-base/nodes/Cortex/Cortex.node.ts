@@ -1,5 +1,4 @@
 import {
-	BINARY_ENCODING,
 	IExecuteFunctions,
 } from 'n8n-core';
 
@@ -56,12 +55,11 @@ export class Cortex implements INodeType {
 		name: 'cortex',
 		icon: 'file:cortex.svg',
 		group: ['transform'],
-		subtitle: '={{$parameter["resource"]+ ": " + $parameter["operation"]}}',
+		subtitle: '={{$parameter["operation"]+ ": " + $parameter["resource"]}}',
 		version: 1,
 		description: 'Apply the Cortex analyzer/responder on the given entity',
 		defaults: {
 			name: 'Cortex',
-			color: '#54c4c3',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -78,6 +76,7 @@ export class Cortex implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Analyzer',
@@ -113,7 +112,7 @@ export class Cortex implements INodeType {
 				const requestResult = await cortexApiRequest.call(
 					this,
 					'POST',
-					`/analyzer/_search`,
+					`/analyzer/_search?range=all`,
 				);
 
 				const returnData: INodePropertyOptions[] = [];
@@ -197,7 +196,7 @@ export class Cortex implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = (items.length as unknown) as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;
@@ -234,16 +233,16 @@ export class Cortex implements INodeType {
 							const item = items[i];
 
 							if (item.binary === undefined) {
-								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 							}
 
 							const binaryPropertyName = this.getNodeParameter('binaryPropertyName', i) as string;
 
 							if (item.binary[binaryPropertyName] === undefined) {
-								throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`);
+								throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`, { itemIndex: i });
 							}
 
-							const fileBufferData = Buffer.from(item.binary[binaryPropertyName].data, BINARY_ENCODING);
+							const fileBufferData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 
 							const options = {
 								formData: {
@@ -389,13 +388,13 @@ export class Cortex implements INodeType {
 												const item = items[i];
 
 												if (item.binary === undefined) {
-													throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+													throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 												}
 
 												const binaryPropertyName = artifactvalue.binaryProperty as string;
 
 												if (item.binary[binaryPropertyName] === undefined) {
-													throw new NodeOperationError(this.getNode(), `No binary data property '${binaryPropertyName}' does not exists on item!`);
+													throw new NodeOperationError(this.getNode(), `No binary data property '${binaryPropertyName}' does not exists on item!`, { itemIndex: i });
 												}
 
 												const binaryData = item.binary[binaryPropertyName] as IBinaryData;
@@ -418,15 +417,15 @@ export class Cortex implements INodeType {
 									const item = items[i];
 
 									if (item.binary === undefined) {
-										throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+										throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 									}
 
 									const binaryPropertyName = (body.data as IDataObject).binaryPropertyName as string;
 									if (item.binary[binaryPropertyName] === undefined) {
-										throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`);
+										throw new NodeOperationError(this.getNode(), `No binary data property "${binaryPropertyName}" does not exists on item!`, { itemIndex: i });
 									}
 
-									const fileBufferData = Buffer.from(item.binary[binaryPropertyName].data, BINARY_ENCODING);
+									const fileBufferData = await this.helpers.getBinaryDataBuffer(i, binaryPropertyName);
 									const sha256 = createHash('sha256').update(fileBufferData).digest('hex');
 
 									(body.data as IDataObject).attachment = {

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const departmentOperations = [
+export const departmentOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const departmentOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a department',
+				action: 'Create a department',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a department',
+				action: 'Delete a department',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a department',
+				action: 'Get a department',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all departments',
+				action: 'Get all departments',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a department',
+				action: 'Update a department',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const departmentFields = [
+export const departmentFields: INodeProperties[] = [
 	// ----------------------------------------
 	//            department: create
 	// ----------------------------------------
@@ -168,7 +174,7 @@ export const departmentFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -272,4 +278,4 @@ export const departmentFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

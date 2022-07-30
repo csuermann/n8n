@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const agentRoleOperations = [
+export const agentRoleOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,18 +20,20 @@ export const agentRoleOperations = [
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve an agent role',
+				action: 'Get an agent role',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all agent roles',
+				action: 'Get all agent roles',
 			},
 		],
 		default: 'get',
 	},
-] as INodeProperties[];
+];
 
-export const agentRoleFields = [
+export const agentRoleFields: INodeProperties[] = [
 	// ----------------------------------------
 	//              agentRole: get
 	// ----------------------------------------
@@ -78,7 +81,7 @@ export const agentRoleFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -96,4 +99,4 @@ export const agentRoleFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

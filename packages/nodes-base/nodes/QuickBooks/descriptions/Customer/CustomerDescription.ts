@@ -6,29 +6,33 @@ import {
 	customerAdditionalFieldsOptions,
 } from './CustomerAdditionalFieldsOptions';
 
-export const customerOperations = [
+export const customerOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		default: 'get',
-		description: 'Operation to perform',
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
+				action: 'Create a customer',
 			},
 			{
 				name: 'Get',
 				value: 'get',
+				action: 'Get a customer',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
+				action: 'Get all customers',
 			},
 			{
 				name: 'Update',
 				value: 'update',
+				action: 'Update a customer',
 			},
 		],
 		displayOptions: {
@@ -39,9 +43,9 @@ export const customerOperations = [
 			},
 		},
 	},
-] as INodeProperties[];
+];
 
-export const customerFields = [
+export const customerFields: INodeProperties[] = [
 	// ----------------------------------
 	//         customer: create
 	// ----------------------------------
@@ -51,7 +55,7 @@ export const customerFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The display name of the customer to create.',
+		description: 'The display name of the customer to create',
 		displayOptions: {
 			show: {
 				resource: [
@@ -91,7 +95,7 @@ export const customerFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The ID of the customer to retrieve.',
+		description: 'The ID of the customer to retrieve',
 		displayOptions: {
 			show: {
 				resource: [
@@ -112,7 +116,7 @@ export const customerFields = [
 		name: 'returnAll',
 		type: 'boolean',
 		default: false,
-		description: 'Return all results.',
+		description: 'Whether to return all results or only up to a given limit',
 		displayOptions: {
 			show: {
 				resource: [
@@ -128,8 +132,8 @@ export const customerFields = [
 		displayName: 'Limit',
 		name: 'limit',
 		type: 'number',
-		default: 5,
-		description: 'The number of results to return.',
+		default: 50,
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 			maxValue: 1000,
@@ -188,7 +192,7 @@ export const customerFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The ID of the customer to update.',
+		description: 'The ID of the customer to update',
 		displayOptions: {
 			show: {
 				resource: [
@@ -219,4 +223,4 @@ export const customerFields = [
 		},
 		options: customerAdditionalFieldsOptions,
 	},
-] as INodeProperties[];
+];

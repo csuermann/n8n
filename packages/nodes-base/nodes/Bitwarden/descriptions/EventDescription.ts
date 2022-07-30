@@ -2,17 +2,18 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const eventOperations = [
+export const eventOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		default: 'get',
-		description: 'Operation to perform',
 		options: [
 			{
 				name: 'Get All',
 				value: 'getAll',
+				action: 'Get all events',
 			},
 		],
 		displayOptions: {
@@ -23,10 +24,10 @@ export const eventOperations = [
 			},
 		},
 	},
-] as INodeProperties[];
+];
 
 
-export const eventFields = [
+export const eventFields: INodeProperties[] = [
 	// ----------------------------------
 	//       event: getAll
 	// ----------------------------------
@@ -35,7 +36,7 @@ export const eventFields = [
 		name: 'returnAll',
 		type: 'boolean',
 		default: false,
-		description: 'Return all available results for the query.',
+		description: 'Whether to return all results or only up to a given limit',
 		displayOptions: {
 			show: {
 				resource: [
@@ -51,8 +52,11 @@ export const eventFields = [
 		displayName: 'Limit',
 		name: 'limit',
 		type: 'number',
+		typeOptions: {
+			minValue: 1,
+		},
 		default: 10,
-		description: 'Number of results to return for the query.',
+		description: 'Max number of results to return',
 		displayOptions: {
 			show: {
 				resource: [
@@ -79,7 +83,7 @@ export const eventFields = [
 				name: 'actingUserId',
 				type: 'string',
 				default: '',
-				description: 'The unique identifier of the acting user.',
+				description: 'The unique identifier of the acting user',
 				placeholder: '4a59c8c7-e05a-4d17-8e85-acc301343926',
 			},
 			{
@@ -87,14 +91,14 @@ export const eventFields = [
 				name: 'end',
 				type: 'dateTime',
 				default: '',
-				description: 'The end date for the search.',
+				description: 'The end date for the search',
 			},
 			{
 				displayName: 'Item ID',
 				name: 'itemID',
 				type: 'string',
 				default: '',
-				description: 'The unique identifier of the item that the event describes.',
+				description: 'The unique identifier of the item that the event describes',
 				placeholder: '5e59c8c7-e05a-4d17-8e85-acc301343926',
 			},
 			{
@@ -102,7 +106,7 @@ export const eventFields = [
 				name: 'start',
 				type: 'dateTime',
 				default: '',
-				description: 'The start date for the search.',
+				description: 'The start date for the search',
 			},
 		],
 		displayOptions: {
@@ -116,4 +120,4 @@ export const eventFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

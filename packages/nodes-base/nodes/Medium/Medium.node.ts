@@ -21,13 +21,13 @@ export class Medium implements INodeType {
 		displayName: 'Medium',
 		name: 'medium',
 		group: ['output'],
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:medium.png',
 		version: 1,
 		description: 'Consume Medium API',
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		defaults: {
 			name: 'Medium',
-			color: '#000000',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -71,12 +71,12 @@ export class Medium implements INodeType {
 					},
 				],
 				default: 'accessToken',
-				description: 'The method of authentication.',
 			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Post',
@@ -88,12 +88,12 @@ export class Medium implements INodeType {
 					},
 				],
 				default: 'post',
-				description: 'Resource to operate on.',
 			},
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: [
@@ -106,10 +106,10 @@ export class Medium implements INodeType {
 						name: 'Create',
 						value: 'create',
 						description: 'Create a post',
+						action: 'Create a post',
 					},
 				],
 				default: 'create',
-				description: 'The operation to perform.',
 			},
 
 			// ----------------------------------
@@ -130,10 +130,10 @@ export class Medium implements INodeType {
 					},
 				},
 				default: false,
-				description: 'Are you posting for a publication?',
+				description: 'Whether you are posting for a publication',
 			},
 			{
-				displayName: 'Publication ID',
+				displayName: 'Publication Name or ID',
 				name: 'publicationId',
 				type: 'options',
 				displayOptions: {
@@ -153,7 +153,7 @@ export class Medium implements INodeType {
 					loadOptionsMethod: 'getPublications',
 				},
 				default: '',
-				description: 'Publication ids',
+				description: 'Publication IDs. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Title',
@@ -172,7 +172,7 @@ export class Medium implements INodeType {
 						],
 					},
 				},
-				description: 'Title of the post. Max Length : 100 characters',
+				description: 'Title of the post. Max Length : 100 characters.',
 			},
 			{
 				displayName: 'Content Format',
@@ -200,7 +200,7 @@ export class Medium implements INodeType {
 						value: 'markdown',
 					},
 				],
-				description: 'The format of the content to be posted.',
+				description: 'The format of the content to be posted',
 			},
 			{
 				displayName: 'Content',
@@ -222,7 +222,7 @@ export class Medium implements INodeType {
 						],
 					},
 				},
-				description: 'The body of the post, in a valid semantic HTML fragment, or Markdown.',
+				description: 'The body of the post, in a valid semantic HTML fragment, or Markdown',
 			},
 			{
 				displayName: 'Additional Fields',
@@ -246,7 +246,7 @@ export class Medium implements INodeType {
 						name: 'canonicalUrl',
 						type: 'string',
 						default: '',
-						description: 'The original home of this content, if it was originally published elsewhere.',
+						description: 'The original home of this content, if it was originally published elsewhere',
 					},
 					{
 						displayName: 'License',
@@ -291,14 +291,14 @@ export class Medium implements INodeType {
 								value: 'public-domain',
 							},
 						],
-						description: 'License of the post.',
+						description: 'License of the post',
 					},
 					{
 						displayName: 'Notify Followers',
 						name: 'notifyFollowers',
 						type: 'boolean',
 						default: false,
-						description: 'Whether to notify followers that the user has published.',
+						description: 'Whether to notify followers that the user has published',
 					},
 					{
 						displayName: 'Publish Status',
@@ -319,7 +319,7 @@ export class Medium implements INodeType {
 								value: 'unlisted',
 							},
 						],
-						description: 'The status of the post.',
+						description: 'The status of the post',
 					},
 					{
 						displayName: 'Tags',
@@ -335,6 +335,7 @@ export class Medium implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				displayOptions: {
 					show: {
 						resource: [
@@ -347,10 +348,10 @@ export class Medium implements INodeType {
 						name: 'Get All',
 						value: 'getAll',
 						description: 'Get all publications',
+						action: 'Get all publications',
 					},
 				],
 				default: 'publication',
-				description: 'The operation to perform.',
 			},
 			// ----------------------------------
 			//         publication:getAll
@@ -370,7 +371,7 @@ export class Medium implements INodeType {
 					},
 				},
 				default: false,
-				description: 'If all results should be returned or only up to a given limit.',
+				description: 'Whether to return all results or only up to a given limit',
 			},
 			{
 				displayName: 'Limit',
@@ -394,7 +395,7 @@ export class Medium implements INodeType {
 					maxValue: 200,
 				},
 				default: 100,
-				description: 'How many results to return.',
+				description: 'Max number of results to return',
 			},
 		],
 	};
@@ -477,13 +478,13 @@ export class Medium implements INodeType {
 							bodyRequest.tags = tags.split(',').map(name => {
 								const returnValue = name.trim();
 								if (returnValue.length > 25) {
-									throw new NodeOperationError(this.getNode(), `The tag "${returnValue}" is to long. Maximum lenght of a tag is 25 characters.`);
+									throw new NodeOperationError(this.getNode(), `The tag "${returnValue}" is to long. Maximum lenght of a tag is 25 characters.`, { itemIndex: i });
 								}
 								return returnValue;
 							});
 
 							if ((bodyRequest.tags as string[]).length > 5) {
-								throw new NodeOperationError(this.getNode(), 'To many tags got used. Maximum 5 can be set.');
+								throw new NodeOperationError(this.getNode(), 'To many tags got used. Maximum 5 can be set.', { itemIndex: i });
 							}
 						}
 

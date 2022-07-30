@@ -16,10 +16,11 @@ import {
 	simplifyObjects,
 } from './GenericFunctions';
 
-import * as moment from 'moment';
+import moment from 'moment';
 
 export class NotionTrigger implements INodeType {
 	description: INodeTypeDescription = {
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-display-name-unsuffixed-trigger-node
 		displayName: 'Notion Trigger (Beta)',
 		name: 'notionTrigger',
 		icon: 'file:notion.svg',
@@ -29,7 +30,6 @@ export class NotionTrigger implements INodeType {
 		subtitle: '={{$parameter["event"]}}',
 		defaults: {
 			name: 'Notion Trigger',
-			color: '#000000',
 		},
 		credentials: [
 			{
@@ -50,16 +50,22 @@ export class NotionTrigger implements INodeType {
 						name: 'Page Added to Database',
 						value: 'pageAddedToDatabase',
 					},
-					// {
-					// 	name: 'Record Updated',
-					// 	value: 'recordUpdated',
-					// },
+					{
+						name: 'Page Updated in Database',
+						value: 'pagedUpdatedInDatabase',
+					},
 				],
 				required: true,
 				default: '',
 			},
 			{
-				displayName: 'Database',
+				displayName: 'In Notion, make sure you share your database with your integration. Otherwise it won\'t be accessible, or listed here.',
+				name: 'notionNotice',
+				type: 'notice',
+				default: '',
+			},
+			{
+				displayName: 'Database Name or ID',
 				name: 'databaseId',
 				type: 'options',
 				typeOptions: {
@@ -69,26 +75,28 @@ export class NotionTrigger implements INodeType {
 					show: {
 						event: [
 							'pageAddedToDatabase',
+							'pagedUpdatedInDatabase',
 						],
 					},
 				},
 				default: '',
 				required: true,
-				description: 'The ID of this database.',
+				description: 'The ID of this database. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
-				displayName: 'Simple',
+				displayName: 'Simplify',
 				name: 'simple',
 				type: 'boolean',
 				displayOptions: {
 					show: {
 						event: [
 							'pageAddedToDatabase',
+							'pagedUpdatedInDatabase',
 						],
 					},
 				},
 				default: true,
-				description: 'When set to true a simplify version of the response will be used else the raw data.',
+				description: 'Whether to return a simplified version of the response instead of the raw data',
 			},
 		],
 	};
@@ -149,7 +157,7 @@ export class NotionTrigger implements INodeType {
 
 		if (this.getMode() === 'manual') {
 			if (simple === true) {
-				data = simplifyObjects(data);
+				data = simplifyObjects(data, false, 1);
 			}
 			if (Array.isArray(data) && data.length) {
 				return [this.helpers.returnJsonArray(data)];
@@ -173,7 +181,7 @@ export class NotionTrigger implements INodeType {
 			}
 
 			if (simple === true) {
-				records = simplifyObjects(records);
+				records = simplifyObjects(records, false, 1);
 			}
 
 			webhookData.lastRecordProccesed = data[0].id;

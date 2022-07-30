@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const mediaOperations = [
+export const mediaOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,20 +20,20 @@ export const mediaOperations = [
 				name: 'Upload',
 				value: 'upload',
 				description: 'Send media to a chat room',
+				action: 'Upload media to a chatroom',
 			},
 		],
 		default: 'upload',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const mediaFields = [
+export const mediaFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                               media:upload                                 */
 	/* -------------------------------------------------------------------------- */
 	{
-		displayName: 'Room ID',
+		displayName: 'Room Name or ID',
 		name: 'roomId',
 		type: 'options',
 		typeOptions: {
@@ -49,7 +50,7 @@ export const mediaFields = [
 				],
 			},
 		},
-		description: 'Room ID to post ',
+		description: 'Room ID to post. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		required: true,
 	},
 	{
@@ -70,7 +71,7 @@ export const mediaFields = [
 		},
 	},
 	{
-		displayName: 'Media type',
+		displayName: 'Media Type',
 		name: 'mediaType',
 		type: 'options',
 		default: 'image',
@@ -100,4 +101,4 @@ export const mediaFields = [
 		placeholder: 'mxc://matrix.org/uploaded-media-uri',
 		required: true,
 	},
-] as INodeProperties[];
+];

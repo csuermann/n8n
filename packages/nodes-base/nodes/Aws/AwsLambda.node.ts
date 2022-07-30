@@ -6,6 +6,7 @@ import {
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
+	JsonObject,
 	NodeApiError,
 	NodeOperationError,
 } from 'n8n-workflow';
@@ -23,7 +24,6 @@ export class AwsLambda implements INodeType {
 		description: 'Invoke functions on AWS Lambda',
 		defaults: {
 			name: 'AWS Lambda',
-			color: '#FF9900',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -38,18 +38,19 @@ export class AwsLambda implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Invoke',
 						value: 'invoke',
 						description: 'Invoke a function',
+						action: 'Invoke a function',
 					},
 				],
 				default: 'invoke',
-				description: 'The operation to perform.',
 			},
 			{
-				displayName: 'Function',
+				displayName: 'Function Name or ID',
 				name: 'function',
 				type: 'options',
 				typeOptions: {
@@ -65,7 +66,7 @@ export class AwsLambda implements INodeType {
 				options: [],
 				default: '',
 				required: true,
-				description: 'The function you want to invoke',
+				description: 'The function you want to invoke. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Qualifier',
@@ -88,12 +89,12 @@ export class AwsLambda implements INodeType {
 				type: 'options',
 				options: [
 					{
-						name: 'Wait for results',
+						name: 'Wait for Results',
 						value: 'RequestResponse',
 						description: 'Invoke the function synchronously and wait for the response',
 					},
 					{
-						name: 'Continue workflow',
+						name: 'Continue Workflow',
 						value: 'Event',
 						description: 'Invoke the function and immediately continue the workflow',
 					},
@@ -192,7 +193,7 @@ export class AwsLambda implements INodeType {
 					},
 				);
 
-				if (responseData !== null && responseData.errorMessage !== undefined) {
+				if (responseData !== null && responseData?.errorMessage !== undefined) {
 					let errorMessage = responseData.errorMessage;
 
 					if (responseData.stackTrace) {
@@ -207,7 +208,7 @@ export class AwsLambda implements INodeType {
 				}
 			} catch (error) {
 				if (this.continueOnFail()) {
-					returnData.push({ error: error.message });
+					returnData.push({ error: (error as JsonObject).message });
 					continue;
 				}
 				throw error;

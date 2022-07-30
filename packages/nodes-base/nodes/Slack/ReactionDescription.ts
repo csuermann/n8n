@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const reactionOperations = [
+export const reactionOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,26 +18,28 @@ export const reactionOperations = [
 				name: 'Add',
 				value: 'add',
 				description: 'Adds a reaction to a message',
+				action: 'Add a reaction',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get the reactions of a message',
+				action: 'Get a reaction',
 			},
 			{
 				name: 'Remove',
 				value: 'remove',
 				description: 'Remove a reaction of a message',
+				action: 'Remove a reaction',
 			},
 		],
 		default: 'add',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const reactionFields = [
+export const reactionFields: INodeProperties[] = [
 	{
-		displayName: 'Channel',
+		displayName: 'Channel Name or ID',
 		name: 'channelId',
 		type: 'options',
 		typeOptions: {
@@ -56,7 +59,7 @@ export const reactionFields = [
 				],
 			},
 		},
-		description: 'Channel containing the message.',
+		description: 'Channel containing the message. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 	},
 	{
 		displayName: 'Emoji',
@@ -75,7 +78,7 @@ export const reactionFields = [
 				],
 			},
 		},
-		description: 'Name of emoji.',
+		description: 'Name of emoji',
 		placeholder: '+1',
 	},
 	{
@@ -96,6 +99,6 @@ export const reactionFields = [
 				],
 			},
 		},
-		description: `Timestamp of the message.`,
+		description: 'Timestamp of the message',
 	},
-] as INodeProperties[];
+];

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const reminderOperations = [
+export const reminderOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const reminderOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a reminder',
+				action: 'Create a reminder',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a reminder',
+				action: 'Delete a reminder',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a reminder',
+				action: 'Get a reminder',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all reminders',
+				action: 'Get all reminders',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a reminder',
+				action: 'Update a reminder',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const reminderFields = [
+export const reminderFields: INodeProperties[] = [
 	// ----------------------------------------
 	//             reminder: create
 	// ----------------------------------------
@@ -259,7 +265,7 @@ export const reminderFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -391,4 +397,4 @@ export const reminderFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

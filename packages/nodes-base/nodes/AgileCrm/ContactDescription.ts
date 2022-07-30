@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const contactOperations = [
+export const contactOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,34 +20,38 @@ export const contactOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new contact',
+				action: 'Create a contact',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a contact',
+				action: 'Delete a contact',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a contact',
+				action: 'Get a contact',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all contacts',
+				action: 'Get all contacts',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update contact properties',
+				action: 'Update a contact',
 			},
 		],
 		default: 'get',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const contactFields = [
+export const contactFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
 	/*                                  contact:get                               */
 	/* -------------------------------------------------------------------------- */
@@ -87,12 +92,15 @@ export const contactFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
 		name: 'limit',
 		type: 'number',
+		typeOptions: {
+			minValue: 1,
+		},
 		displayOptions: {
 			show: {
 				resource: [
@@ -107,7 +115,7 @@ export const contactFields = [
 			},
 		},
 		default: 20,
-		description: 'Number of results to fetch.',
+		description: 'Max number of results to return',
 	},
 
 	{
@@ -146,7 +154,7 @@ export const contactFields = [
 		type: 'options',
 		options: [
 			{
-				name: 'Any filter',
+				name: 'Any Filter',
 				value: 'anyFilter',
 			},
 			{
@@ -170,7 +178,7 @@ export const contactFields = [
 		default: 'anyFilter',
 	},
 	{
-		displayName: 'Simplify Response',
+		displayName: 'Simplify',
 		name: 'simple',
 		type: 'boolean',
 		displayOptions: {
@@ -183,8 +191,9 @@ export const contactFields = [
 				],
 			},
 		},
+		// eslint-disable-next-line n8n-nodes-base/node-param-default-wrong-for-simplify
 		default: false,
-		description: 'Return a simplified version of the response instead of the raw data.',
+		description: 'Whether to return a simplified version of the response instead of the raw data',
 	},
 	{
 		displayName: 'Filters',
@@ -206,7 +215,7 @@ export const contactFields = [
 				],
 			},
 		},
-		default: '',
+		default: {},
 		placeholder: 'Add Condition',
 		options: [
 			{
@@ -218,7 +227,7 @@ export const contactFields = [
 						name: 'field',
 						type: 'string',
 						default: '',
-						description: 'Any searchable field.',
+						description: 'Any searchable field',
 					},
 					{
 						displayName: 'Condition Type',
@@ -226,32 +235,32 @@ export const contactFields = [
 						type: 'options',
 						options: [
 							{
-								name: 'Equals',
-								value: 'EQUALS',
-							},
-							{
-								name: 'Not Equal',
-								value: 'NOTEQUALS',
-							},
-							{
-								name: 'Last',
-								value: 'LAST',
-							},
-							{
-								name: 'Between',
-								value: 'BETWEEN',
-							},
-							{
-								name: 'On',
-								value: 'ON',
+								name: 'After',
+								value: 'AFTER',
 							},
 							{
 								name: 'Before',
 								value: 'BEFORE',
 							},
 							{
-								name: 'After',
-								value: 'AFTER',
+								name: 'Between',
+								value: 'BETWEEN',
+							},
+							{
+								name: 'Equals',
+								value: 'EQUALS',
+							},
+							{
+								name: 'Last',
+								value: 'LAST',
+							},
+							{
+								name: 'Not Equal',
+								value: 'NOTEQUALS',
+							},
+							{
+								name: 'On',
+								value: 'ON',
 							},
 						],
 						default: 'EQUALS',
@@ -319,7 +328,6 @@ export const contactFields = [
 			},
 		},
 		default: '',
-		description: '',
 	},
 	{
 		displayName: 'Options',
@@ -371,7 +379,7 @@ export const contactFields = [
 								name: 'field',
 								type: 'string',
 								default: '',
-								description: `The sorting field`,
+								description: 'The sorting field',
 							},
 						],
 					},
@@ -389,7 +397,6 @@ export const contactFields = [
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -402,7 +409,7 @@ export const contactFields = [
 		},
 	},
 	{
-		displayName: ' Additional Fields',
+		displayName: 'Additional Fields',
 		name: 'additionalFieldsJson',
 		type: 'json',
 		typeOptions: {
@@ -423,7 +430,7 @@ export const contactFields = [
 			},
 		},
 
-		description: `Object of values to set as described <a href="https://github.com/agilecrm/rest-api#1-contacts---companies-api">here</a>.`,
+		description: 'Object of values to set as described <a href="https://github.com/agilecrm/rest-api#1-contacts---companies-api">here</a>',
 	},
 
 	{
@@ -450,7 +457,8 @@ export const contactFields = [
 				displayName: 'Address',
 				name: 'addressOptions',
 				type: 'fixedCollection',
-				description: 'Contacts address.',
+				default: {},
+				description: 'Contacts address',
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -465,7 +473,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of address.',
+								description: 'Type of address',
 								options: [
 									{
 										name: 'Home',
@@ -487,7 +495,7 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Full address.',
+								description: 'Full address',
 							},
 						],
 					},
@@ -498,13 +506,14 @@ export const contactFields = [
 				name: 'company',
 				type: 'string',
 				default: '',
-				description: 'Company Name.',
+				description: 'Company Name',
 			},
 			{
 				displayName: 'Email',
 				name: 'emailOptions',
 				type: 'fixedCollection',
-				description: 'Contact email.',
+				default: {},
+				description: 'Contact email',
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -535,9 +544,9 @@ export const contactFields = [
 								displayName: 'Email',
 								name: 'email',
 								type: 'string',
+								placeholder: 'name@email.com',
 								required: true,
 								default: '',
-								description: 'Email',
 							},
 						],
 					},
@@ -548,14 +557,14 @@ export const contactFields = [
 				name: 'firstName',
 				type: 'string',
 				default: '',
-				description: 'Contact first name.',
+				description: 'Contact first name',
 			},
 			{
 				displayName: 'Last Name',
 				name: 'lastName',
 				type: 'string',
 				default: '',
-				description: 'Contact last name.',
+				description: 'Contact last name',
 			},
 			{
 				displayName: 'Lead Score',
@@ -604,13 +613,14 @@ export const contactFields = [
 				displayName: 'Phone',
 				name: 'phoneOptions',
 				type: 'fixedCollection',
-				description: 'Contacts phone.',
+				default: {},
+				description: 'Contacts phone',
 				typeOptions: {
 					multipleValues: true,
 				},
 				options: [
 					{
-						displayName: 'Phone properties',
+						displayName: 'Phone Properties',
 						name: 'phoneProperties',
 						values: [
 							{
@@ -619,7 +629,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of phone number.',
+								description: 'Type of phone number',
 								options: [
 									{
 										name: 'Home',
@@ -642,12 +652,12 @@ export const contactFields = [
 										value: 'other',
 									},
 									{
-										name: 'Work Fax',
-										value: 'workFax',
-									},
-									{
 										name: 'Work',
 										value: 'work',
+									},
+									{
+										name: 'Work Fax',
+										value: 'workFax',
 									},
 								],
 							},
@@ -657,7 +667,7 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Phone number.',
+								description: 'Phone number',
 							},
 						],
 					},
@@ -679,19 +689,20 @@ export const contactFields = [
 				name: 'title',
 				type: 'string',
 				default: '',
-				description: 'Professional title.',
+				description: 'Professional title',
 			},
 			{
 				displayName: 'Website',
 				name: 'websiteOptions',
 				type: 'fixedCollection',
-				description: 'Contacts websites.',
+				default: {},
+				description: 'Contacts websites',
 				typeOptions: {
 					multipleValues: true,
 				},
 				options: [
 					{
-						displayName: 'Website properties.',
+						displayName: 'Website Properties.',
 						name: 'websiteProperties',
 						values: [
 							{
@@ -700,7 +711,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of website.',
+								description: 'Type of website',
 								options: [
 									{
 										name: 'Facebook',
@@ -764,7 +775,7 @@ export const contactFields = [
 				displayName: 'Custom Properties',
 				name: 'customProperties',
 				type: 'fixedCollection',
-				description: 'Custom Properties',
+				default: {},
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -779,21 +790,21 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Property name.',
+								description: 'Property name',
 							},
 							{
 								displayName: 'Sub Type',
 								name: 'subtype',
 								type: 'string',
 								default: '',
-								description: 'Property sub type.',
+								description: 'Property sub type',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Property value.',
+								description: 'Property value',
 							},
 						],
 					},
@@ -821,7 +832,7 @@ export const contactFields = [
 			},
 		},
 		default: '',
-		description: 'Id of contact to delete.',
+		description: 'ID of contact to delete',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -850,7 +861,6 @@ export const contactFields = [
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -863,7 +873,7 @@ export const contactFields = [
 		},
 	},
 	{
-		displayName: ' Additional Fields',
+		displayName: 'Additional Fields',
 		name: 'additionalFieldsJson',
 		type: 'json',
 		typeOptions: {
@@ -883,7 +893,7 @@ export const contactFields = [
 				],
 			},
 		},
-		description: `Object of values to set as described <a href="https://github.com/agilecrm/rest-api#1-contacts---companies-api">here</a>.`,
+		description: 'Object of values to set as described <a href="https://github.com/agilecrm/rest-api#1-contacts---companies-api">here</a>',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -909,7 +919,8 @@ export const contactFields = [
 				displayName: 'Address',
 				name: 'addressOptions',
 				type: 'fixedCollection',
-				description: 'Contacts address.',
+				default: {},
+				description: 'Contacts address',
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -924,7 +935,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of address.',
+								description: 'Type of address',
 								options: [
 									{
 										name: 'Home',
@@ -946,7 +957,7 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Full address.',
+								description: 'Full address',
 							},
 						],
 					},
@@ -957,13 +968,14 @@ export const contactFields = [
 				name: 'company',
 				type: 'string',
 				default: '',
-				description: 'Company Name.',
+				description: 'Company Name',
 			},
 			{
 				displayName: 'Email',
 				name: 'emailOptions',
 				type: 'fixedCollection',
-				description: 'Contact email.',
+				default: {},
+				description: 'Contact email',
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -994,9 +1006,9 @@ export const contactFields = [
 								displayName: 'Email',
 								name: 'email',
 								type: 'string',
+								placeholder: 'name@email.com',
 								required: true,
 								default: '',
-								description: 'Email',
 							},
 						],
 					},
@@ -1007,14 +1019,14 @@ export const contactFields = [
 				name: 'firstName',
 				type: 'string',
 				default: '',
-				description: 'Contact first name.',
+				description: 'Contact first name',
 			},
 			{
 				displayName: 'Last Name',
 				name: 'lastName',
 				type: 'string',
 				default: '',
-				description: 'Contact last name.',
+				description: 'Contact last name',
 			},
 			{
 				displayName: 'Lead Score',
@@ -1063,13 +1075,14 @@ export const contactFields = [
 				displayName: 'Phone',
 				name: 'phoneOptions',
 				type: 'fixedCollection',
-				description: 'Contacts phone.',
+				default: {},
+				description: 'Contacts phone',
 				typeOptions: {
 					multipleValues: true,
 				},
 				options: [
 					{
-						displayName: 'Phone properties',
+						displayName: 'Phone Properties',
 						name: 'phoneProperties',
 						values: [
 							{
@@ -1078,7 +1091,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of phone number.',
+								description: 'Type of phone number',
 								options: [
 									{
 										name: 'Home',
@@ -1101,12 +1114,12 @@ export const contactFields = [
 										value: 'other',
 									},
 									{
-										name: 'Work Fax',
-										value: 'workFax',
-									},
-									{
 										name: 'Work',
 										value: 'work',
+									},
+									{
+										name: 'Work Fax',
+										value: 'workFax',
 									},
 								],
 							},
@@ -1116,7 +1129,7 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Phone number.',
+								description: 'Phone number',
 							},
 						],
 					},
@@ -1138,19 +1151,20 @@ export const contactFields = [
 				name: 'title',
 				type: 'string',
 				default: '',
-				description: 'Professional title.',
+				description: 'Professional title',
 			},
 			{
 				displayName: 'Website',
 				name: 'websiteOptions',
 				type: 'fixedCollection',
-				description: 'Contacts websites.',
+				default: {},
+				description: 'Contacts websites',
 				typeOptions: {
 					multipleValues: true,
 				},
 				options: [
 					{
-						displayName: 'Website properties.',
+						displayName: 'Website Properties.',
 						name: 'websiteProperties',
 						values: [
 							{
@@ -1159,7 +1173,7 @@ export const contactFields = [
 								type: 'options',
 								required: true,
 								default: '',
-								description: 'Type of website.',
+								description: 'Type of website',
 								options: [
 									{
 										name: 'Facebook',
@@ -1223,7 +1237,7 @@ export const contactFields = [
 				displayName: 'Custom Properties',
 				name: 'customProperties',
 				type: 'fixedCollection',
-				description: 'Custom Properties',
+				default: {},
 				typeOptions: {
 					multipleValues: true,
 				},
@@ -1238,21 +1252,21 @@ export const contactFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Property name.',
+								description: 'Property name',
 							},
 							{
 								displayName: 'Sub Type',
 								name: 'subtype',
 								type: 'string',
 								default: '',
-								description: 'Property sub type.',
+								description: 'Property sub type',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Property value.',
+								description: 'Property value',
 							},
 						],
 					},
@@ -1261,4 +1275,4 @@ export const contactFields = [
 		],
 	},
 
-] as INodeProperties[];
+];

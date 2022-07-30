@@ -7,11 +7,11 @@ import {
 	ICredentialTestFunctions,
 	IDataObject,
 	ILoadOptionsFunctions,
+	INodeCredentialTestResult,
 	INodeExecutionData,
 	INodePropertyOptions,
 	INodeType,
 	INodeTypeDescription,
-	NodeCredentialTestResult,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -57,7 +57,6 @@ export class ElasticSecurity implements INodeType {
 		description: 'Consume the Elastic Security API',
 		defaults: {
 			name: 'Elastic Security',
-			color: '#f3d337',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -122,7 +121,7 @@ export class ElasticSecurity implements INodeType {
 			async elasticSecurityApiTest(
 				this: ICredentialTestFunctions,
 				credential: ICredentialsDecrypted,
-			): Promise<NodeCredentialTestResult> {
+			): Promise<INodeCredentialTestResult> {
 				const {
 					username,
 					password,
@@ -215,6 +214,7 @@ export class ElasticSecurity implements INodeType {
 							throw new NodeOperationError(
 								this.getNode(),
 								'Connector Type does not match the type of the connector in Connector Name',
+								{ itemIndex: i },
 							);
 						}
 
@@ -387,6 +387,7 @@ export class ElasticSecurity implements INodeType {
 							throw new NodeOperationError(
 								this.getNode(),
 								`Cannot add tag "${tagToAdd}" to case ID ${caseId} because this case already has this tag.`,
+								{ itemIndex: i },
 							);
 						}
 
@@ -426,7 +427,7 @@ export class ElasticSecurity implements INodeType {
 						} = await elasticSecurityApiRequest.call(this, 'GET', `/cases/${caseId}`) as IDataObject & { tags: string[] };
 
 						if (!tags.includes(tagToRemove)) {
-							throw new NodeOperationError(this.getNode(), `Cannot remove tag "${tagToRemove}" from case ID ${caseId} because this case does not have this tag.`);
+							throw new NodeOperationError(this.getNode(), `Cannot remove tag "${tagToRemove}" from case ID ${caseId} because this case does not have this tag.`, { itemIndex: i });
 						}
 
 						const body = {};

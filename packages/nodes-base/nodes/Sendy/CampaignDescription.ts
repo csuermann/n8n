@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const campaignOperations = [
+export const campaignOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,14 +20,14 @@ export const campaignOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a campaign',
+				action: 'Create a campaign',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const campaignFields = [
+export const campaignFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                campaign:create                             */
@@ -46,7 +47,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'From name' of your campaign.`,
+		description: 'The \'From name\' of your campaign',
 	},
 	{
 		displayName: 'From Email',
@@ -63,7 +64,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'From email' of your campaign.`,
+		description: 'The \'From email\' of your campaign',
 	},
 	{
 		displayName: 'Reply To',
@@ -80,7 +81,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'Reply to' of your campaign.`,
+		description: 'The \'Reply to\' of your campaign',
 	},
 	{
 		displayName: 'Title',
@@ -97,7 +98,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'Title' of your campaign.`,
+		description: 'The \'Title\' of your campaign',
 	},
 	{
 		displayName: 'Subject',
@@ -114,7 +115,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'Subject' of your campaign.`,
+		description: 'The \'Subject\' of your campaign',
 	},
 	{
 		displayName: 'HTML Text',
@@ -131,7 +132,7 @@ export const campaignFields = [
 			},
 		},
 		default: '',
-		description: `The 'HTML version' of your campaign.`,
+		description: 'The \'HTML version\' of your campaign',
 	},
 	{
 		displayName: 'Send Campaign',
@@ -148,7 +149,7 @@ export const campaignFields = [
 			},
 		},
 		default: false,
-		description: `Set to true if you want to send the campaign as well and not just create a draft. Default is false.`,
+		description: 'Whether to send the campaign as well and not just create a draft. Default is false.',
 	},
 	{
 		displayName: 'Brand ID',
@@ -192,57 +193,57 @@ export const campaignFields = [
 				name: 'excludeListIds',
 				type: 'string',
 				default: '',
-				description: ` Lists to exclude from your campaign. List IDs should be single or comma-separated`,
+				description: 'Lists to exclude from your campaign. List IDs should be single or comma-separated.',
 			},
 			{
 				displayName: 'Exclude Segment IDs',
 				name: 'excludeSegmentIds',
 				type: 'string',
 				default: '',
-				description: `Segments to exclude from your campaign. Segment IDs should be single or comma-separated.`,
+				description: 'Segments to exclude from your campaign. Segment IDs should be single or comma-separated.',
 			},
 			{
 				displayName: 'List IDs',
 				name: 'listIds',
 				type: 'string',
 				default: '',
-				description: `List IDs should be single or comma-separated.`,
+				description: 'List IDs should be single or comma-separated',
 			},
 			{
 				displayName: 'Plain Text',
 				name: 'plainText',
 				type: 'string',
 				default: '',
-				description: `The 'Plain text version' of your campaign.`,
+				description: 'The \'Plain text version\' of your campaign',
 			},
 			{
 				displayName: 'Querystring',
 				name: 'queryString',
 				type: 'string',
 				default: '',
-				description: `Google Analytics tags.`,
+				description: 'Google Analytics tags',
 			},
 			{
 				displayName: 'Segment IDs',
 				name: 'segmentIds',
 				type: 'string',
 				default: '',
-				description: `Segment IDs should be single or comma-separated.`,
+				description: 'Segment IDs should be single or comma-separated',
 			},
 			{
 				displayName: 'Track Clicks',
 				name: 'trackClicks',
 				type: 'boolean',
 				default: true,
-				description: ` Set to false if you want to disable clicks tracking. Default is true.`,
+				description: 'Whether to disable clicks tracking. Default is true.',
 			},
 			{
 				displayName: 'Track Opens',
 				name: 'trackOpens',
 				type: 'boolean',
 				default: true,
-				description: `Set to false if you want to disable opens tracking. Default is true.`,
+				description: 'Whether to disable opens tracking. Default is true.',
 			},
 		],
 	},
-] as INodeProperties[];
+];

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const callOperations = [
+export const callOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const callOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a call',
+				action: 'Create a call',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a call',
+				action: 'Delete a call',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a call',
+				action: 'Get a call',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all calls',
+				action: 'Get all calls',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a call',
+				action: 'Update a call',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const callFields = [
+export const callFields: INodeProperties[] = [
 	// ----------------------------------------
 	//               call: create
 	// ----------------------------------------
@@ -176,7 +182,7 @@ export const callFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -256,4 +262,4 @@ export const callFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

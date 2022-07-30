@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const userOperations = [
+export const userOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -18,25 +19,27 @@ export const userOperations = [
 			{
 				name: 'Create',
 				value: 'create',
-				description: 'Create a new user.',
+				description: 'Create a new user',
+				action: 'Create a user',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
-				description: 'Delete a user.',
+				description: 'Delete a user',
+				action: 'Delete a user',
 			},
 			{
 				name: 'Get',
 				value: 'get',
-				description: 'Retrieve a user.',
+				description: 'Retrieve a user',
+				action: 'Get a user',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const userFields = [
+export const userFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                user:create                                 */
@@ -45,6 +48,7 @@ export const userFields = [
 		displayName: 'Username',
 		name: 'username',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -61,6 +65,7 @@ export const userFields = [
 		displayName: 'Email Address',
 		name: 'emailAddress',
 		type: 'string',
+		default: '',
 		required: true,
 		displayOptions: {
 			show: {
@@ -122,7 +127,7 @@ export const userFields = [
 				name: 'notification',
 				type: 'boolean',
 				default: false,
-				description: 'Send the user an email confirmation that they have been added to Jira.',
+				description: 'Whether to send the user an email confirmation that they have been added to Jira',
 			},
 		],
 	},
@@ -134,7 +139,7 @@ export const userFields = [
 		name: 'accountId',
 		type: 'string',
 		default: '',
-		description: 'Account ID of the user to delete.',
+		description: 'Account ID of the user to delete',
 		displayOptions: {
 			show: {
 				resource: [
@@ -154,7 +159,7 @@ export const userFields = [
 		name: 'accountId',
 		type: 'string',
 		default: '',
-		description: 'Account ID of the user to retrieve.',
+		description: 'Account ID of the user to retrieve',
 		displayOptions: {
 			show: {
 				resource: [
@@ -188,20 +193,20 @@ export const userFields = [
 				name: 'expand',
 				type: 'multiOptions',
 				default: [],
-				description: 'Include more information about the user.',
+				description: 'Include more information about the user',
 				options: [
 					{
 						name: 'Groups',
 						value: 'groups',
-						description: 'Include all groups to which the user belongs.',
+						description: 'Include all groups to which the user belongs',
 					},
 					{
 						name: 'Application Roles',
 						value: 'applicationRoles',
-						description: 'Include details of all the applications the user can access.',
+						description: 'Include details of all the applications the user can access',
 					},
 				],
 			},
 		],
 	},
-] as INodeProperties[];
+];

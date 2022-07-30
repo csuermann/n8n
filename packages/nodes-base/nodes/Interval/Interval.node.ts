@@ -12,17 +12,25 @@ export class Interval implements INodeType {
 		displayName: 'Interval',
 		name: 'interval',
 		icon: 'fa:hourglass',
-		group: ['trigger'],
+		group: ['trigger', 'schedule'],
 		version: 1,
 		description: 'Triggers the workflow in a given interval',
 		eventTriggerDescription: '',
+		activationMessage: 'Your interval trigger will now trigger executions on the schedule you have defined.',
 		defaults: {
 			name: 'Interval',
 			color: '#00FF00',
 		},
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-inputs-wrong-regular-node
 		inputs: [],
 		outputs: ['main'],
 		properties: [
+			{
+				displayName: 'This workflow will run on the schedule you define here once you <a data-key="activate">activate</a> it.<br><br>For testing, you can also trigger it manually: by going back to the canvas and clicking ‘execute workflow’',
+				name: 'notice',
+				type: 'notice',
+				default: '',
+			},
 			{
 				displayName: 'Interval',
 				name: 'interval',
@@ -31,7 +39,7 @@ export class Interval implements INodeType {
 					minValue: 1,
 				},
 				default: 1,
-				description: 'Interval value.',
+				description: 'Interval value',
 			},
 			{
 				displayName: 'Unit',
@@ -52,7 +60,7 @@ export class Interval implements INodeType {
 					},
 				],
 				default: 'seconds',
-				description: 'Unit of the interval value.',
+				description: 'Unit of the interval value',
 			},
 		],
 	};
@@ -83,7 +91,7 @@ export class Interval implements INodeType {
 
 		// Reference: https://nodejs.org/api/timers.html#timers_setinterval_callback_delay_args
 		if (intervalValue > 2147483647) {
-			throw new Error('The interval value is too large.');
+			throw new NodeOperationError(this.getNode(), 'The interval value is too large.');
 		}
 
 		const intervalObj = setInterval(executeTrigger, intervalValue);

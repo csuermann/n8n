@@ -6,11 +6,12 @@ import {
 	activeCampaignDefaultGetAllProperties,
 } from './GenericFunctions';
 
-export const accountOperations = [
+export const accountOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -23,34 +24,38 @@ export const accountOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create an account',
+				action: 'Create an account',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete an account',
+				action: 'Delete an account',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get data of an account',
+				action: 'Get an account',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get data of all accounts',
+				action: 'Get all accounts',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update an account',
+				action: 'Update an account',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const accountFields = [
+export const accountFields: INodeProperties[] = [
 	// ----------------------------------
 	//         contact:create
 	// ----------------------------------
@@ -70,7 +75,7 @@ export const accountFields = [
 				],
 			},
 		},
-		description: 'Account\'s name.',
+		description: 'Account\'s name',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -94,13 +99,13 @@ export const accountFields = [
 				name: 'accountUrl',
 				type: 'string',
 				default: '',
-				description: `Account's website`,
+				description: 'Account\'s website',
 			},
 			{
 				displayName: 'Fields',
 				name: 'fields',
 				placeholder: 'Add Custom Fields',
-				description: 'Adds a custom fields to set also values which have not been predefined.',
+				description: 'Adds a custom fields to set also values which have not been predefined',
 				type: 'fixedCollection',
 				typeOptions: {
 					multipleValues: true,
@@ -112,21 +117,21 @@ export const accountFields = [
 						displayName: 'Field',
 						values: [
 							{
-								displayName: 'Field ID',
+								displayName: 'Field Name or ID',
 								name: 'customFieldId',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getAccountCustomFields',
 								},
 								default: '',
-								description: 'ID of the field to set.',
+								description: 'ID of the field to set. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Field Value',
 								name: 'fieldValue',
 								type: 'string',
 								default: '',
-								description: 'Value of the field to set.',
+								description: 'Value of the field to set',
 							},
 						],
 					},
@@ -154,13 +159,13 @@ export const accountFields = [
 		},
 		default: 0,
 		required: true,
-		description: 'ID of the account to update.',
+		description: 'ID of the account to update',
 	},
 	{
 		displayName: 'Update Fields',
 		name: 'updateFields',
 		type: 'collection',
-		description: 'The fields to update.',
+		description: 'The fields to update',
 		placeholder: 'Add Field',
 		displayOptions: {
 			show: {
@@ -179,7 +184,7 @@ export const accountFields = [
 				name: 'name',
 				type: 'string',
 				default: '',
-				description: 'Account\'s name.',
+				description: 'Account\'s name',
 			},
 			{
 				displayName: 'Account URL',
@@ -192,7 +197,7 @@ export const accountFields = [
 				displayName: 'Fields',
 				name: 'fields',
 				placeholder: 'Add Fields',
-				description: 'Adds a custom fields to set also values which have not been predefined.',
+				description: 'Adds a custom fields to set also values which have not been predefined',
 				type: 'fixedCollection',
 				typeOptions: {
 					multipleValues: true,
@@ -204,21 +209,21 @@ export const accountFields = [
 						displayName: 'Field',
 						values: [
 							{
-								displayName: 'Field ID',
+								displayName: 'Field Name or ID',
 								name: 'customFieldId',
 								type: 'options',
 								typeOptions: {
 									loadOptionsMethod: 'getAccountCustomFields',
 								},
 								default: '',
-								description: 'ID of the field to set.',
+								description: 'ID of the field to set. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 							},
 							{
 								displayName: 'Field Value',
 								name: 'fieldValue',
 								type: 'string',
 								default: '',
-								description: 'Value of the field to set.',
+								description: 'Value of the field to set',
 							},
 						],
 					},
@@ -245,7 +250,7 @@ export const accountFields = [
 		},
 		default: 0,
 		required: true,
-		description: 'ID of the account to delete.',
+		description: 'ID of the account to delete',
 	},
 	// ----------------------------------
 	//         account:get
@@ -266,7 +271,7 @@ export const accountFields = [
 		},
 		default: 0,
 		required: true,
-		description: 'ID of the account to get.',
+		description: 'ID of the account to get',
 	},
 	// ----------------------------------
 	//         account:getAll
@@ -299,4 +304,4 @@ export const accountFields = [
 		],
 	},
 
-] as INodeProperties[];
+];

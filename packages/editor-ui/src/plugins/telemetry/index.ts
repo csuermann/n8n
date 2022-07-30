@@ -1,9 +1,12 @@
 import _Vue from "vue";
 import {
 	ITelemetrySettings,
+	ITelemetryTrackProperties,
 	IDataObject,
 } from 'n8n-workflow';
-import { INodeCreateElement } from "@/Interface";
+import { ILogLevel, INodeCreateElement, IRootState } from "@/Interface";
+import { Route } from "vue-router";
+import { Store } from "vuex";
 
 declare module 'vue/types/vue' {
 	interface Vue {
@@ -34,7 +37,11 @@ interface IUserNodesPanelSession {
 }
 
 class Telemetry {
-	
+
+	private pageEventQueue: Array<{route: Route}>;
+	private previousPath: string;
+	private store: Store<IRootState> | null;
+
 	private get telemetry() {
 		// @ts-ignore
 		return window.rudderanalytics;
@@ -49,21 +56,78 @@ class Telemetry {
 		},
 	};
 
-	init(options: ITelemetrySettings, instanceId: string) {
+	constructor() {
+		this.pageEventQueue = [];
+		this.previousPath = '';
+		this.store = null;
+	}
+
+	init(options: ITelemetrySettings, { instanceId, logLevel, userId, store }: { instanceId: string, logLevel?: ILogLevel, userId?: string, store: Store<IRootState> }) {
 		if (options.enabled && !this.telemetry) {
 			if(!options.config) {
 				return;
 			}
 
-			this.loadTelemetryLibrary(options.config.key, options.config.url, { integrations: { All: false }, loadIntegration: false });
-			this.telemetry.identify(instanceId);
+			this.store = store;
+			const logging = logLevel === 'debug' ? { logLevel: 'DEBUG'} : {};
+			this.loadTelemetryLibrary(options.config.key, options.config.url, { integrations: { All: false }, loadIntegration: false, ...logging});
+			this.identify(instanceId, userId);
+			this.flushPageEvents();
+			this.track('Session started', { session_id: store.getters.sessionId });
 		}
 	}
 
-	track(event: string, properties?: IDataObject) {
-		if (this.telemetry) {
-			this.telemetry.track(event, properties);
+	identify(instanceId: string, userId?: string) {
+		const traits = { instance_id: instanceId };
+		if (userId) {
+			this.telemetry.identify(`${instanceId}#${userId}`, traits);
 		}
+		else {
+			this.telemetry.reset();
+			this.telemetry.identify(undefined, traits);
+		}
+	}
+
+	track(event: string, properties?: ITelemetryTrackProperties) {
+		if (this.telemetry) {
+			const updatedProperties = {
+				...properties,
+				version_cli: this.store && this.store.getters.versionCli,
+			};
+
+			this.telemetry.track(event, updatedProperties);
+		}
+	}
+
+	page(route: Route) {
+		if (this.telemetry)	{
+			if (route.path === this.previousPath) { // avoid duplicate requests query is changed for example on search page
+				return;
+			}
+			this.previousPath = route.path;
+
+			const pageName = route.name;
+			let properties: {[key: string]: string} = {};
+			if (this.store && route.meta && route.meta.telemetry && typeof route.meta.telemetry.getProperties === 'function') {
+				properties = route.meta.telemetry.getProperties(route, this.store);
+			}
+
+			const category = (route.meta && route.meta.telemetry && route.meta.telemetry.pageCategory) || 'Editor';
+			this.telemetry.page(category, pageName, properties);
+		}
+		else {
+			this.pageEventQueue.push({
+				route,
+			});
+		}
+	}
+
+	flushPageEvents() {
+		const queue = this.pageEventQueue;
+		this.pageEventQueue = [];
+		queue.forEach(({route}) => {
+			this.page(route);
+		});
 	}
 
 	trackNodesPanel(event: string, properties: IDataObject = {}) {
@@ -74,21 +138,21 @@ class Telemetry {
 					if (properties.createNodeActive !== false) {
 						this.resetNodesPanelSession();
 						properties.nodes_panel_session_id = this.userNodesPanelSession.sessionId;
-						this.telemetry.track('User opened nodes panel', properties);
+						this.track('User opened nodes panel', properties);
 					}
 					break;
 				case 'nodeCreateList.selectedTypeChanged':
 					this.userNodesPanelSession.data.filterMode = properties.new_filter as string;
-					this.telemetry.track('User changed nodes panel filter', properties);
+					this.track('User changed nodes panel filter', properties);
 					break;
 				case 'nodeCreateList.destroyed':
 					if(this.userNodesPanelSession.data.nodeFilter.length > 0 && this.userNodesPanelSession.data.nodeFilter !== '') {
-						this.telemetry.track('User entered nodes panel search term', this.generateNodesPanelEvent());
+						this.track('User entered nodes panel search term', this.generateNodesPanelEvent());
 					}
 					break;
 				case 'nodeCreateList.nodeFilterChanged':
 					if((properties.newValue as string).length === 0 && this.userNodesPanelSession.data.nodeFilter.length > 0) {
-						this.telemetry.track('User entered nodes panel search term', this.generateNodesPanelEvent());
+						this.track('User entered nodes panel search term', this.generateNodesPanelEvent());
 					}
 
 					if((properties.newValue as string).length > (properties.oldValue as string || '').length) {
@@ -98,7 +162,7 @@ class Telemetry {
 					break;
 				case 'nodeCreateList.onCategoryExpanded':
 					properties.is_subcategory = false;
-					this.telemetry.track('User viewed node category', properties);
+					this.track('User viewed node category', properties);
 					break;
 				case 'nodeCreateList.onSubcategorySelected':
 					const selectedProperties = (properties.selected as IDataObject).properties as IDataObject;
@@ -107,10 +171,13 @@ class Telemetry {
 					}
 					properties.is_subcategory = true;
 					delete properties.selected;
-					this.telemetry.track('User viewed node category', properties);
+					this.track('User viewed node category', properties);
 					break;
 				case 'nodeView.addNodeButton':
-					this.telemetry.track('User added node to workflow canvas', properties);
+					this.track('User added node to workflow canvas', properties);
+					break;
+				case 'nodeView.addSticky':
+					this.track('User inserted workflow note', properties);
 					break;
 				default:
 					break;

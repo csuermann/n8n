@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const notificationOperations = [
+export const notificationOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,14 +20,14 @@ export const notificationOperations = [
 				name: 'Send',
 				value: 'send',
 				description: 'Sends notifications to users or groups',
+				action: 'Send a notification',
 			},
 		],
 		default: 'send',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const notificationFields = [
+export const notificationFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                 notification:send                          */
@@ -77,7 +78,7 @@ export const notificationFields = [
 				options: [
 					{
 						name: 'imageValue',
-						displayName: 'image',
+						displayName: 'Image',
 						values: [
 							{
 								displayName: 'Binary Data',
@@ -97,7 +98,7 @@ export const notificationFields = [
 										],
 									},
 								},
-								description: 'HTTP/HTTPS URL. Maximum size of 2048×2048px JPEG',
+								description: 'HTTP/HTTPS URL. Maximum size of 2048×2048px JPEG.',
 							},
 							{
 								displayName: 'Image Thumbnail',
@@ -111,7 +112,7 @@ export const notificationFields = [
 									},
 								},
 								default: '',
-								description: 'HTTP/HTTPS URL. Maximum size of 240×240px JPEG',
+								description: 'HTTP/HTTPS URL. Maximum size of 240×240px JPEG.',
 							},
 							{
 								displayName: 'Binary Property',
@@ -125,7 +126,7 @@ export const notificationFields = [
 									},
 								},
 								default: 'data',
-								description: `Name of the property that holds the binary data.`,
+								description: 'Name of the property that holds the binary data',
 							},
 						],
 					},
@@ -136,7 +137,8 @@ export const notificationFields = [
 				name: 'notificationDisabled',
 				type: 'boolean',
 				default: false,
-				description: `<p>true: The user doesn't receive a push notification when the message is sent.</p><p>false: The user receives a push notification when the message is sent</p>`,
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+				description: '<p>true: The user doesn\'t receive a push notification when the message is sent.</p><p>false: The user receives a push notification when the message is sent</p>',
 			},
 			{
 				displayName: 'Sticker',
@@ -157,7 +159,6 @@ export const notificationFields = [
 								name: 'stickerId',
 								type: 'number',
 								default: '',
-								description: 'Sticker ID',
 							},
 							{
 								displayName: 'Sticker Package ID',
@@ -172,4 +173,4 @@ export const notificationFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

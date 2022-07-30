@@ -36,12 +36,11 @@ export class GoogleDocs implements INodeType {
 		name: 'googleDocs',
 		icon: 'file:googleDocs.svg',
 		group: ['input'],
-		version: 1,
+		version: [1, 2],
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		description: 'Consume Google Docs API.',
 		defaults: {
 			name: 'Google Docs',
-			color: '#1a73e8',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -85,11 +84,42 @@ export class GoogleDocs implements INodeType {
 					},
 				],
 				default: 'serviceAccount',
+				displayOptions: {
+					show: {
+						'@version': [
+							1,
+						],
+					},
+				},
+			},
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				options: [
+					{
+						name: 'OAuth2 (Recommended)',
+						value: 'oAuth2',
+					},
+					{
+						name: 'Service Account',
+						value: 'serviceAccount',
+					},
+				],
+				default: 'oAuth2',
+				displayOptions: {
+					show: {
+						'@version': [
+							2,
+						],
+					},
+				},
 			},
 			{
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Document',
@@ -97,7 +127,6 @@ export class GoogleDocs implements INodeType {
 					},
 				],
 				default: 'document',
-				description: 'The resource to operate on.',
 			},
 			...documentOperations,
 			...documentFields,
@@ -114,7 +143,7 @@ export class GoogleDocs implements INodeType {
 						value: 'myDrive',
 					},
 					{
-						name: 'Shared with me',
+						name: 'Shared with Me',
 						value: 'sharedWithMe',
 					},
 				];

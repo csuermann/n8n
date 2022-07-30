@@ -13,6 +13,7 @@ import {
 
 import {
 	get,
+	isEmpty,
 	isEqual,
 	isObject,
 	lt,
@@ -38,7 +39,6 @@ export class ItemLists implements INodeType {
 		description: 'Helper for working with lists of items and transforming arrays',
 		defaults: {
 			name: 'Item Lists',
-			color: '#ff6d5a',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -60,31 +60,37 @@ export class ItemLists implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				options: [
-					{
-						name: 'Split Out Items',
-						value: 'splitOutItems',
-						description: 'Turn a list inside item(s) into separate items',
-					},
 					{
 						name: 'Aggregate Items',
 						value: 'aggregateItems',
-						description: 'Merge fields into a single new item',
-					},
-					{
-						name: 'Remove Duplicates',
-						value: 'removeDuplicates',
-						description: 'Remove extra items that are similar',
-					},
-					{
-						name: 'Sort',
-						value: 'sort',
-						description: 'Change the item order',
+						description: 'Combine fields into a single new item',
+						action: 'Combine fields into a single new item',
 					},
 					{
 						name: 'Limit',
 						value: 'limit',
 						description: 'Remove items if there are too many',
+						action: 'Remove items if there are too many',
+					},
+					{
+						name: 'Remove Duplicates',
+						value: 'removeDuplicates',
+						description: 'Remove extra items that are similar',
+						action: 'Remove extra items that are similar',
+					},
+					{
+						name: 'Sort',
+						value: 'sort',
+						description: 'Change the item order',
+						action: 'Change the item order',
+					},
+					{
+						name: 'Split Out Items',
+						value: 'splitOutItems',
+						description: 'Turn a list inside item(s) into separate items',
+						action: 'Turn a list inside item(s) into separate items',
 					},
 				],
 				default: 'splitOutItems',
@@ -178,6 +184,34 @@ export class ItemLists implements INodeType {
 					},
 				],
 			},
+			// Aggregate Items
+			{
+				displayName: 'Aggregate',
+				name: 'aggregate',
+				type: 'options',
+				default: 'aggregateIndividualFields',
+				options: [
+					{
+						name: 'Individual Fields',
+						value: 'aggregateIndividualFields',
+					},
+					{
+						name: 'All Item Data (Into a Single List)',
+						value: 'aggregateAllItemData',
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: [
+							'itemList',
+						],
+						operation: [
+							'aggregateItems',
+						],
+					},
+				},
+			},
+			// Aggregate Individual Fields
 			{
 				displayName: 'Fields To Aggregate',
 				name: 'fieldsToAggregate',
@@ -186,7 +220,7 @@ export class ItemLists implements INodeType {
 					multipleValues: true,
 				},
 				placeholder: 'Add Field To Aggregate',
-				default: {},
+				default: {fieldToAggregate: [{fieldToAggregate: '', renameField: false}]},
 				displayOptions: {
 					show: {
 						resource: [
@@ -194,6 +228,9 @@ export class ItemLists implements INodeType {
 						],
 						operation: [
 							'aggregateItems',
+						],
+						aggregate: [
+							'aggregateIndividualFields',
 						],
 					},
 				},
@@ -228,13 +265,148 @@ export class ItemLists implements INodeType {
 								},
 								type: 'string',
 								default: '',
-								description: 'The name of the field to put the aggregated data in. Leave blank to use the input field name',
+								description: 'The name of the field to put the aggregated data in. Leave blank to use the input field name.',
 							},
 						],
 					},
 				],
 			},
-
+			// Aggregate All Item Data
+			{
+				displayName: 'Put Output in Field',
+				name: 'destinationFieldName',
+				type: 'string',
+				displayOptions: {
+					show: {
+						resource: [
+							'itemList',
+						],
+						'operation': [
+							'aggregateItems',
+						],
+						aggregate: [
+							'aggregateAllItemData',
+						],
+					},
+				},
+				default: 'data',
+				description: 'The name of the output field to put the data in',
+			},
+			{
+				displayName: 'Include',
+				name: 'include',
+				type: 'options',
+				default: 'allFields',
+				options: [
+					{
+						name: 'All Fields',
+						value: 'allFields',
+					},
+					{
+						name: 'Specified Fields',
+						value: 'specifiedFields',
+					},
+					{
+						name: 'All Fields Except',
+						value: 'allFieldsExcept',
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: [
+							'itemList',
+						],
+						operation: [
+							'aggregateItems',
+						],
+						aggregate: [
+							'aggregateAllItemData',
+						],
+					},
+				},
+			},
+			{
+				displayName: 'Fields To Exclude',
+				name: 'fieldsToExclude',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				placeholder: 'Add Field To Exclude',
+				default: {},
+				options: [
+					{
+						displayName: '',
+						name: 'fields',
+						values: [
+							{
+								displayName: 'Field Name',
+								name: 'fieldName',
+								type: 'string',
+								default: '',
+								description: 'A field in the input to exclude from the object in output array',
+							},
+						],
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: [
+							'itemList',
+						],
+						operation: [
+							'aggregateItems',
+						],
+						aggregate: [
+							'aggregateAllItemData',
+						],
+						include: [
+							'allFieldsExcept',
+						],
+					},
+				},
+			},
+			{
+				displayName: 'Fields To Include',
+				name: 'fieldsToInclude',
+				type: 'fixedCollection',
+				typeOptions: {
+					multipleValues: true,
+				},
+				placeholder: 'Add Field To Include',
+				default: {},
+				options: [
+					{
+						displayName: '',
+						name: 'fields',
+						values: [
+							{
+								displayName: 'Field Name',
+								name: 'fieldName',
+								type: 'string',
+								default: '',
+								description: 'Specify fields that will be included in output array',
+							},
+						],
+					},
+				],
+				displayOptions: {
+					show: {
+						resource: [
+							'itemList',
+						],
+						operation: [
+							'aggregateItems',
+						],
+						aggregate: [
+							'aggregateAllItemData',
+						],
+						include: [
+							'specifiedFields',
+						],
+					},
+				},
+			},
 			// Remove duplicates - Fields
 			{
 				displayName: 'Compare',
@@ -312,7 +484,7 @@ export class ItemLists implements INodeType {
 				typeOptions: {
 					multipleValues: true,
 				},
-				placeholder: 'Add Field To Exclude',
+				placeholder: 'Add Field To Compare',
 				default: {},
 				displayOptions: {
 					show: {
@@ -545,7 +717,7 @@ return 0;`,
 						name: 'removeOtherFields',
 						type: 'boolean',
 						default: false,
-						description: 'Whether to remove any fields that are not being compared. If disabled, will keep the values from the first of the duplicates',
+						description: 'Whether to remove any fields that are not being compared. If disabled, will keep the values from the first of the duplicates.',
 					},
 					{
 						displayName: 'Disable Dot Notation',
@@ -601,6 +773,11 @@ return 0;`,
 							'aggregateItems',
 						],
 					},
+					hide: {
+						'aggregate': [
+							'aggregateAllItemData',
+						],
+					},
 				},
 				options: [
 					{
@@ -644,7 +821,7 @@ return 0;`,
 							},
 						},
 						default: false,
-						description: 'If the field to aggregate is a list, whether to merge the output into a single flat list (rather than a list of lists)',
+						description: 'Whether to merge the output into a single flat list (rather than a list of lists), if the field to aggregate is a list',
 					},
 					{
 						displayName: 'Keep Missing And Null Values',
@@ -667,7 +844,7 @@ return 0;`,
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
-		const length = (items.length as unknown) as number;
+		const length = items.length;
 		const returnData: INodeExecutionData[] = [];
 		const resource = this.getNodeParameter('resource', 0) as string;
 		const operation = this.getNodeParameter('operation', 0) as string;
@@ -691,12 +868,12 @@ return 0;`,
 						if (fieldToSplitOut.includes('.') && disableDotNotation === true) {
 							throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToSplitOut}' in the input data`, { description: `If you're trying to use a nested field, make sure you turn off 'disable dot notation' in the node options` });
 						} else {
-							throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToSplitOut}' in the input data`);
+							throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToSplitOut}' in the input data`, { itemIndex: i });
 						}
 					}
 
 					if (!Array.isArray(arrayToSplit)) {
-						throw new NodeOperationError(this.getNode(), `The provided field '${fieldToSplitOut}' is not an array`);
+						throw new NodeOperationError(this.getNode(), `The provided field '${fieldToSplitOut}' is not an array`, { itemIndex: i });
 					} else {
 
 						for (const element of arrayToSplit) {
@@ -752,7 +929,12 @@ return 0;`,
 								newItem = { ...newItem, [destinationFieldName as string || fieldToSplitOut as string]: element };
 							}
 
-							returnData.push({ json: newItem });
+							returnData.push({
+								json: newItem,
+								pairedItem: {
+									item: i,
+								},
+							});
 						}
 					}
 				}
@@ -760,108 +942,154 @@ return 0;`,
 				return this.prepareOutputData(returnData);
 
 			} else if (operation === 'aggregateItems') {
+				const aggregate = this.getNodeParameter('aggregate', 0, '') as string;
 
-				const disableDotNotation = this.getNodeParameter('options.disableDotNotation', 0, false) as boolean;
-				const mergeLists = this.getNodeParameter('options.mergeLists', 0, false) as boolean;
-				const fieldsToAggregate = this.getNodeParameter('fieldsToAggregate.fieldToAggregate', 0, []) as [{ fieldToAggregate: string, renameField: boolean, outputFieldName: string }];
-				const keepMissing = this.getNodeParameter('options.keepMissing', 0, false) as boolean;
+				if ( aggregate === 'aggregateIndividualFields') {
+					const disableDotNotation = this.getNodeParameter('options.disableDotNotation', 0, false) as boolean;
+					const mergeLists = this.getNodeParameter('options.mergeLists', 0, false) as boolean;
+					const fieldsToAggregate = this.getNodeParameter('fieldsToAggregate.fieldToAggregate', 0, []) as [{ fieldToAggregate: string, renameField: boolean, outputFieldName: string }];
+					const keepMissing = this.getNodeParameter('options.keepMissing', 0, false) as boolean;
 
-				if (!fieldsToAggregate.length) {
-					throw new NodeOperationError(this.getNode(), 'No fields specified', { description: 'Please add a field to aggregate' });
-				}
-				for (const { fieldToAggregate } of fieldsToAggregate) {
-					let found = false;
-					for (const item of items) {
-						if (fieldToAggregate === '') {
-							throw new NodeOperationError(this.getNode(), 'Field to aggregate is blank', { description: 'Please add a field to aggregate' });
-						}
-						if (disableDotNotation === false) {
-							if (get(item.json, fieldToAggregate) !== undefined) {
+					if (!fieldsToAggregate.length) {
+						throw new NodeOperationError(this.getNode(), 'No fields specified', { description: 'Please add a field to aggregate' });
+					}
+					for (const { fieldToAggregate } of fieldsToAggregate) {
+						let found = false;
+						for (const item of items) {
+							if (fieldToAggregate === '') {
+								throw new NodeOperationError(this.getNode(), 'Field to aggregate is blank', { description: 'Please add a field to aggregate' });
+							}
+							if (disableDotNotation === false) {
+								if (get(item.json, fieldToAggregate) !== undefined) {
+									found = true;
+								}
+							} else if (item.json.hasOwnProperty(fieldToAggregate)) {
 								found = true;
 							}
-						} else if (item.json.hasOwnProperty(fieldToAggregate)) {
-							found = true;
+						}
+						if (found === false && disableDotNotation && fieldToAggregate.includes('.')) {
+							throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToAggregate}' in the input data`, { description: `If you're trying to use a nested field, make sure you turn off 'disable dot notation' in the node options` });
+						} else if (found === false && keepMissing === false) {
+							throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToAggregate}' in the input data`);
 						}
 					}
-					if (found === false && disableDotNotation && fieldToAggregate.includes('.')) {
-						throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToAggregate}' in the input data`, { description: `If you're trying to use a nested field, make sure you turn off 'disable dot notation' in the node options` });
-					} else if (found === false && keepMissing === false) {
-						throw new NodeOperationError(this.getNode(), `Couldn't find the field '${fieldToAggregate}' in the input data`);
-					}
-				}
 
-				let newItem: INodeExecutionData;
-				newItem = { json: {} };
-				// tslint:disable-next-line: no-any
-				const values: { [key: string]: any } = {};
-				const outputFields: string[] = [];
 
-				for (const { fieldToAggregate, outputFieldName, renameField } of fieldsToAggregate) {
+					let newItem: INodeExecutionData;
+					newItem = {
+						json: {},
+						pairedItem: Array.from({length}, (_, i) => i).map(index => {
+							return {
+								item: index,
+							};
+						}),
+					};
 
-					const field = (renameField) ? outputFieldName : fieldToAggregate;
+					// tslint:disable-next-line: no-any
+					const values: { [key: string]: any } = {};
+					const outputFields: string[] = [];
 
-					if (outputFields.includes(field)) {
-						throw new NodeOperationError(this.getNode(), `The '${field}' output field is used more than once`, { description: `Please make sure each output field name is unique` });
-					} else {
-						outputFields.push(field);
-					}
+					for (const { fieldToAggregate, outputFieldName, renameField } of fieldsToAggregate) {
 
-					const getFieldToAggregate = () => ((disableDotNotation === false && fieldToAggregate.includes('.')) ? fieldToAggregate.split('.').pop() : fieldToAggregate);
+						const field = (renameField) ? outputFieldName : fieldToAggregate;
 
-					const _outputFieldName = (outputFieldName) ? (outputFieldName) : getFieldToAggregate() as string;
+						if (outputFields.includes(field)) {
+							throw new NodeOperationError(this.getNode(), `The '${field}' output field is used more than once`, { description: `Please make sure each output field name is unique` });
+						} else {
+							outputFields.push(field);
+						}
 
-					if (fieldToAggregate !== '') {
-						values[_outputFieldName] = [];
-						for (let i = 0; i < length; i++) {
-							if (disableDotNotation === false) {
-								let value = get(items[i].json, fieldToAggregate);
+						const getFieldToAggregate = () => ((disableDotNotation === false && fieldToAggregate.includes('.')) ? fieldToAggregate.split('.').pop() : fieldToAggregate);
 
-								if (!keepMissing) {
-									if (Array.isArray(value)) {
-										value = value.filter(value => value !== null);
-									} else if (value === null || value === undefined) {
-										continue;
+						const _outputFieldName = (outputFieldName) ? (outputFieldName) : getFieldToAggregate() as string;
+
+						if (fieldToAggregate !== '') {
+							values[_outputFieldName] = [];
+							for (let i = 0; i < length; i++) {
+								if (disableDotNotation === false) {
+									let value = get(items[i].json, fieldToAggregate);
+
+									if (!keepMissing) {
+										if (Array.isArray(value)) {
+											value = value.filter(value => value !== null);
+										} else if (value === null || value === undefined) {
+											continue;
+										}
 									}
-								}
 
-								if (Array.isArray(value) && mergeLists) {
-									values[_outputFieldName].push(...value);
-								} else {
-									values[_outputFieldName].push(value);
-								}
-
-							} else {
-								let value = items[i].json[fieldToAggregate];
-
-								if (!keepMissing) {
-									if (Array.isArray(value)) {
-										value = value.filter(value => value !== null);
-									} else if (value === null || value === undefined) {
-										continue;
+									if (Array.isArray(value) && mergeLists) {
+										values[_outputFieldName].push(...value);
+									} else {
+										values[_outputFieldName].push(value);
 									}
-								}
 
-								if (Array.isArray(value) && mergeLists) {
-									values[_outputFieldName].push(...value);
 								} else {
-									values[_outputFieldName].push(value);
+									let value = items[i].json[fieldToAggregate];
+
+									if (!keepMissing) {
+										if (Array.isArray(value)) {
+											value = value.filter(value => value !== null);
+										} else if (value === null || value === undefined) {
+											continue;
+										}
+									}
+
+									if (Array.isArray(value) && mergeLists) {
+										values[_outputFieldName].push(...value);
+									} else {
+										values[_outputFieldName].push(value);
+									}
 								}
 							}
 						}
 					}
-				}
 
-				for (const key of Object.keys(values)) {
-					if (disableDotNotation === false) {
-						set(newItem.json, key, values[key]);
-					} else {
-						newItem.json[key] = values[key];
+					for (const key of Object.keys(values)) {
+						if (disableDotNotation === false) {
+							set(newItem.json, key, values[key]);
+						} else {
+							newItem.json[key] = values[key];
+						}
 					}
+
+					returnData.push(newItem);
+
+					return this.prepareOutputData(returnData);
+
+				} else {
+					let newItems: IDataObject[] = items.map(item => item.json);
+					const destinationFieldName = this.getNodeParameter('destinationFieldName', 0) as string;
+					const fieldsToExclude = (this.getNodeParameter('fieldsToExclude.fields', 0, []) as IDataObject[]).map(entry => entry.fieldName);
+					const fieldsToInclude = (this.getNodeParameter('fieldsToInclude.fields', 0, []) as IDataObject[]).map(entry => entry.fieldName);
+
+
+					if (fieldsToExclude.length || fieldsToInclude.length) {
+						newItems = newItems.reduce((acc, item) => {
+							const newItem:IDataObject = {};
+							let outputFields = Object.keys(item);
+
+							if (fieldsToExclude.length) {
+								outputFields = outputFields.filter(key => !fieldsToExclude.includes(key));
+							}
+							if (fieldsToInclude.length) {
+								outputFields = outputFields.filter(key => fieldsToInclude.length ? fieldsToInclude.includes(key) : true);
+							}
+
+							outputFields.forEach( key => {
+								newItem[key] = item[key];
+							});
+
+							if (isEmpty(newItem)) {
+								return acc;
+							}
+							return acc.concat([newItem]);
+						}, [] as IDataObject[]);
+					}
+
+					const output: INodeExecutionData = { json: {[destinationFieldName]: newItems} };
+
+					return this.prepareOutputData([output]);
 				}
-
-				returnData.push(newItem);
-
-				return this.prepareOutputData(returnData);
 
 			} else if (operation === 'removeDuplicates') {
 
@@ -899,9 +1127,10 @@ return 0;`,
 					}
 					keys = fieldsToCompare.map(key => (key.trim()));
 				}
+
 				// This solution is O(nlogn)
 				// add original index to the items
-				const newItems = items.map((item, index) => ({ json: { ...item['json'], __INDEX: index, }, } as INodeExecutionData));
+				const newItems = items.map((item, index) => ({ json: { ...item['json'], __INDEX: index, }, pairedItem: { item: index, } } as INodeExecutionData));
 				//sort items using the compare keys
 				newItems.sort((a, b) => {
 					let result = 0;
@@ -962,7 +1191,7 @@ return 0;`,
 				let data = items.filter((_, index) => !removedIndexes.includes(index));
 
 				if (removeOtherFields) {
-					data = data.map(item => ({ json: pick(item.json, ...keys) }));
+					data = data.map((item, index) => ({ json: pick(item.json, ...keys), pairedItem: { item: index, } }));
 				}
 
 				// return the filtered items
@@ -986,7 +1215,7 @@ return 0;`,
 						fieldName: string;
 						order: 'ascending' | 'descending'
 					}>;
-				
+
 
 					if (!sortFields || !sortFields.length) {
 						throw new NodeOperationError(this.getNode(), 'No sorting specified. Please add a field to sort by');

@@ -23,6 +23,7 @@ export class CircleCi implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'CircleCI',
 		name: 'circleCi',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:circleCi.png',
 		group: ['output'],
 		version: 1,
@@ -30,7 +31,6 @@ export class CircleCi implements INodeType {
 		description: 'Consume CircleCI API',
 		defaults: {
 			name: 'CircleCI',
-			color: '#04AA51',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -45,14 +45,14 @@ export class CircleCi implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
-						name: ' Pipeline',
+						name: 'Pipeline',
 						value: 'pipeline',
 					},
 				],
 				default: 'pipeline',
-				description: 'Resource to consume.',
 			},
 			...pipelineOperations,
 			...pipelineFields,
@@ -62,7 +62,7 @@ export class CircleCi implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;

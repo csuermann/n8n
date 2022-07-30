@@ -8,11 +8,12 @@ export const resource = {
 	value: 'asset',
 } as INodePropertyOptions;
 
-export const operations = [
+export const operations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -31,11 +32,10 @@ export const operations = [
 			},
 		],
 		default: 'getAll',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const fields = [
+export const fields: INodeProperties[] = [
 	{
 		displayName: 'Environment ID',
 		name: 'environmentId',
@@ -52,7 +52,7 @@ export const fields = [
 			},
 		},
 		default: 'master',
-		description: 'The id for the Contentful environment (e.g. master, staging, etc.). Depending on your plan, you might not have environments. In that case use "master".',
+		description: 'The ID for the Contentful environment (e.g. master, staging, etc.). Depending on your plan, you might not have environments. In that case use "master".',
 	},
 	{
 		displayName: 'Return All',
@@ -69,7 +69,7 @@ export const fields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -93,7 +93,7 @@ export const fields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Asset ID',
@@ -159,7 +159,7 @@ export const fields = [
 				type: 'string',
 				placeholder: 'fields.title',
 				default: '',
-				description: 'The select operator allows you to choose what fields to return from an entity. You can choose multiple values by combining comma separated operators.',
+				description: 'The select operator allows you to choose what fields to return from an entity. You can choose multiple values by combining comma-separated operators.',
 			},
 			{
 				displayName: 'Include',
@@ -190,15 +190,15 @@ export const fields = [
 				name: 'query',
 				type: 'string',
 				default: '',
-				description: ' Full-text search is case insensitive and might return more results than expected. A query will only take values with more than 1 character.',
+				description: 'Full-text search is case insensitive and might return more results than expected. A query will only take values with more than 1 character.',
 			},
 			{
 				displayName: 'RAW Data',
 				name: 'rawData',
 				type: 'boolean',
 				default: false,
-				description: 'If the data should be returned RAW instead of parsed.',
+				description: 'Whether the data should be returned RAW instead of parsed',
 			},
 		],
 	},
-] as INodeProperties[];
+];

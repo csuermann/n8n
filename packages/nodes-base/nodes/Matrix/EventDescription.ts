@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const eventOperations = [
+export const eventOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,15 +20,15 @@ export const eventOperations = [
 				name: 'Get',
 				value: 'get',
 				description: 'Get single event by ID',
+				action: 'Get an event by ID',
 			},
 		],
 		default: 'get',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
 
-export const eventFields = [
+export const eventFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                 event:get                                  */
@@ -70,4 +71,4 @@ export const eventFields = [
 		required: true,
 		description: 'The room related to the event',
 	},
-] as INodeProperties[];
+];

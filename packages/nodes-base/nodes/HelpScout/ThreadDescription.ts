@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const threadOperations = [
+export const threadOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,19 +18,20 @@ export const threadOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new chat thread',
+				action: 'Create a thread',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all chat threads',
+				action: 'Get all threads',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const threadFields = [
+export const threadFields: INodeProperties[] = [
 /* -------------------------------------------------------------------------- */
 /*                                thread:create                               */
 /* -------------------------------------------------------------------------- */
@@ -49,7 +51,6 @@ export const threadFields = [
 				],
 			},
 		},
-		description: 'conversation ID',
 	},
 	{
 		displayName: 'Type',
@@ -158,14 +159,14 @@ export const threadFields = [
 						],
 					},
 				},
-				description: 'If set to true, a draft reply is created',
+				description: 'Whether a draft reply is created',
 			},
 			{
 				displayName: 'Imported',
 				name: 'imported',
 				type: 'boolean',
 				default: false,
-				description: 'When imported is set to true, no outgoing emails or notifications will be generated.',
+				description: 'Whether no outgoing emails or notifications will be generated',
 			},
 		],
 	},
@@ -212,7 +213,7 @@ export const threadFields = [
 						type: 'string',
 						default: '',
 						placeholder: 'ZXhhbXBsZSBmaWxl',
-						description: 'Base64-encoded stream of data.',
+						description: 'Base64-encoded stream of data',
 					},
 				],
 			},
@@ -230,8 +231,8 @@ export const threadFields = [
 				],
 			},
 		],
-		default: '',
-		description: 'Array of supported attachments to add to the message.',
+		default: {},
+		description: 'Array of supported attachments to add to the message',
 	},
 /* -------------------------------------------------------------------------- */
 /*                                thread:getAll                               */
@@ -252,7 +253,6 @@ export const threadFields = [
 				],
 			},
 		},
-		description: 'conversation ID',
 	},
 	{
 		displayName: 'Return All',
@@ -269,7 +269,7 @@ export const threadFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -292,6 +292,6 @@ export const threadFields = [
 			minValue: 1,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
-] as INodeProperties[];
+];

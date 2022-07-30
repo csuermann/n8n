@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const campaignContactOperations = [
+export const campaignContactOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,19 +20,20 @@ export const campaignContactOperations = [
 				name: 'Add',
 				value: 'add',
 				description: 'Add contact to a campaign',
+				action: 'Add a campaign contact',
 			},
 			{
 				name: 'Remove',
 				value: 'remove',
 				description: 'Remove contact from a campaign',
+				action: 'Remove a campaign contact',
 			},
 		],
 		default: 'add',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const campaignContactFields = [
+export const campaignContactFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                               campaignContact:add                           */
@@ -53,13 +55,13 @@ export const campaignContactFields = [
 			},
 		},
 		default: '',
-		description: 'Contact ID',
 	},
 	{
 
-		displayName: 'Campaign ID',
+		displayName: 'Campaign Name or ID',
 		name: 'campaignId',
 		type: 'options',
+		description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 		required: true,
 		displayOptions: {
 			show: {
@@ -76,7 +78,6 @@ export const campaignContactFields = [
 			loadOptionsMethod: 'getCampaigns',
 		},
 		default: '',
-		description: 'Campaign ID',
 
 	},
-] as INodeProperties[];
+];

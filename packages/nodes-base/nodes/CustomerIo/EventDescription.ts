@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const eventOperations = [
+export const eventOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -16,20 +17,21 @@ export const eventOperations = [
 			{
 				name: 'Track',
 				value: 'track',
-				description: 'Track a customer event.',
+				description: 'Track a customer event',
+				action: 'Track a customer event',
 			},
 			{
 				name: 'Track Anonymous',
 				value: 'trackAnonymous',
-				description: 'Track an anonymous event.',
+				description: 'Track an anonymous event',
+				action: 'Track an anonymous event',
 			},
 		],
 		default: 'track',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const eventFields = [
+export const eventFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                   event:track                              */
@@ -50,7 +52,7 @@ export const eventFields = [
 				],
 			},
 		},
-		description: 'The unique identifier for the customer.',
+		description: 'The unique identifier for the customer',
 	},
 	{
 		displayName: 'Event Name',
@@ -67,14 +69,13 @@ export const eventFields = [
 				],
 			},
 		},
-		description: 'Name of the event to track.',
+		description: 'Name of the event to track',
 	},
 	{
 		displayName: 'JSON Parameters',
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -107,7 +108,7 @@ export const eventFields = [
 				],
 			},
 		},
-		description: 'Object of values to set as described <a href="https://customer.io/docs/api-triggered-data-format#basic-data-formatting">here</a>.',
+		description: 'Object of values to set as described <a href="https://customer.io/docs/api-triggered-data-format#basic-data-formatting">here</a>',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -133,6 +134,7 @@ export const eventFields = [
 				displayName: 'Custom Attributes',
 				name: 'customAttributes',
 				type: 'fixedCollection',
+				default: {},
 				description: 'Custom Properties',
 				typeOptions: {
 					multipleValues: true,
@@ -148,7 +150,7 @@ export const eventFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Attribute name.',
+								description: 'Attribute name',
 								placeholder: 'Price',
 							},
 
@@ -158,7 +160,7 @@ export const eventFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Attribute value.',
+								description: 'Attribute value',
 								placeholder: '25.50',
 							},
 						],
@@ -193,14 +195,13 @@ export const eventFields = [
 				],
 			},
 		},
-		description: 'The unique identifier for the customer.',
+		description: 'The unique identifier for the customer',
 	},
 	{
 		displayName: 'JSON Parameters',
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -233,7 +234,7 @@ export const eventFields = [
 				],
 			},
 		},
-		description: 'Object of values to set as described <a href="https://customer.io/docs/api-triggered-data-format#basic-data-formatting">here</a>.',
+		description: 'Object of values to set as described <a href="https://customer.io/docs/api-triggered-data-format#basic-data-formatting">here</a>',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -259,6 +260,7 @@ export const eventFields = [
 				displayName: 'Custom Attributes',
 				name: 'customAttributes',
 				type: 'fixedCollection',
+				default: {},
 				description: 'Custom Properties',
 				typeOptions: {
 					multipleValues: true,
@@ -274,7 +276,7 @@ export const eventFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Attribute name.',
+								description: 'Attribute name',
 								placeholder: 'Price',
 							},
 							{
@@ -283,7 +285,7 @@ export const eventFields = [
 								type: 'string',
 								required: true,
 								default: '',
-								description: 'Attribute value.',
+								description: 'Attribute value',
 								placeholder: '25.50',
 							},
 						],
@@ -292,4 +294,4 @@ export const eventFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

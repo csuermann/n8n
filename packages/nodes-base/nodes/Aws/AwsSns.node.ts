@@ -23,7 +23,6 @@ export class AwsSns implements INodeType {
 		description: 'Sends data to AWS SNS',
 		defaults: {
 			name: 'AWS SNS',
-			color: '#FF9900',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -38,18 +37,19 @@ export class AwsSns implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Publish',
 						value: 'publish',
 						description: 'Publish a message to a topic',
+						action: 'Publish a message to a topic',
 					},
 				],
 				default: 'publish',
-				description: 'The operation to perform.',
 			},
 			{
-				displayName: 'Topic',
+				displayName: 'Topic Name or ID',
 				name: 'topic',
 				type: 'options',
 				typeOptions: {
@@ -65,7 +65,7 @@ export class AwsSns implements INodeType {
 				options: [],
 				default: '',
 				required: true,
-				description: 'The topic you want to publish to',
+				description: 'The topic you want to publish to. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 			},
 			{
 				displayName: 'Subject',

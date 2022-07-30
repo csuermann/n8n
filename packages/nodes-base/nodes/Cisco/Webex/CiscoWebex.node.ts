@@ -28,12 +28,13 @@ import {
 	messageOperations,
 } from './descriptions';
 
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 export class CiscoWebex implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Webex by Cisco',
 		name: 'ciscoWebex',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:ciscoWebex.png',
 		group: ['transform'],
 		version: 1,
@@ -41,7 +42,6 @@ export class CiscoWebex implements INodeType {
 		description: 'Consume the Cisco Webex API',
 		defaults: {
 			name: 'Webex',
-			color: '#29b6f6',
 		},
 		credentials: [
 			{
@@ -56,6 +56,7 @@ export class CiscoWebex implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Meeting',
@@ -71,7 +72,6 @@ export class CiscoWebex implements INodeType {
 					},
 				],
 				default: 'message',
-				description: 'Resource to consume',
 			},
 			...meetingOperations,
 			...meetingFields,
@@ -167,7 +167,7 @@ export class CiscoWebex implements INodeType {
 							if (isBinaryData) {
 
 								if (!items[i].binary) {
-									throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+									throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 								}
 
 								const binaryPropertyName = file.binaryPropertyName as string;

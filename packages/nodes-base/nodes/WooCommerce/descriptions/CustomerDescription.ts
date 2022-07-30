@@ -7,11 +7,12 @@ import {
 	customerUpdateFields,
 } from './shared';
 
-export const customerOperations = [
+export const customerOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -24,33 +25,38 @@ export const customerOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a customer',
+				action: 'Create a customer',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a customer',
+				action: 'Delete a customer',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a customer',
+				action: 'Get a customer',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all customers',
+				action: 'Get all customers',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a customer',
+				action: 'Update a customer',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const customerFields = [
+export const customerFields: INodeProperties[] = [
 	// ----------------------------------------
 	//             customer: create
 	// ----------------------------------------
@@ -58,6 +64,7 @@ export const customerFields = [
 		displayName: 'Email',
 		name: 'email',
 		type: 'string',
+		placeholder: 'name@email.com',
 		required: true,
 		default: '',
 		displayOptions: {
@@ -142,7 +149,7 @@ export const customerFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -181,6 +188,7 @@ export const customerFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 				description: 'Email address to filter customers by',
 			},
@@ -251,4 +259,4 @@ export const customerFields = [
 		},
 	},
 	customerUpdateFields,
-] as INodeProperties[];
+];

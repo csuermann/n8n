@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const messageOperations = [
+export const messageOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,53 +20,59 @@ export const messageOperations = [
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a message',
+				action: 'Delete a message',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a single message',
+				action: 'Get a message',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all messages in the signed-in user\'s mailbox',
+				action: 'Get all messages',
 			},
 			{
 				name: 'Get MIME Content',
 				value: 'getMime',
 				description: 'Get MIME content of a message',
+				action: 'Get MIME Content of a message',
 			},
 			{
 				name: 'Move',
 				value: 'move',
 				description: 'Move a message',
+				action: 'Move a message',
 			},
 			{
 				name: 'Reply',
 				value: 'reply',
 				description: 'Create reply to a message',
+				action: 'Reply to a message',
 			},
 			{
 				name: 'Send',
 				value: 'send',
 				description: 'Send a message',
+				action: 'Send a message',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a message',
+				action: 'Update a message',
 			},
 		],
 		default: 'send',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const messageFields = [
+export const messageFields: INodeProperties[] = [
 	{
 		displayName: 'Message ID',
 		name: 'messageId',
-		description: 'Message ID',
 		type: 'string',
 		required: true,
 		default: '',
@@ -136,7 +143,7 @@ export const messageFields = [
 	{
 		displayName: 'Send',
 		name: 'send',
-		description: 'Send the reply message directly. If not set, it will be saved as draft.',
+		description: 'Whether to send the reply message directly. If not set, it will be saved as draft.',
 		displayOptions: {
 			show: {
 				resource: [
@@ -199,21 +206,21 @@ export const messageFields = [
 			{
 				displayName: 'BCC Recipients',
 				name: 'bccRecipients',
-				description: 'Email addresses of BCC recipients.',
+				description: 'Email addresses of BCC recipients',
 				type: 'string',
 				default: '',
 			},
 			{
 				displayName: 'Body Content',
 				name: 'bodyContent',
-				description: 'Message body content.',
+				description: 'Message body content',
 				type: 'string',
 				default: '',
 			},
 			{
 				displayName: 'Body Content Type',
 				name: 'bodyContentType',
-				description: 'Message body content type.',
+				description: 'Message body content type',
 				type: 'options',
 				options: [
 					{
@@ -230,7 +237,7 @@ export const messageFields = [
 			{
 				displayName: 'CC Recipients',
 				name: 'ccRecipients',
-				description: 'Email addresses of CC recipients.',
+				description: 'Email addresses of CC recipients',
 				type: 'string',
 				default: '',
 			},
@@ -253,14 +260,14 @@ export const messageFields = [
 								name: 'name',
 								type: 'string',
 								default: '',
-								description: 'Name of the header.',
+								description: 'Name of the header',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value to set for the header.',
+								description: 'Value to set for the header',
 							},
 						],
 					},
@@ -276,7 +283,7 @@ export const messageFields = [
 			{
 				displayName: 'Importance',
 				name: 'importance',
-				description: 'The importance of the message.',
+				description: 'The importance of the message',
 				type: 'options',
 				options: [
 					{
@@ -297,7 +304,7 @@ export const messageFields = [
 			{
 				displayName: 'Read Receipt Requested',
 				name: 'isReadReceiptRequested',
-				description: 'Indicates whether a read receipt is requested for the message.',
+				description: 'Whether a read receipt is requested for the message',
 				type: 'boolean',
 				default: false,
 			},
@@ -311,14 +318,14 @@ export const messageFields = [
 			{
 				displayName: 'Reply To',
 				name: 'replyTo',
-				description: 'Email addresses to use when replying.',
+				description: 'Email addresses to use when replying',
 				type: 'string',
 				default: '',
 			},
 			{
 				displayName: 'Subject',
 				name: 'subject',
-				description: 'The subject of the message.',
+				description: 'The subject of the message',
 				type: 'string',
 				default: '',
 			},
@@ -341,7 +348,7 @@ export const messageFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -365,14 +372,14 @@ export const messageFields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 
 	// message:create, message:update, message:send
 	{
 		displayName: 'Subject',
 		name: 'subject',
-		description: 'The subject of the message.',
+		description: 'The subject of the message',
 		displayOptions: {
 			show: {
 				resource: [
@@ -390,7 +397,7 @@ export const messageFields = [
 	{
 		displayName: 'Body Content',
 		name: 'bodyContent',
-		description: 'Message body content.',
+		description: 'Message body content',
 		type: 'string',
 		displayOptions: {
 			show: {
@@ -469,14 +476,14 @@ export const messageFields = [
 			{
 				displayName: 'BCC Recipients',
 				name: 'bccRecipients',
-				description: 'Email addresses of BCC recipients.',
+				description: 'Email addresses of BCC recipients',
 				type: 'string',
 				default: '',
 			},
 			{
 				displayName: 'Body Content Type',
 				name: 'bodyContentType',
-				description: 'Message body content type.',
+				description: 'Message body content type',
 				type: 'options',
 				options: [
 					{
@@ -491,9 +498,10 @@ export const messageFields = [
 				default: 'html',
 			},
 			{
-				displayName: 'Categories',
+				displayName: 'Category Names or IDs',
 				name: 'categories',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getCategories',
 				},
@@ -502,7 +510,7 @@ export const messageFields = [
 			{
 				displayName: 'CC Recipients',
 				name: 'ccRecipients',
-				description: 'Email addresses of CC recipients.',
+				description: 'Email addresses of CC recipients',
 				type: 'string',
 				default: '',
 			},
@@ -525,14 +533,14 @@ export const messageFields = [
 								name: 'name',
 								type: 'string',
 								default: '',
-								description: 'Name of the header.',
+								description: 'Name of the header',
 							},
 							{
 								displayName: 'Value',
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value to set for the header.',
+								description: 'Value to set for the header',
 							},
 						],
 					},
@@ -548,7 +556,7 @@ export const messageFields = [
 			{
 				displayName: 'Importance',
 				name: 'importance',
-				description: 'The importance of the message.',
+				description: 'The importance of the message',
 				type: 'options',
 				options: [
 					{
@@ -569,7 +577,7 @@ export const messageFields = [
 			{
 				displayName: 'Read Receipt Requested',
 				name: 'isReadReceiptRequested',
-				description: 'Indicates whether a read receipt is requested for the message.',
+				description: 'Whether a read receipt is requested for the message',
 				type: 'boolean',
 				default: false,
 			},
@@ -583,14 +591,14 @@ export const messageFields = [
 			{
 				displayName: 'Reply To',
 				name: 'replyTo',
-				description: 'Email addresses to use when replying.',
+				description: 'Email addresses to use when replying',
 				type: 'string',
 				default: '',
 			},
 			{
 				displayName: 'Save To Sent Items',
 				name: 'saveToSentItems',
-				description: 'Indicates whether to save the message in Sent Items.',
+				description: 'Whether to save the message in Sent Items',
 				type: 'boolean',
 				default: true,
 			},
@@ -601,7 +609,7 @@ export const messageFields = [
 	{
 		displayName: 'Binary Property',
 		name: 'binaryPropertyName',
-		description: 'Name of the binary property to which to write the data of the read file.',
+		description: 'Name of the binary property to which to write the data of the read file',
 		type: 'string',
 		required: true,
 		default: 'data',
@@ -621,7 +629,7 @@ export const messageFields = [
 	{
 		displayName: 'Folder ID',
 		name: 'folderId',
-		description: 'Target Folder ID.',
+		description: 'Target Folder ID',
 		type: 'string',
 		default: '',
 		required: true,
@@ -636,4 +644,4 @@ export const messageFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

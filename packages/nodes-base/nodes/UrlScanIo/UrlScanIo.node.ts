@@ -3,13 +3,10 @@ import {
 } from 'n8n-core';
 
 import {
-	ICredentialsDecrypted,
-	ICredentialTestFunctions,
 	IDataObject,
 	INodeExecutionData,
 	INodeType,
 	INodeTypeDescription,
-	NodeCredentialTestResult,
 	NodeOperationError,
 } from 'n8n-workflow';
 
@@ -39,7 +36,6 @@ export class UrlScanIo implements INodeType {
 		description: 'Provides various utilities for monitoring websites like health checks or screenshots',
 		defaults: {
 			name: 'urlscan.io',
-			color: '#f3d337',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -47,7 +43,6 @@ export class UrlScanIo implements INodeType {
 			{
 				name: 'urlScanIoApi',
 				required: true,
-				testedBy: 'urlScanIoApiTest',
 			},
 		],
 		properties: [
@@ -67,39 +62,6 @@ export class UrlScanIo implements INodeType {
 			...scanOperations,
 			...scanFields,
 		],
-	};
-
-	methods = {
-		credentialTest: {
-			async urlScanIoApiTest(
-				this: ICredentialTestFunctions,
-				credentials: ICredentialsDecrypted,
-			): Promise<NodeCredentialTestResult> {
-				const { apiKey } = credentials.data as { apiKey: string };
-
-				const options: OptionsWithUri = {
-					headers: {
-						'API-KEY': apiKey,
-					},
-					method: 'GET',
-					uri: 'https://urlscan.io/user/quotas',
-					json: true,
-				};
-
-				try {
-					await this.helpers.request(options);
-					return {
-						status: 'OK',
-						message: 'Authentication successful',
-					};
-				} catch (error) {
-					return {
-						status: 'Error',
-						message: error.message,
-					};
-				}
-			},
-		},
 	};
 
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
@@ -179,7 +141,7 @@ export class UrlScanIo implements INodeType {
 							if (tags.length > 10) {
 								throw new NodeOperationError(
 									this.getNode(),
-									'Please enter at most 10 tags',
+									'Please enter at most 10 tags', { itemIndex: i },
 								);
 							}
 

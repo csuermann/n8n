@@ -13,8 +13,9 @@ import {
 } from 'n8n-workflow';
 
 import { ChildProcess } from 'child_process';
+import { stringify } from 'flatted';
 // eslint-disable-next-line import/no-extraneous-dependencies
-import * as PCancelable from 'p-cancelable';
+import PCancelable from 'p-cancelable';
 // eslint-disable-next-line import/no-cycle
 import {
 	Db,
@@ -69,9 +70,7 @@ export class ActiveExecutions {
 
 			const execution = ResponseHelper.flattenExecutionData(fullExecutionData);
 
-			const executionResult = await Db.collections.Execution!.save(
-				execution as IExecutionFlattedDb,
-			);
+			const executionResult = await Db.collections.Execution.save(execution as IExecutionFlattedDb);
 			executionId =
 				typeof executionResult.id === 'object'
 					? // @ts-ignore
@@ -82,11 +81,11 @@ export class ActiveExecutions {
 
 			const execution = {
 				id: executionId,
+				data: stringify(executionData.executionData!),
 				waitTill: null,
 			};
 
-			// @ts-ignore
-			await Db.collections.Execution!.update(executionId, execution);
+			await Db.collections.Execution.update(executionId, execution);
 		}
 
 		// @ts-ignore

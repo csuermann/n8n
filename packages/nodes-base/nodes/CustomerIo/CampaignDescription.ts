@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const campaignOperations = [
+export const campaignOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -16,22 +17,24 @@ export const campaignOperations = [
 			{
 				name: 'Get',
 				value: 'get',
+				action: 'Get a campaign',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
+				action: 'Get all campaigns',
 			},
 			{
 				name: 'Get Metrics',
 				value: 'getMetrics',
+				action: 'Get metrics for a campaign',
 			},
 		],
 		default: 'get',
-		description: 'The operation to perform',
 	},
-] as INodeProperties[];
+];
 
-export const campaignFields = [
+export const campaignFields: INodeProperties[] = [
 	/* -------------------------------------------------------------------------- */
 	/*                                   campaign:get                             */
 	/* -------------------------------------------------------------------------- */
@@ -114,7 +117,6 @@ export const campaignFields = [
 		name: 'jsonParameters',
 		type: 'boolean',
 		default: false,
-		description: '',
 		displayOptions: {
 			show: {
 				resource: [
@@ -165,12 +167,12 @@ export const campaignFields = [
 				description: 'Specify metric type',
 				options: [
 					{
-						name: 'Empty',
-						value: 'empty',
-					},
-					{
 						name: 'Email',
 						value: 'email',
+					},
+					{
+						name: 'Empty',
+						value: 'empty',
 					},
 					{
 						name: 'Push',
@@ -181,7 +183,7 @@ export const campaignFields = [
 						value: 'slack',
 					},
 					{
-						name: 'twilio',
+						name: 'Twilio',
 						value: 'twilio',
 					},
 					{
@@ -196,4 +198,4 @@ export const campaignFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

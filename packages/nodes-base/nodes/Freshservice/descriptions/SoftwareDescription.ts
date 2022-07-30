@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const softwareOperations = [
+export const softwareOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const softwareOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a software application',
+				action: 'Create a software application',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a software application',
+				action: 'Delete a software application',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a software application',
+				action: 'Get a software application',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all software applications',
+				action: 'Get all software applications',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a software application',
+				action: 'Update a software application',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const softwareFields = [
+export const softwareFields: INodeProperties[] = [
 	// ----------------------------------------
 	//             software: create
 	// ----------------------------------------
@@ -222,7 +228,7 @@ export const softwareFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -344,4 +350,4 @@ export const softwareFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

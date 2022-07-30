@@ -67,7 +67,6 @@ export class HelpScout implements INodeType {
 		description: 'Consume HelpScout API',
 		defaults: {
 			name: 'HelpScout',
-			color: '#1392ee',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -82,6 +81,7 @@ export class HelpScout implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Conversation',
@@ -101,7 +101,6 @@ export class HelpScout implements INodeType {
 					},
 				],
 				default: 'conversation',
-				description: 'The resource to operate on.',
 			},
 			...conversationOperations,
 			...conversationFields,
@@ -166,7 +165,7 @@ export class HelpScout implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;
@@ -205,7 +204,7 @@ export class HelpScout implements INodeType {
 							delete body.customerEmail;
 						}
 						if (body.customer === undefined) {
-							throw new NodeOperationError(this.getNode(), 'Either customer email or customer ID must be set');
+							throw new NodeOperationError(this.getNode(), 'Either customer email or customer ID must be set', { itemIndex: i });
 						}
 						if (threads) {
 							for (let i = 0; i < threads.length; i++) {
@@ -291,7 +290,7 @@ export class HelpScout implements INodeType {
 							body.websites = websites;
 						}
 						if (Object.keys(body).length === 0) {
-							throw new NodeOperationError(this.getNode(), 'You have to set at least one field');
+							throw new NodeOperationError(this.getNode(), 'You have to set at least one field', { itemIndex: i });
 						}
 						responseData = await helpscoutApiRequest.call(this, 'POST', '/v2/customers', body, qs, undefined, { resolveWithFullResponse: true });
 						const id = responseData.headers['resource-id'];
@@ -337,7 +336,7 @@ export class HelpScout implements INodeType {
 							body.age = body.age.toString();
 						}
 						if (Object.keys(body).length === 0) {
-							throw new NodeOperationError(this.getNode(), 'You have to set at least one field');
+							throw new NodeOperationError(this.getNode(), 'You have to set at least one field', { itemIndex: i });
 						}
 						responseData = await helpscoutApiRequest.call(this, 'PUT', `/v2/customers/${customerId}`, body, qs, undefined, { resolveWithFullResponse: true });
 						responseData = { success: true };
@@ -389,7 +388,7 @@ export class HelpScout implements INodeType {
 							delete body.customerEmail;
 						}
 						if (body.customer === undefined) {
-							throw new NodeOperationError(this.getNode(), 'Either customer email or customer ID must be set');
+							throw new NodeOperationError(this.getNode(), 'Either customer email or customer ID must be set', { itemIndex: i });
 						}
 						if (attachments) {
 							if (attachments.attachmentsValues
@@ -408,7 +407,7 @@ export class HelpScout implements INodeType {
 											mimeType: binaryProperty.mimeType,
 										};
 									} else {
-										throw new NodeOperationError(this.getNode(), `Binary property ${value.property} does not exist on input`);
+										throw new NodeOperationError(this.getNode(), `Binary property ${value.property} does not exist on input`, { itemIndex: i });
 									}
 								};
 								body.attachments?.push.apply(body.attachments, (attachments.attachmentsBinary as IDataObject[]).map(mapFunction) as IAttachment[]);

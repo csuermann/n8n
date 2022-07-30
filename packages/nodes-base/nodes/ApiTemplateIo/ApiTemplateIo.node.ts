@@ -30,7 +30,6 @@ export class ApiTemplateIo implements INodeType {
 		subtitle: '={{$parameter["operation"] + ": " + $parameter["resource"]}}',
 		defaults: {
 			name: 'APITemplate.io',
-			color: '#c0c0c0',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -45,6 +44,7 @@ export class ApiTemplateIo implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Account',
@@ -60,19 +60,19 @@ export class ApiTemplateIo implements INodeType {
 					},
 				],
 				default: 'image',
-				description: 'Resource to consume',
 			},
 			{
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				default: 'create',
 				required: true,
-				description: 'Operation to perform',
 				options: [
 					{
 						name: 'Create',
 						value: 'create',
+						action: 'Create an image',
 					},
 				],
 				displayOptions: {
@@ -88,13 +88,14 @@ export class ApiTemplateIo implements INodeType {
 				displayName: 'Operation',
 				name: 'operation',
 				type: 'options',
+				noDataExpression: true,
 				default: 'get',
 				required: true,
-				description: 'Operation to perform',
 				options: [
 					{
 						name: 'Get',
 						value: 'get',
+						action: 'Get an account',
 					},
 				],
 				displayOptions: {
@@ -106,12 +107,12 @@ export class ApiTemplateIo implements INodeType {
 				},
 			},
 			{
-				displayName: 'Template ID',
+				displayName: 'Template Name or ID',
 				name: 'imageTemplateId',
 				type: 'options',
 				required: true,
 				default: '',
-				description: 'ID of the image template to use.',
+				description: 'ID of the image template to use. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'getImageTemplates',
 				},
@@ -127,12 +128,12 @@ export class ApiTemplateIo implements INodeType {
 				},
 			},
 			{
-				displayName: 'Template ID',
+				displayName: 'Template Name or ID',
 				name: 'pdfTemplateId',
 				type: 'options',
 				required: true,
 				default: '',
-				description: 'ID of the PDF template to use.',
+				description: 'ID of the PDF template to use. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
 					loadOptionsMethod: 'getPdfTemplates',
 				},
@@ -180,7 +181,8 @@ export class ApiTemplateIo implements INodeType {
 						],
 					},
 				},
-				description: 'Name of the binary property to which to write the data of the read file.',
+				// eslint-disable-next-line n8n-nodes-base/node-param-description-boolean-without-whether
+				description: 'Name of the binary property to which to write the data of the read file',
 			},
 			{
 				displayName: 'Binary Property',
@@ -188,7 +190,7 @@ export class ApiTemplateIo implements INodeType {
 				type: 'string',
 				required: true,
 				default: 'data',
-				description: 'Name of the binary property to which to write to.',
+				description: 'Name of the binary property to which to write to',
 				displayOptions: {
 					show: {
 						resource: [
@@ -297,7 +299,7 @@ export class ApiTemplateIo implements INodeType {
 												name: 'value',
 												type: 'string',
 												default: '',
-												description: 'Value to the property.',
+												description: 'Value to the property',
 											},
 										],
 									},
@@ -346,7 +348,7 @@ export class ApiTemplateIo implements INodeType {
 								name: 'value',
 								type: 'string',
 								default: '',
-								description: 'Value to the property.',
+								description: 'Value to the property',
 							},
 						],
 					},
@@ -452,7 +454,10 @@ export class ApiTemplateIo implements INodeType {
 					try {
 						const jsonParameters = this.getNodeParameter('jsonParameters', i) as boolean;
 
-						const options = this.getNodeParameter('options', i) as IDataObject;
+						let options: IDataObject = {};
+						if (download) {
+							options = this.getNodeParameter('options', i) as IDataObject;
+						}
 
 						const qs = {
 							template_id: this.getNodeParameter('imageTemplateId', i),
@@ -475,7 +480,7 @@ export class ApiTemplateIo implements INodeType {
 							if (overrideJson !== '') {
 								const data = validateJSON(overrideJson);
 								if (data === undefined) {
-									throw new NodeOperationError(this.getNode(), 'A valid JSON must be provided.');
+									throw new NodeOperationError(this.getNode(), 'A valid JSON must be provided.', { itemIndex: i });
 								}
 								body.overrides = data;
 							}
@@ -529,7 +534,10 @@ export class ApiTemplateIo implements INodeType {
 					try {
 						const jsonParameters = this.getNodeParameter('jsonParameters', i) as boolean;
 
-						const options = this.getNodeParameter('options', i) as IDataObject;
+						let options: IDataObject = {};
+						if (download) {
+							options = this.getNodeParameter('options', i) as IDataObject;
+						}
 
 						const qs = {
 							template_id: this.getNodeParameter('pdfTemplateId', i),
@@ -540,14 +548,14 @@ export class ApiTemplateIo implements INodeType {
 						if (jsonParameters === false) {
 							const properties = (this.getNodeParameter('propertiesUi', i) as IDataObject || {}).propertyValues as IDataObject[] || [];
 							if (properties.length === 0) {
-								throw new NodeOperationError(this.getNode(), 'The parameter properties cannot be empty');
+								throw new NodeOperationError(this.getNode(), 'The parameter properties cannot be empty', { itemIndex: i });
 							}
 							data = properties.reduce((obj, value) => Object.assign(obj, { [`${value.key}`]: value.value }), {});
 						} else {
 							const propertiesJson = this.getNodeParameter('propertiesJson', i) as string;
 							data = validateJSON(propertiesJson);
 							if (data === undefined) {
-								throw new NodeOperationError(this.getNode(), 'A valid JSON must be provided.');
+								throw new NodeOperationError(this.getNode(), 'A valid JSON must be provided.', { itemIndex: i });
 							}
 						}
 

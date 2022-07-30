@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const storyContentOperations = [
+export const storyContentOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				source: [
@@ -22,19 +23,20 @@ export const storyContentOperations = [
 				name: 'Get',
 				value: 'get',
 				description: 'Get a story',
+				action: 'Get a story',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all stories',
+				action: 'Get all stories',
 			},
 		],
 		default: 'get',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const storyContentFields = [
+export const storyContentFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                story:get                                   */
@@ -58,7 +60,7 @@ export const storyContentFields = [
 				],
 			},
 		},
-		description: 'The ID or slug of the story to get.',
+		description: 'The ID or slug of the story to get',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -82,7 +84,7 @@ export const storyContentFields = [
 			},
 		},
 		default: false,
-		description: 'Returns a list of your user contacts.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -109,7 +111,7 @@ export const storyContentFields = [
 			maxValue: 100,
 		},
 		default: 50,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -136,8 +138,8 @@ export const storyContentFields = [
 				name: 'starts_with',
 				type: 'string',
 				default: '',
-				description: 'Filter by slug.',
+				description: 'Filter by slug',
 			},
 		],
 	},
-] as INodeProperties[];
+];

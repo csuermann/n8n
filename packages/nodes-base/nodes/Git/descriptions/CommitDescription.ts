@@ -2,7 +2,7 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const commitFields = [
+export const commitFields: INodeProperties[] = [
 	{
 		displayName: 'Message',
 		name: 'message',
@@ -15,7 +15,7 @@ export const commitFields = [
 			},
 		},
 		default: '',
-		description: 'The commit message to use.',
+		description: 'The commit message to use',
 	},
 	{
 		displayName: 'Options',
@@ -37,8 +37,8 @@ export const commitFields = [
 				type: 'string',
 				default: '',
 				placeholder: '/data/file1.json',
-				description: `Comma separated list of paths (absolute or relative to Repository Path) of files or folders to commit. If not set will all "added" files and folders be committed.`,
+				description: 'Comma-separated list of paths (absolute or relative to Repository Path) of files or folders to commit. If not set will all "added" files and folders be committed.',
 			},
 		],
 	},
-] as INodeProperties[];
+];

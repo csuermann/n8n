@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const formOperations = [
+export const formOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -17,15 +18,15 @@ export const formOperations = [
 				name: 'Submit a Form',
 				value: 'submit',
 				description: 'Store data from a form submission',
+				action: 'Submit a form',
 			},
 
 		],
 		default: 'submit',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const formFields = [
+export const formFields: INodeProperties[] = [
 	{
 		displayName: 'Form',
 		name: 'form',
@@ -39,12 +40,12 @@ export const formFields = [
 		},
 		default: '',
 		required: true,
-		description: 'Name of the form to operate on.',
+		description: 'Name of the form to operate on',
 	},
 
 	// Form:submit
 	{
-		displayName: 'JSON Data fields',
+		displayName: 'JSON Data Fields',
 		name: 'jsonDataFields',
 		type: 'boolean',
 		default: false,
@@ -58,7 +59,7 @@ export const formFields = [
 				],
 			},
 		},
-		description: 'If form fields should be set via the value-key pair UI or JSON.',
+		description: 'Whether form fields should be set via the value-key pair UI or JSON',
 	},
 	{
 		displayName: 'Form Data',
@@ -81,7 +82,7 @@ export const formFields = [
 				],
 			},
 		},
-		description: 'Form data to send as JSON.',
+		description: 'Form data to send as JSON',
 	},
 	{
 		displayName: 'Form Data',
@@ -114,18 +115,18 @@ export const formFields = [
 						name: 'name',
 						type: 'string',
 						default: '',
-						description: 'Name of the field.',
+						description: 'Name of the field',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: 'Value of the field.',
+						description: 'Value of the field',
 					},
 				],
 			},
 		],
-		description: 'Form data to send.',
+		description: 'Form data to send',
 	},
-] as INodeProperties[];
+];

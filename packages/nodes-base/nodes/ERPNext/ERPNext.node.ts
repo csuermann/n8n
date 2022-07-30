@@ -1,3 +1,4 @@
+/* eslint-disable n8n-nodes-base/node-filename-against-convention */
 import {
 	IExecuteFunctions,
 } from 'n8n-core';
@@ -39,7 +40,6 @@ export class ERPNext implements INodeType {
 		description: 'Consume ERPNext API',
 		defaults: {
 			name: 'ERPNext',
-			color: '#7574ff',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -54,6 +54,7 @@ export class ERPNext implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Document',
@@ -61,7 +62,6 @@ export class ERPNext implements INodeType {
 					},
 				],
 				default: 'document',
-				description: 'Resource to consume.',
 			},
 			...documentOperations,
 			...documentFields,
@@ -207,7 +207,7 @@ export class ERPNext implements INodeType {
 					const properties = this.getNodeParameter('properties', i) as DocumentProperties;
 
 					if (!properties.customProperty.length) {
-						throw new NodeOperationError(this.getNode(), 'Please enter at least one property for the document to create.');
+						throw new NodeOperationError(this.getNode(), 'Please enter at least one property for the document to create.', { itemIndex: i },);
 					}
 
 					properties.customProperty.forEach(property => {
@@ -243,7 +243,7 @@ export class ERPNext implements INodeType {
 					const properties = this.getNodeParameter('properties', i) as DocumentProperties;
 
 					if (!properties.customProperty.length) {
-						throw new NodeOperationError(this.getNode(), 'Please enter at least one property for the document to update.');
+						throw new NodeOperationError(this.getNode(), 'Please enter at least one property for the document to update.', { itemIndex: i });
 					}
 
 					properties.customProperty.forEach(property => {

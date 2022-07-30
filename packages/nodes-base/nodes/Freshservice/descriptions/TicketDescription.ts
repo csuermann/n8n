@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const ticketOperations = [
+export const ticketOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const ticketOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a ticket',
+				action: 'Create a ticket',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a ticket',
+				action: 'Delete a ticket',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a ticket',
+				action: 'Get a ticket',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all tickets',
+				action: 'Get all tickets',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a ticket',
+				action: 'Update a ticket',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const ticketFields = [
+export const ticketFields: INodeProperties[] = [
 	// ----------------------------------------
 	//              ticket: create
 	// ----------------------------------------
@@ -54,6 +60,7 @@ export const ticketFields = [
 		name: 'email',
 		description: 'Email address of the ticket author',
 		type: 'string',
+		placeholder: 'name@email.com',
 		required: true,
 		default: '',
 		displayOptions: {
@@ -193,27 +200,23 @@ export const ticketFields = [
 				description: 'Comma-separated email addresses to add in the CC field of the ticket email',
 			},
 			{
-				displayName: 'Department Name/ID',
+				displayName: 'Department Name or ID',
 				name: 'department_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the department to which this ticket belongs. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the department to which this ticket belongs. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getDepartments',
-					],
+					loadOptionsMethod: 'getDepartments',
 				},
 			},
 			{
-				displayName: 'Group Name/ID',
+				displayName: 'Group Name or ID',
 				name: 'group_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the group to which the ticket has been assigned. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the group to which the ticket has been assigned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getAgentGroups',
-					],
+					loadOptionsMethod: 'getAgentGroups',
 				},
 			},
 			{
@@ -244,15 +247,13 @@ export const ticketFields = [
 				description: 'Name of the ticket author',
 			},
 			{
-				displayName: 'Requester Name/ID',
+				displayName: 'Requester Name or ID',
 				name: 'requester_id',
 				type: 'options',
-				description: 'Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				default: '',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getRequesters',
-					],
+					loadOptionsMethod: 'getRequesters',
 				},
 			},
 		],
@@ -327,7 +328,7 @@ export const ticketFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -363,27 +364,23 @@ export const ticketFields = [
 		},
 		options: [
 			{
-				displayName: 'Agent Name/ID',
+				displayName: 'Agent Name or ID',
 				name: 'agent_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the agent to whom the tickets have been assigned. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the agent to whom the tickets have been assigned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getAgents',
-					],
+					loadOptionsMethod: 'getAgents',
 				},
 			},
 			{
-				displayName: 'Group Name/ID',
+				displayName: 'Group Name or ID',
 				name: 'group_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the group to which the tickets have been assigned. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the group to which the tickets have been assigned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getAgentGroups',
-					],
+					loadOptionsMethod: 'getAgentGroups',
 				},
 			},
 			{
@@ -510,15 +507,13 @@ export const ticketFields = [
 		},
 		options: [
 			{
-				displayName: 'Department Name/ID',
+				displayName: 'Department Name or ID',
 				name: 'department_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the department to which this ticket has been assigned. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the department to which this ticket has been assigned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getDepartments',
-					],
+					loadOptionsMethod: 'getDepartments',
 				},
 			},
 			{
@@ -532,19 +527,18 @@ export const ticketFields = [
 				displayName: 'Email',
 				name: 'email',
 				type: 'string',
+				placeholder: 'name@email.com',
 				default: '',
 				description: 'Email address of the ticket author',
 			},
 			{
-				displayName: 'Group Name/ID',
+				displayName: 'Group Name or ID',
 				name: 'group_id',
 				type: 'options',
 				default: '',
-				description: 'ID of the group to which the ticket has been assigned. Choose from the list or specify an ID. You can also specify the ID using an <a href="https://docs.n8n.io/nodes/expressions.html#expressions">expression</a>.',
+				description: 'ID of the group to which the ticket has been assigned. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 				typeOptions: {
-					loadOptionsMethod: [
-						'getAgentGroups',
-					],
+					loadOptionsMethod: 'getAgentGroups',
 				},
 			},
 			{
@@ -637,4 +631,4 @@ export const ticketFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

@@ -1,12 +1,13 @@
-import { 
+import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const deployOperations = [
+export const deployOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,38 +20,42 @@ export const deployOperations = [
 				name: 'Cancel',
 				value: 'cancel',
 				description: 'Cancel a deployment',
+				action: 'Cancel a deployment',
 			},
 			{
 				name: 'Create',
 				value: 'create',
 				description: 'Create a new deployment',
+				action: 'Create a deployment',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get a deployment',
+				action: 'Get a deployment',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all deployments',
+				action: 'Get all deployments',
 			},
 		],
 		default: 'getAll',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const deployFields = [
+export const deployFields: INodeProperties[] = [
 	{
-		displayName: 'Site ID',
+		displayName: 'Site Name or ID',
 		name: 'siteId',
 		required: true,
 		type: 'options',
+		default: '',
 		typeOptions: {
 			loadOptionsMethod: 'getSites',
 		},
-		description: 'Enter the Site ID',
+		description: 'Enter the Site ID. Choose from the list, or specify an ID using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>.',
 		displayOptions:{
 			show: {
 				resource: [
@@ -69,6 +74,7 @@ export const deployFields = [
 		name: 'deployId',
 		required: true,
 		type: 'string',
+		default: '',
 		displayOptions:{
 			show: {
 				resource: [
@@ -121,7 +127,7 @@ export const deployFields = [
 			maxValue: 200,
 		},
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 	},
 	// ---- Create Site Deploy ---- //
 	{
@@ -155,4 +161,4 @@ export const deployFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

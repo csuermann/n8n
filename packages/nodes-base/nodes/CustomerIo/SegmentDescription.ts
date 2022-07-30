@@ -1,10 +1,11 @@
 import { INodeProperties } from 'n8n-workflow';
 
-export const segmentOperations = [
+export const segmentOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -16,18 +17,19 @@ export const segmentOperations = [
 			{
 				name: 'Add Customer',
 				value: 'add',
+				action: 'Add a customer to a segment',
 			},
 			{
 				name: 'Remove Customer',
 				value: 'remove',
+				action: 'Remove a customer from a segment',
 			},
 		],
 		default: 'add',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const segmentFields = [
+export const segmentFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                   segment:add                              */
@@ -49,7 +51,7 @@ export const segmentFields = [
 				],
 			},
 		},
-		description: 'The unique identifier of the segment.',
+		description: 'The unique identifier of the segment',
 	},
 	{
 		displayName: 'Customer IDs',
@@ -68,6 +70,6 @@ export const segmentFields = [
 				],
 			},
 		},
-		description: 'A list of customer ids to add to the segment.',
+		description: 'A list of customer IDs to add to the segment',
 	},
-] as INodeProperties[];
+];

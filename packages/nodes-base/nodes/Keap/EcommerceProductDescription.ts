@@ -2,11 +2,12 @@ import {
 	INodeProperties,
  } from 'n8n-workflow';
 
-export const ecommerceProductOperations = [
+export const ecommerceProductOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,29 +20,32 @@ export const ecommerceProductOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create an ecommerce product',
+				action: 'Create an e-commerce product',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete an ecommerce product',
+				action: 'Delete an e-commerce product',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Get an ecommerce product',
+				action: 'Get an e-commerce product',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all ecommerce product',
+				action: 'Get all e-commerce products',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const ecommerceProductFields = [
+export const ecommerceProductFields: INodeProperties[] = [
 
 /* -------------------------------------------------------------------------- */
 /*                                 ecommerceProduct:create                    */
@@ -182,7 +186,7 @@ export const ecommerceProductFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -206,7 +210,7 @@ export const ecommerceProductFields = [
 			maxValue: 200,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -233,4 +237,4 @@ export const ecommerceProductFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const companyOperations = [
+export const companyOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -18,10 +19,10 @@ export const companyOperations = [
 			{
 				name: 'Get Settings',
 				value: 'getSetting',
-				description: 'Get your companys ProfitWell account settings',
+				description: 'Get your company\'s ProfitWell account settings',
+				action: 'Get settings for your company',
 			},
 		],
 		default: 'getSetting',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];

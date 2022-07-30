@@ -43,7 +43,6 @@ export class Marketstack implements INodeType {
 		description: 'Consume Marketstack API',
 		defaults: {
 			name: 'Marketstack',
-			color: '#02283e',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -58,6 +57,7 @@ export class Marketstack implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'End-of-Day Data',
@@ -140,7 +140,7 @@ export class Marketstack implements INodeType {
 							if (!dateFrom || !dateTo) {
 								throw new NodeOperationError(
 									this.getNode(),
-									'Please enter a start and end date to filter by timeframe.',
+									'Please enter a start and end date to filter by timeframe.', { itemIndex: i },
 								);
 							}
 							endpoint = '/eod';

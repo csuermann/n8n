@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const journalEntryOperations = [
+export const journalEntryOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,33 +20,38 @@ export const journalEntryOperations = [
 				name: 'Create',
 				value: 'create',
 				description: 'Create a journal entry',
+				action: 'Create a journal entry',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Delete a journal entry',
+				action: 'Delete a journal entry',
 			},
 			{
 				name: 'Get',
 				value: 'get',
 				description: 'Retrieve a journal entry',
+				action: 'Get a journal entry',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all journal entries',
+				action: 'Get all journal entries',
 			},
 			{
 				name: 'Update',
 				value: 'update',
 				description: 'Update a journal entry',
+				action: 'Update a journal entry',
 			},
 		],
 		default: 'create',
 	},
-] as INodeProperties[];
+];
 
-export const journalEntryFields = [
+export const journalEntryFields: INodeProperties[] = [
 	// ----------------------------------------
 	//           journalEntry: create
 	// ----------------------------------------
@@ -158,7 +164,7 @@ export const journalEntryFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'How many results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -234,4 +240,4 @@ export const journalEntryFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

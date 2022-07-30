@@ -21,13 +21,13 @@ export class ActiveCampaignTrigger implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'ActiveCampaign Trigger',
 		name: 'activeCampaignTrigger',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:activeCampaign.png',
 		group: ['trigger'],
 		version: 1,
 		description: 'Handle ActiveCampaign events via webhooks',
 		defaults: {
 			name: 'ActiveCampaign Trigger',
-			color: '#356ae6',
 		},
 		inputs: [],
 		outputs: ['main'],
@@ -47,9 +47,10 @@ export class ActiveCampaignTrigger implements INodeType {
 		],
 		properties: [
 			{
-				displayName: 'Events',
+				displayName: 'Event Names or IDs',
 				name: 'events',
 				type: 'multiOptions',
+				description: 'Choose from the list, or specify IDs using an <a href="https://docs.n8n.io/code-examples/expressions/">expression</a>',
 				typeOptions: {
 					loadOptionsMethod: 'getEvents',
 				},

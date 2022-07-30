@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const flowOperations = [
+export const flowOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,19 +20,20 @@ export const flowOperations = [
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all flows',
+				action: 'Get all flows',
 			},
 			{
 				name: 'Invoke',
 				value: 'invoke',
 				description: 'Invoke a flow',
+				action: 'Invoke a flow',
 			},
 		],
 		default: 'invoke',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const flowFields = [
+export const flowFields: INodeProperties[] = [
 
 	/* -------------------------------------------------------------------------- */
 	/*                                flow:getAll                                 */
@@ -51,7 +53,7 @@ export const flowFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -74,8 +76,8 @@ export const flowFields = [
 			minValue: 1,
 			maxValue: 500,
 		},
-		default: 100,
-		description: 'How many results to return.',
+		default: 50,
+		description: 'Max number of results to return',
 	},
 
 	/* -------------------------------------------------------------------------- */
@@ -114,7 +116,7 @@ export const flowFields = [
 				],
 			},
 		},
-		description: 'If the input variables should be set via the value-key pair UI or JSON/RAW.',
+		description: 'Whether the input variables should be set via the value-key pair UI or JSON/RAW',
 	},
 	{
 		displayName: 'Variables',
@@ -134,7 +136,7 @@ export const flowFields = [
 			},
 		},
 		default: '',
-		description: 'Input variables as JSON object.',
+		description: 'Input variables as JSON object',
 	},
 	{
 		displayName: 'Variables',
@@ -157,7 +159,7 @@ export const flowFields = [
 				],
 			},
 		},
-		description: 'The input variable to send.',
+		description: 'The input variable to send',
 		default: {},
 		options: [
 			{
@@ -169,17 +171,17 @@ export const flowFields = [
 						name: 'name',
 						type: 'string',
 						default: '',
-						description: 'Name of the input variable.',
+						description: 'Name of the input variable',
 					},
 					{
 						displayName: 'Value',
 						name: 'value',
 						type: 'string',
 						default: '',
-						description: 'Value of the input variable.',
+						description: 'Value of the input variable',
 					},
 				],
 			},
 		],
 	},
-] as INodeProperties[];
+];

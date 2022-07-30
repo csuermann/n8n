@@ -2,33 +2,37 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const postCommentOperations = [
+export const postCommentOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		default: 'create',
-		description: 'Operation to perform',
 		options: [
 			{
 				name: 'Create',
 				value: 'create',
 				description: 'Create a top-level comment in a post',
+				action: 'Create a comment in a post',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Retrieve all comments in a post',
+				action: 'Get all comments in a post',
 			},
 			{
 				name: 'Delete',
 				value: 'delete',
 				description: 'Remove a comment from a post',
+				action: 'Delete a comment from a post',
 			},
 			{
 				name: 'Reply',
 				value: 'reply',
 				description: 'Write a reply to a comment in a post',
+				action: 'Reply to a comment in a post',
 			},
 		],
 		displayOptions: {
@@ -39,9 +43,9 @@ export const postCommentOperations = [
 			},
 		},
 	},
-] as INodeProperties[];
+];
 
-export const postCommentFields = [
+export const postCommentFields: INodeProperties[] = [
 	// ----------------------------------
 	//        postComment: create
 	// ----------------------------------
@@ -92,7 +96,7 @@ export const postCommentFields = [
 		type: 'string',
 		required: true,
 		default: '',
-		description: 'The name of subreddit where the post is.',
+		description: 'The name of subreddit where the post is',
 		displayOptions: {
 			show: {
 				resource: [
@@ -128,7 +132,7 @@ export const postCommentFields = [
 		name: 'returnAll',
 		type: 'boolean',
 		default: false,
-		description: 'Return all results.',
+		description: 'Whether to return all results or only up to a given limit',
 		displayOptions: {
 			show: {
 				resource: [
@@ -145,7 +149,7 @@ export const postCommentFields = [
 		name: 'limit',
 		type: 'number',
 		default: 100,
-		description: 'The number of results to return.',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 			maxValue: 100,
@@ -228,4 +232,4 @@ export const postCommentFields = [
 			},
 		},
 	},
-] as INodeProperties[];
+];

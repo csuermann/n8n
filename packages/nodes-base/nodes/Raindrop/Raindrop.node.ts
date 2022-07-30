@@ -43,7 +43,6 @@ export class Raindrop implements INodeType {
 		description: 'Consume the Raindrop API',
 		defaults: {
 			name: 'Raindrop',
-			color: '#1988e0',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -58,6 +57,7 @@ export class Raindrop implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Bookmark',
@@ -77,7 +77,6 @@ export class Raindrop implements INodeType {
 					},
 				],
 				default: 'collection',
-				description: 'Resource to consume',
 			},
 			...bookmarkOperations,
 			...bookmarkFields,
@@ -205,7 +204,7 @@ export class Raindrop implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						Object.assign(body, updateFields);
@@ -216,7 +215,10 @@ export class Raindrop implements INodeType {
 							};
 							delete updateFields.collectionId;
 						}
-
+						if (updateFields.pleaseParse === true) {
+							body.pleaseParse = {};
+							delete updateFields.pleaseParse;
+						}
 						if (updateFields.tags) {
 							body.tags = (updateFields.tags as string).split(',').map(tag => tag.trim()) as string[];
 						}
@@ -315,7 +317,7 @@ export class Raindrop implements INodeType {
 						const updateFields = this.getNodeParameter('updateFields', i) as IDataObject;
 
 						if (isEmpty(updateFields)) {
-							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`);
+							throw new NodeOperationError(this.getNode(), `Please enter at least one field to update for the ${resource}.`, { itemIndex: i });
 						}
 
 						if (updateFields.parentId) {
@@ -334,11 +336,11 @@ export class Raindrop implements INodeType {
 						if (updateFields.cover) {
 
 							if (!items[i].binary) {
-								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!');
+								throw new NodeOperationError(this.getNode(), 'No binary data exists on item!', { itemIndex: i });
 							}
 
 							if (!updateFields.cover) {
-								throw new NodeOperationError(this.getNode(), 'Please enter a binary property to upload a cover image.');
+								throw new NodeOperationError(this.getNode(), 'Please enter a binary property to upload a cover image.', { itemIndex: i });
 							}
 
 							const binaryPropertyName = updateFields.cover as string;

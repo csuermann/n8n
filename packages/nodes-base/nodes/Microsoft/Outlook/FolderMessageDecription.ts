@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const folderMessageOperations = [
+export const folderMessageOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -19,18 +20,17 @@ export const folderMessageOperations = [
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all the messages in a folder',
+				action: 'Get all folder messages',
 			},
 		],
 		default: 'create',
-		description: 'The operation to perform.',
 	},
-] as INodeProperties[];
+];
 
-export const folderMessageFields = [
+export const folderMessageFields: INodeProperties[] = [
 	{
 		displayName: 'Folder ID',
 		name: 'folderId',
-		description: 'Folder ID',
 		type: 'string',
 		required: true,
 		default: '',
@@ -60,7 +60,7 @@ export const folderMessageFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -84,7 +84,7 @@ export const folderMessageFields = [
 			maxValue: 500,
 		},
 		default: 100,
-		description: 'How many results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Additional Fields',
@@ -119,4 +119,4 @@ export const folderMessageFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const meetingTranscriptOperations = [
+export const meetingTranscriptOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		displayOptions: {
 			show: {
 				resource: [
@@ -18,18 +19,19 @@ export const meetingTranscriptOperations = [
 			{
 				name: 'Download',
 				value: 'download',
+				action: 'Download a meeting transcript',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
+				action: 'Get all meeting transcripts',
 			},
 		],
 		default: 'download',
-		description: 'Operation to perform',
 	},
-] as INodeProperties[];
+];
 
-export const meetingTranscriptFields = [
+export const meetingTranscriptFields: INodeProperties[] = [
 	// ----------------------------------------
 	//             meetingTranscript: download
 	// ----------------------------------------
@@ -92,10 +94,12 @@ export const meetingTranscriptFields = [
 				type: 'options',
 				options: [
 					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 						name: 'txt',
 						value: 'txt',
 					},
 					{
+						// eslint-disable-next-line n8n-nodes-base/node-param-display-name-miscased
 						name: 'vtt',
 						value: 'vtt',
 					},
@@ -132,7 +136,7 @@ export const meetingTranscriptFields = [
 		name: 'returnAll',
 		type: 'boolean',
 		default: false,
-		description: 'Return all results.',
+		description: 'Whether to return all results or only up to a given limit',
 		displayOptions: {
 			show: {
 				resource: [
@@ -149,7 +153,7 @@ export const meetingTranscriptFields = [
 		name: 'limit',
 		type: 'number',
 		default: 50,
-		description: 'The number of results to return',
+		description: 'Max number of results to return',
 		typeOptions: {
 			minValue: 1,
 		},
@@ -193,4 +197,4 @@ export const meetingTranscriptFields = [
 			},
 		],
 	},
-] as INodeProperties[];
+];

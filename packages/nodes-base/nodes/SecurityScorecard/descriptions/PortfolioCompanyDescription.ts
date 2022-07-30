@@ -2,11 +2,12 @@ import {
 	INodeProperties,
 } from 'n8n-workflow';
 
-export const portfolioCompanyOperations = [
+export const portfolioCompanyOperations: INodeProperties[] = [
 	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
+		noDataExpression: true,
 		required: true,
 		displayOptions: {
 			show: {
@@ -20,23 +21,26 @@ export const portfolioCompanyOperations = [
 				name: 'Add',
 				value: 'add',
 				description: 'Add a company to portfolio',
+				action: 'Add a portfolio company',
 			},
 			{
 				name: 'Get All',
 				value: 'getAll',
 				description: 'Get all companies in a portfolio',
+				action: 'Get all portfolio companies',
 			},
 			{
 				name: 'Remove',
 				value: 'remove',
 				description: 'Remove a company from portfolio',
+				action: 'Remove a portfolio company',
 			},
 		],
 		default: 'add',
 	},
-] as INodeProperties[];
+];
 
-export const portfolioCompanyFields = [
+export const portfolioCompanyFields: INodeProperties[] = [
 	{
 		displayName: 'Portfolio ID',
 		name: 'portfolioId',
@@ -71,7 +75,7 @@ export const portfolioCompanyFields = [
 			},
 		},
 		default: false,
-		description: 'If all results should be returned or only up to a given limit.',
+		description: 'Whether to return all results or only up to a given limit',
 	},
 	{
 		displayName: 'Limit',
@@ -95,7 +99,7 @@ export const portfolioCompanyFields = [
 			maxValue: 100,
 		},
 		default: 100,
-		description: 'Number of results to return.',
+		description: 'Max number of results to return',
 	},
 	{
 		displayName: 'Filters',
@@ -184,5 +188,5 @@ export const portfolioCompanyFields = [
 		description: 'Company\'s domain name',
 	},
 
-] as INodeProperties[];
+];
 

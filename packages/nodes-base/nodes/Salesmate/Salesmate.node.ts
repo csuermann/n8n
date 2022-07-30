@@ -42,6 +42,7 @@ export class Salesmate implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Salesmate',
 		name: 'salesmate',
+		// eslint-disable-next-line n8n-nodes-base/node-class-description-icon-not-svg
 		icon: 'file:salesmate.png',
 		group: ['output'],
 		version: 1,
@@ -49,7 +50,6 @@ export class Salesmate implements INodeType {
 		description: 'Consume Salesmate API',
 		defaults: {
 			name: 'Salesmate',
-			color: '#004ef6',
 		},
 		inputs: ['main'],
 		outputs: ['main'],
@@ -64,6 +64,7 @@ export class Salesmate implements INodeType {
 				displayName: 'Resource',
 				name: 'resource',
 				type: 'options',
+				noDataExpression: true,
 				options: [
 					{
 						name: 'Activity',
@@ -79,7 +80,6 @@ export class Salesmate implements INodeType {
 					},
 				],
 				default: 'activity',
-				description: 'Resource to consume.',
 			},
 			...companyOperations,
 			...activityOperations,
@@ -151,7 +151,7 @@ export class Salesmate implements INodeType {
 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const items = this.getInputData();
 		const returnData: IDataObject[] = [];
-		const length = items.length as unknown as number;
+		const length = items.length;
 		const qs: IDataObject = {};
 		let responseData;
 		const resource = this.getNodeParameter('resource', 0) as string;
@@ -314,7 +314,7 @@ export class Salesmate implements INodeType {
 					}
 					if (options.fields) {
 						if ((options.fields as string).trim() === '') {
-							throw new NodeOperationError(this.getNode(), 'You have to add at least one field');
+							throw new NodeOperationError(this.getNode(), 'You have to add at least one field', { itemIndex: i });
 						}
 						body.fields = (options.fields as string).split(',') as string[];
 					} else {
@@ -479,7 +479,7 @@ export class Salesmate implements INodeType {
 					}
 					if (options.fields) {
 						if ((options.fields as string).trim() === '') {
-							throw new NodeOperationError(this.getNode(), 'You have to add at least one field');
+							throw new NodeOperationError(this.getNode(), 'You have to add at least one field', { itemIndex: i });
 						}
 						body.fields = (options.fields as string).split(',') as string[];
 					} else {
@@ -671,7 +671,7 @@ export class Salesmate implements INodeType {
 					}
 					if (options.fields !== undefined) {
 						if ((options.fields as string).trim() === '') {
-							throw new NodeOperationError(this.getNode(), 'You have to add at least one field');
+							throw new NodeOperationError(this.getNode(), 'You have to add at least one field', { itemIndex: i });
 						}
 						body.fields = (options.fields as string).split(',') as string[];
 					} else {
